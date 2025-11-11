@@ -18,4 +18,5 @@ public class LoginInputData {
         return password;
     }
 
+
 }
