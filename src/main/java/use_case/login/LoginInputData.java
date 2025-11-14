@@ -1,5 +1,9 @@
 package use_case.login;
 
+/**
+ * The input data for a user to login in to the program
+ */
+
 public class LoginInputData {
 
     private final String username;

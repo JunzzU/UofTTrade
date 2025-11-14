@@ -1,5 +1,9 @@
 package use_case.login;
 
+/**
+ * The data outputted by the login use case
+ */
+
 public class LoginOutputData {
 
     private final String username, email;
