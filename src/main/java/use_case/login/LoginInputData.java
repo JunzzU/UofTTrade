@@ -4,9 +4,11 @@ public class LoginInputData {
 
     private final String username;
     private final String password;
+    private final String email;
 
-    public LoginInputData(String username, String password) {
+    public LoginInputData(String username, String password, String email) {
         this.username = username;
+        this.email = email;
         this.password = password;
     }
 
@@ -16,6 +18,10 @@ public class LoginInputData {
 
     String getPassword() {
         return password;
+    }
+
+    String getEmail() {
+        return email;
     }
 
 
