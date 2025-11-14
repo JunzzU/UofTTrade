@@ -46,6 +46,10 @@ public class Listing {
 
     public User get_owner() { return owner; }
 
+    /**
+     * Generates a unique ID for the Listing. Helper to the constructor.
+     * @return the generated ID
+     */
     private int generateListingId() {
         int result = owner.get_username().hashCode() + name.hashCode();
         return result;
