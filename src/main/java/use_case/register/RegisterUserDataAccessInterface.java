@@ -5,5 +5,6 @@ import entity.User;
 public interface RegisterUserDataAccessInterface {
 
     void save(User user);
+    boolean userExists(String userIdentifier);
 
 }
