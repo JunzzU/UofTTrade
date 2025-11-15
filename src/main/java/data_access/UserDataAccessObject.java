@@ -5,10 +5,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.login.LoginUserDataAccessInterface;
 import okhttp3.*;
+import use_case.register.RegisterUserDataAccessInterface;
 
 import java.io.IOException;
 
-public class UserDataAccessObject implements LoginUserDataAccessInterface {
+public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface {
 
     private final JSONArray USERINFO = getUserData();
     private String username;
@@ -47,6 +48,27 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface {
             return new User(username, email, password);
         } catch (Exception e) {
             return null;
+        }
+
+    }
+
+    public void save(User user) {
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "{\n\t\"Username\": \"" + user.get_username() + "\"," +
+                    "\n\t\"Email\": \"" + user.get_email() + "\",\n\t\"Password\": \"" + user.get_password() + "\"\n}");
+            Request request = new Request.Builder()
+                    .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/USERS")
+                    .method("PUT", body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            Response response = client.newCall(request).execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
