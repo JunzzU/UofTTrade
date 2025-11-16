@@ -9,8 +9,5 @@
         <module name="UofTTrade" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="API-Tester" target="25" />
-    </bytecodeTargetLevel>
   </component>
 </project>

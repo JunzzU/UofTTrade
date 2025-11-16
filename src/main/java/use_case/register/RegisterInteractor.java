@@ -2,6 +2,8 @@ package use_case.register;
 
 import entity.User;
 
+import java.io.IOException;
+
 public class RegisterInteractor implements RegisterInputBoundary {
 
     private final RegisterUserDataAccessInterface userDataAccess;
@@ -13,7 +15,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
     }
 
     @Override
-    public void execute(RegisterInputData registerInputData) {
+    public void execute(RegisterInputData registerInputData) throws IOException {
 
         if (userDataAccess.userExists(registerInputData.getUsername()) ||
                 userDataAccess.userExists(registerInputData.getEmail())) {
