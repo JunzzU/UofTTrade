@@ -1,6 +1,13 @@
 package use_case.view_profile;
+
 import java.util.List;
+
+/**
+ * Output data for the View Profile use case.
+ * Contains the username and the user's listing names.
+ */
 public class ViewProfileOutputData {
+
     private final String username;
     private final List<String> listingNames;
 
@@ -17,6 +24,7 @@ public class ViewProfileOutputData {
         return listingNames;
     }
 }
+
 
 
 
