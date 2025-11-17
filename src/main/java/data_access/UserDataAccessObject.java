@@ -10,17 +10,16 @@ import java.io.IOException;
 
 public class UserDataAccessObject implements LoginUserDataAccessInterface {
 
-    private final JSONArray USERINFO = getUserData();
     private String username;
     private String email;
 
-    public UserDataAccessObject() throws IOException {
-    }
+
 
     @Override
-    public boolean userExists(String userIdentifier) {
-        for (int i = 0; i < USERINFO.length(); i++) {
-            JSONObject user = USERINFO.getJSONObject(i);
+    public boolean userExists(String userIdentifier) throws IOException {
+        JSONArray userInfo = getUserData();
+        for (int i = 0; i < userInfo.length(); i++) {
+            JSONObject user = userInfo.getJSONObject(i);
             if (user.getString("Email").equals(userIdentifier) || user.getString("Username").equals(userIdentifier)) {
                 return true;
             }
@@ -29,12 +28,13 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface {
     }
 
     @Override
-    public User getUser(String userIdentifier) {
+    public User getUser(String userIdentifier) throws IOException {
+        JSONArray userInfo = getUserData();
         JSONObject userData = new JSONObject();
-        for (int i = 0; i < USERINFO.length(); i++) {
-            JSONObject user = USERINFO.getJSONObject(i);
+        for (int i = 0; i < userInfo.length(); i++) {
+            JSONObject user = userInfo.getJSONObject(i);
             if (user.getString("Email").equals(userIdentifier) || user.getString("Username").equals(userIdentifier)) {
-                userData = USERINFO.getJSONObject(i);
+                userData = userInfo.getJSONObject(i);
                 break;
             }
         }

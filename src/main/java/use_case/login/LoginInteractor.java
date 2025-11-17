@@ -2,6 +2,8 @@ package use_case.login;
 
 import entity.User;
 
+import java.io.IOException;
+
 /**
  * The interactor for the login use case.
  */
@@ -17,21 +19,20 @@ public class LoginInteractor implements LoginInputBoundary {
     }
 
     @Override
-    public void execute(LoginInputData loginInputData) {
+    public void execute(LoginInputData loginInputData) throws IOException {
 
-        String username =  loginInputData.getUsername();
+        String userIdentifier =  loginInputData.getUserIdentifier();
         String password = loginInputData.getPassword();
-        String email = loginInputData.getEmail();
 
-        if (!userDataAccess.userExists(username) && !userDataAccess.userExists(email)) {
+        if (!userDataAccess.userExists(userIdentifier)) {
             outputBoundary.prepareFailView("Account does not exist.");
         } else {
-            String dbPassword = userDataAccess.getUser(username).get_password();
+            String dbPassword = userDataAccess.getUser(userIdentifier).get_password();
             if (!password.equals(dbPassword)) {
                 outputBoundary.prepareFailView("Incorrect password.");
             } else {
 
-                User currentUser = userDataAccess.getUser(username);
+                User currentUser = userDataAccess.getUser(userIdentifier);
                 LoginOutputData outputData = new LoginOutputData(currentUser.get_username(), currentUser.get_email());
                 outputBoundary.prepareSuccessView(outputData);
 

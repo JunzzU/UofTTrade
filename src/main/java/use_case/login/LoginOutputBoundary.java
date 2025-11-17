@@ -20,4 +20,6 @@ public interface LoginOutputBoundary {
      */
     void prepareFailView(String failMessage);
 
+    void switchToRegisterView();
+
 }

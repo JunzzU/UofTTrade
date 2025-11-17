@@ -6,17 +6,12 @@ package interface_adapter.login;
 
 public class LoginState {
 
-    private String username = "";
-    private String email = "";
+    private String userIdentifier = "";
     private String loginError;
     private String password = "";
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
+    public String getUserIdentifier() {
+        return userIdentifier;
     }
 
     public String getLoginError() {
@@ -27,16 +22,12 @@ public class LoginState {
         return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserIdentifier(String userIdentifier) {
+        this.userIdentifier = userIdentifier;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setLoginError(String usernameError) {
-        this.loginError = usernameError;
+    public void setLoginError(String userIdentifierError) {
+        this.loginError = userIdentifierError;
     }
 
     public void setPassword(String password) {
