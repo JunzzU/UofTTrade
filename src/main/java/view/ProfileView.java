@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 /**
  * The ProfileView is responsible for rendering the user's profile screen.
  * <p>
- * It displays:
+ * displays:
  * <ul>
  *     <li>The username title </li>
  *     <li>A scrollable list of listings, each with its photo and a delete button</li>
