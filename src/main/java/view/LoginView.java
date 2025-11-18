@@ -36,7 +36,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public LoginView(LoginViewModel loginViewModel) {
 
         this.loginViewModel = loginViewModel;
-        this.loginViewModel.addPropertyChangeListener(this);
+        loginViewModel.addPropertyChangeListener(this);
 
         setBounds(100, 100, 450, 300);
         setBackground(new Color(255, 255, 255));
@@ -106,13 +106,20 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         gbc_passwordField.gridy = 8;
         loginInfoPanel.add(passwordField, gbc_passwordField);
 
+        usernameErrorField.setFont(new Font("Rubik", Font.PLAIN, 12));
+        GridBagConstraints gbc_usernameErrorField = new GridBagConstraints();
+        gbc_usernameErrorField.insets = new Insets(5, 5, 5, 5);
+        gbc_usernameErrorField.gridx = 0;
+        gbc_usernameErrorField.gridy = 10;
+        loginInfoPanel.add(usernameErrorField, gbc_usernameErrorField);
+
         loginButton = new JButton("Login");
         loginButton.setBackground(new Color(128, 128, 255));
         loginButton.setFont(new Font("Rubik", Font.PLAIN, 16));
         GridBagConstraints gbc_loginButton = new GridBagConstraints();
         gbc_loginButton.insets = new Insets(5, 5, 5, 5);
         gbc_loginButton.gridx = 0;
-        gbc_loginButton.gridy = 11;
+        gbc_loginButton.gridy = 12;
         loginInfoPanel.add(loginButton, gbc_loginButton);
 
         registerButton = new JButton("Register");
@@ -121,7 +128,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         GridBagConstraints gbc_registerButton = new GridBagConstraints();
         gbc_registerButton.insets = new Insets(5, 5, 5, 5);
         gbc_registerButton.gridx = 0;
-        gbc_registerButton.gridy = 13;
+        gbc_registerButton.gridy = 14;
         loginInfoPanel.add(registerButton, gbc_registerButton);
 
         loginButton.addActionListener(
