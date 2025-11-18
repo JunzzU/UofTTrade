@@ -7,6 +7,6 @@ import java.io.IOException;
 public interface RegisterUserDataAccessInterface {
 
     void save(User user) throws IOException;
-    boolean userExists(String userIdentifier);
+    boolean userExists(String userIdentifier) throws IOException;
 
 }
