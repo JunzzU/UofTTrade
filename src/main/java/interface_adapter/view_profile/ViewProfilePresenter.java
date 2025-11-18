@@ -3,6 +3,12 @@ package interface_adapter.view_profile;
 import use_case.view_profile.ViewProfileOutputBoundary;
 import use_case.view_profile.ViewProfileOutputData;
 
+import java.util.List;
+
+/**
+ * Presenter for the View Profile use case.
+ * Updates the ViewModel's state after success or failure and notifies the view.
+ */
 public class ViewProfilePresenter implements ViewProfileOutputBoundary {
 
     private final ViewProfileViewModel viewModel;
@@ -12,11 +18,33 @@ public class ViewProfilePresenter implements ViewProfileOutputBoundary {
     }
 
     @Override
-    public void present(ViewProfileOutputData outputData) {
+    public void prepareSuccessView(ViewProfileOutputData outputData) {
         ViewProfileState state = viewModel.getState();
 
         state.setUsername(outputData.getUsername());
         state.setListingNames(outputData.getListingNames());
+
+        // Set dynamic title text
+        state.setTitleText("Profile: " + outputData.getUsername());
+
+        // Clear previous error
+        state.setErrorMessage("");
+
+        viewModel.setState(state);
+        viewModel.firePropertyChanged();
+    }
+
+    @Override
+    public void prepareFailView(String errorMessage) {
+        ViewProfileState state = viewModel.getState();
+
+        // Set error
+        state.setErrorMessage(errorMessage);
+
+        // Clear fields that shouldn’t show on failure
+        state.setUsername("");
+        state.setListingNames(List.of());
+        state.setTitleText("");
 
         viewModel.setState(state);
         viewModel.firePropertyChanged();
