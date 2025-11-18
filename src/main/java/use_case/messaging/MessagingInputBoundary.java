@@ -1,5 +1,5 @@
 package use_case.messaging;
 
 public interface MessagingInputBoundary {
-    void execute(MessagingInputData messagingInputData);
+    void execute(use_case.messaging.MessagingInputData messagingInputData);
 }

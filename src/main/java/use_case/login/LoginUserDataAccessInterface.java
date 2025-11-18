@@ -22,6 +22,8 @@ public interface LoginUserDataAccessInterface {
      */
     User getUser(String userIdentifier) throws IOException;
 
+    void save(User user) throws IOException;
+
     void setUsername(String username);
 
     void setEmail(String email);
