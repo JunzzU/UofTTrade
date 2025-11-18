@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b6cbc8-de7a-4ddf-9a63-f74472710dcf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/UofTTrade.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/view/MessagingSubpageView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="67b6cbc8-de7a-4ddf-9a63-f74472710dcf" name="Changes" comment="Modify the MessagingViewModel to fit the existing ViewModel">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/messaging/MessagingViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/messaging/MessagingViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/messaging/MessagingViewModel$State.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/messaging/MessagingViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/MessagingSubpageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/MessagingSubpageView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +38,16 @@
   "selectedUrlAndAccountId": {
     "url": "https://github.com/Grace273/UofTTrade.git",
     "accountId": "4ecc9055-5388-4cad-bcf6-ba94861973d0"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "Grace273",
+    "repository": "UofTTrade"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -60,7 +65,8 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "subpage",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "git-widget-placeholder": "#34 on subpage",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -116,11 +122,24 @@
       <updated>1763482832052</updated>
       <workItem from="1763482834058" duration="681000" />
       <workItem from="1763484237106" duration="667000" />
-      <workItem from="1763485167604" duration="2382000" />
+      <workItem from="1763485167604" duration="3848000" />
     </task>
+    <task id="LOCAL-00001" summary="Modify the MessagingViewModel to fit the existing ViewModel">
+      <option name="closed" value="true" />
+      <created>1763487607899</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763487607899</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Modify the MessagingViewModel to fit the existing ViewModel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modify the MessagingViewModel to fit the existing ViewModel" />
   </component>
 </project>
