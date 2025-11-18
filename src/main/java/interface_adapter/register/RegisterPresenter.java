@@ -24,7 +24,7 @@ public class RegisterPresenter implements RegisterOutputBoundary {
     public void prepareSuccessView(RegisterOutputData response) {
         // On success, switch to the login view.
         final LoginState loginState = loginViewModel.getState();
-        loginState.setUsername(response.getUsername());
+        loginState.setUserIdentifier(response.getUsername());
         loginViewModel.firePropertyChanged();
 
         viewManagerModel.setState(loginViewModel.getViewName());
