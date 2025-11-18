@@ -127,6 +127,7 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("state")) {
             final HomepageState state = (HomepageState) evt.getNewValue();
             username = state.getUsername();
+            userGreetingLabel.setText("Hello, " + username);
         }
 
 
