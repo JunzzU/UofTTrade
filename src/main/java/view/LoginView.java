@@ -36,7 +36,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public LoginView(LoginViewModel loginViewModel) {
 
         this.loginViewModel = loginViewModel;
-        loginViewModel.addPropertyChangeListener(this);
+        this.loginViewModel.addPropertyChangeListener(this);
 
         setBounds(100, 100, 450, 300);
         setBackground(new Color(255, 255, 255));
