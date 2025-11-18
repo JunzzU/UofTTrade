@@ -3,6 +3,8 @@ package interface_adapter.login;
 import use_case.login.LoginInputData;
 import use_case.login.LoginInputBoundary;
 
+import java.io.IOException;
+
 /**
  * The controller for the login use case
  */
@@ -17,16 +19,19 @@ public class LoginController {
 
     /**
      * Executes the user's login attempt
-     * @param username: String with the username of the user logging in
+     * @param userIdentifier: String with the username/email of the user logging in
      * @param password: String with the password of the user logging in
-     * @param email: String with the email of the user logging in
      */
 
-    public void executeLogin(String username, String password, String email) {
+    public void executeLogin(String userIdentifier, String password) throws IOException {
 
-        final LoginInputData  loginInputData = new LoginInputData(username, password, email);
+        final LoginInputData  loginInputData = new LoginInputData(userIdentifier, password);
         inputBoundary.execute(loginInputData);
 
+    }
+
+    public void switchToRegisterView() {
+        inputBoundary.switchToRegisterView();
     }
 
 }
