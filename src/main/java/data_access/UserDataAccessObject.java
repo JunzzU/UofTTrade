@@ -5,14 +5,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.login.LoginUserDataAccessInterface;
 import okhttp3.*;
+import java.util.ArrayList;
+import java.util.List;
 import use_case.register.RegisterUserDataAccessInterface;
+import use_case.view_profile.ViewProfileUserDataAccessInterface;
 
 import java.io.IOException;
 
-public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface {
+public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface, ViewProfileUserDataAccessInterface {
 
     private String username;
     private String email;
+    private User currentLoggedInUser;
 
 
 
@@ -76,6 +80,23 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         Response response = client.newCall(request).execute();
 
     }
+
+    /** Called by login interactor when login succeeds */
+    public void setCurrentLoggedInUser(User user) {
+        this.currentLoggedInUser = user;
+    }
+
+    @Override
+    public User getCurrentLoggedInUser() {
+        return currentLoggedInUser;
+    }
+
+    @Override
+    public List<String> getUserListings(String username) {
+        // If you don’t have listings yet, return an empty list for now
+        return new ArrayList<>();
+    }
+
 
     public void setUsername(String username) {this.username = username;}
 

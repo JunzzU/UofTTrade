@@ -19,6 +19,14 @@ import view.HomepageView;
 import view.LoginView;
 import view.RegisterView;
 import view.ViewManager;
+import view.ProfileView;
+import interface_adapter.view_profile.ViewProfileViewModel;
+import interface_adapter.view_profile.ViewProfileController;
+import interface_adapter.view_profile.ViewProfilePresenter;
+import use_case.view_profile.ViewProfileInputBoundary;
+import use_case.view_profile.ViewProfileOutputBoundary;
+import use_case.view_profile.ViewProfileInteractor;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +45,9 @@ public class AppBuilder {
     private RegisterViewModel registerViewModel;
     private LoginViewModel loginViewModel;
     private LoginView loginView;
+    private ProfileView profileView;
+    private ViewProfileViewModel viewProfileViewModel;
+
     private HomepageViewModel homepageViewModel;
     private HomepageView homepageView;
 
@@ -82,6 +93,37 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addViewProfileUseCase() {
+
+        viewProfileViewModel = new ViewProfileViewModel();
+
+        ViewProfileOutputBoundary presenter =
+                new ViewProfilePresenter(viewProfileViewModel);
+
+        ViewProfileInputBoundary interactor =
+                new ViewProfileInteractor(userDataAccessObject, presenter);
+
+        ViewProfileController controller =
+                new ViewProfileController(interactor);
+
+        return addProfileView(controller);
+    }
+
+
+    public AppBuilder addProfileView(ViewProfileController controller) {
+
+        profileView = new ProfileView(
+                viewProfileViewModel,
+                controller,
+                () -> System.out.println("Create listing"),
+                () -> System.out.println("Home"),
+                listingName -> System.out.println("Delete " + listingName)
+        );
+
+        contentPane.add(profileView, viewProfileViewModel.getViewName());
+        return this;
+    }
+
     public AppBuilder addLoginUseCase() {
 
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
@@ -109,4 +151,6 @@ public class AppBuilder {
 
     }
 
+
+}
 }

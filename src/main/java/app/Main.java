@@ -1,5 +1,7 @@
 package app;
 
+import interface_adapter.view_profile.ViewProfileController;
+
 import javax.swing.*;
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ public class Main {
                 .addRegisterView()
                 .addHomepageView()
                 .addRegisterUseCase()
+                .addViewProfileUseCase()
                 .addLoginUseCase()
                 .build();
 
