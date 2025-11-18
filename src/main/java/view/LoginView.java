@@ -2,7 +2,6 @@ package view;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
-import use_case.login.LoginInputData;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -20,15 +19,18 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final String viewName = "log in";
     private final LoginViewModel loginViewModel;
     private LoginController loginController = null;
-    private final JLabel lblNewLabel;
+    private final JPanel imagePanel;
+    private final JLabel imageLabel;
     private final JLabel titleLabel;
-    private final JLabel usernameLabel;
-    private final JTextField usernameField;
+    private final JLabel userIdentifierLabel;
+    private final JTextField userIdentifierField;
     private final JLabel passwordLabel;
     private final JPasswordField passwordField;
-    private final JButton btnLogin;
-    private final JButton btnRegister;
+    private final JButton loginButton;
+    private final JButton registerButton;
     private final JLabel usernameErrorField = new JLabel();
+    private final JPanel loginFormPanel;
+    private final JPanel loginInfoPanel;
 
 
     public LoginView(LoginViewModel loginViewModel) {
@@ -36,62 +38,96 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
 
+        setBounds(100, 100, 450, 300);
         setBackground(new Color(255, 255, 255));
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        setLayout(null);
+        setLayout(new BorderLayout(0, 0));
 
-        usernameErrorField.setFont(new Font("Rubik", Font.PLAIN, 24));
-        usernameErrorField.setBounds(583, 869, 543, 62);
-        add(usernameErrorField);
+        imagePanel = new JPanel();
+        imagePanel.setBackground(new Color(128, 128, 255));
+        add(imagePanel, BorderLayout.WEST);
+        imagePanel.setLayout(new BorderLayout(0, 0));
 
-        lblNewLabel = new JLabel("");
-        lblNewLabel.setIcon(new ImageIcon("C:\\Users\\humbe\\IdeaProjects\\API Starter\\src\\resources\\images\\university-of-toronto-01.jpg"));
-        lblNewLabel.setBounds(0, -286, 493, 1442);
-        add(lblNewLabel);
+        imageLabel = new JLabel("");
+        imageLabel.setIcon(new ImageIcon("C:\\Users\\humbe\\IdeaProjects\\API Starter\\src\\resources\\images\\istockphoto-157334765-612x612.jpg"));
+        imagePanel.add(imageLabel);
+
+        loginFormPanel = new JPanel();
+        loginFormPanel.setBackground(new Color(255, 255, 255));
+        add(loginFormPanel, BorderLayout.CENTER);
+        loginFormPanel.setLayout(new BorderLayout(0, 0));
 
         titleLabel = new JLabel("UofTTrade Login");
-        titleLabel.setFont(new Font("Rubik", Font.BOLD, 96));
-        titleLabel.setBounds(522, 10, 965, 133);
-        add(titleLabel);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Rubik", Font.BOLD, 48));
+        loginFormPanel.add(titleLabel, BorderLayout.NORTH);
 
-        usernameLabel = new JLabel("Username/Email:");
-        usernameLabel.setFont(new Font("Rubik", Font.PLAIN, 48));
-        usernameLabel.setBounds(585, 265, 602, 94);
-        add(usernameLabel);
+        loginInfoPanel = new JPanel();
+        loginInfoPanel.setBackground(new Color(255, 255, 255));
+        loginFormPanel.add(loginInfoPanel, BorderLayout.CENTER);
+        GridBagLayout gbl_loginInfoPanel = new GridBagLayout();
+        gbl_loginInfoPanel.columnWidths = new int[]{0, 0};
+        gbl_loginInfoPanel.rowHeights = new int[]{250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        gbl_loginInfoPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+        gbl_loginInfoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        loginInfoPanel.setLayout(gbl_loginInfoPanel);
 
-        usernameField = new JTextField();
-        usernameField.setFont(new Font("Rubik", Font.PLAIN, 40));
-        usernameField.setBounds(585, 358, 541, 68);
-        add(usernameField);
-        usernameField.setColumns(10);
+        userIdentifierLabel = new JLabel("Username/Email:");
+        userIdentifierLabel.setFont(new Font("Rubik", Font.PLAIN, 36));
+        GridBagConstraints gbc_userIdentifierLabel = new GridBagConstraints();
+        gbc_userIdentifierLabel.insets = new Insets(5, 5, 5, 5);
+        gbc_userIdentifierLabel.gridx = 0;
+        gbc_userIdentifierLabel.gridy = 4;
+        loginInfoPanel.add(userIdentifierLabel, gbc_userIdentifierLabel);
+
+        userIdentifierField = new JTextField();
+        userIdentifierField.setFont(new Font("Rubik", Font.PLAIN, 24));
+        GridBagConstraints gbc_textField = new GridBagConstraints();
+        gbc_textField.insets = new Insets(5, 5, 5, 5);
+        gbc_textField.gridx = 0;
+        gbc_textField.gridy = 5;
+        loginInfoPanel.add(userIdentifierField, gbc_textField);
+        userIdentifierField.setColumns(15);
 
         passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Rubik", Font.PLAIN, 48));
-        passwordLabel.setBounds(585, 469, 602, 94);
-        add(passwordLabel);
+        passwordLabel.setFont(new Font("Rubik", Font.PLAIN, 36));
+        GridBagConstraints gbc_passwordLabel = new GridBagConstraints();
+        gbc_passwordLabel.insets = new Insets(5, 5, 5, 5);
+        gbc_passwordLabel.gridx = 0;
+        gbc_passwordLabel.gridy = 7;
+        loginInfoPanel.add(passwordLabel, gbc_passwordLabel);
 
         passwordField = new JPasswordField();
-        passwordField.setFont(new Font("Rubik", Font.PLAIN, 40));
-        passwordField.setColumns(10);
-        passwordField.setBounds(585, 567, 541, 68);
-        add(passwordField);
+        passwordField.setFont(new Font("Rubik", Font.PLAIN, 24));
+        passwordField.setColumns(15);
+        GridBagConstraints gbc_passwordField = new GridBagConstraints();
+        gbc_passwordField.insets = new Insets(5, 5, 5, 5);
+        gbc_passwordField.gridx = 0;
+        gbc_passwordField.gridy = 8;
+        loginInfoPanel.add(passwordField, gbc_passwordField);
 
-        btnLogin = new JButton("Log In");
-        btnLogin.setBackground(new Color(128, 128, 255));
-        btnLogin.setFont(new Font("Rubik", Font.PLAIN, 36));
-        btnLogin.setBounds(585, 709, 258, 124);
-        add(btnLogin);
+        loginButton = new JButton("Login");
+        loginButton.setBackground(new Color(128, 128, 255));
+        loginButton.setFont(new Font("Rubik", Font.PLAIN, 16));
+        GridBagConstraints gbc_loginButton = new GridBagConstraints();
+        gbc_loginButton.insets = new Insets(5, 5, 5, 5);
+        gbc_loginButton.gridx = 0;
+        gbc_loginButton.gridy = 11;
+        loginInfoPanel.add(loginButton, gbc_loginButton);
 
-        btnRegister = new JButton("Register");
-        btnRegister.setBackground(new Color(0, 128, 0));
-        btnRegister.setFont(new Font("Rubik", Font.PLAIN, 36));
-        btnRegister.setBounds(868, 709, 258, 124);
-        add(btnRegister);
+        registerButton = new JButton("Register");
+        registerButton.setBackground(new Color(0, 128, 0));
+        registerButton.setFont(new Font("Rubik", Font.PLAIN, 16));
+        GridBagConstraints gbc_registerButton = new GridBagConstraints();
+        gbc_registerButton.insets = new Insets(5, 5, 5, 5);
+        gbc_registerButton.gridx = 0;
+        gbc_registerButton.gridy = 13;
+        loginInfoPanel.add(registerButton, gbc_registerButton);
 
-        btnLogin.addActionListener(
+        loginButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(btnLogin)) {
+                        if (evt.getSource().equals(loginButton)) {
                             final LoginState currentState = loginViewModel.getState();
 
                             try {
@@ -107,10 +143,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
-        btnRegister.addActionListener(
+        registerButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(btnRegister)) {
+                        if (evt.getSource().equals(registerButton)) {
                             final LoginState currentState = loginViewModel.getState();
                             loginController.switchToRegisterView();
                         }
@@ -118,11 +154,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
-        usernameField.getDocument().addDocumentListener(new DocumentListener() {
+        userIdentifierField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final LoginState currentState = loginViewModel.getState();
-                currentState.setUserIdentifier(usernameField.getText());
+                currentState.setUserIdentifier(userIdentifierField.getText());
                 loginViewModel.setState(currentState);
             }
 
@@ -180,7 +216,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     }
 
     private void setFields(LoginState state) {
-        usernameField.setText(state.getUserIdentifier());
+        userIdentifierField.setText(state.getUserIdentifier());
     }
 
     public String getViewName() {

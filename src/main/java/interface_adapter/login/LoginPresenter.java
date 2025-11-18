@@ -1,36 +1,38 @@
 package interface_adapter.login;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.homepage.HomepageState;
+import interface_adapter.homepage.HomepageViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
 public class LoginPresenter implements LoginOutputBoundary {
 
     private final LoginViewModel loginViewModel;
-    private final LoggedInViewModel loggedInViewModel;
+    private final HomepageViewModel homepageViewModel;
     private final ViewManagerModel viewManagerModel;
     private final RegisterViewModel registerViewModel;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
-                          LoggedInViewModel loggedInViewModel,
+                          HomepageViewModel homepageViewModel,
                           LoginViewModel loginViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.loggedInViewModel = loggedInViewModel;
+        this.homepageViewModel = homepageViewModel;
         this.loginViewModel = loginViewModel;
     }
 
     @Override
     public void prepareSuccessView(LoginOutputData response) {
         // On success, update the loggedInViewModel's state
-        final LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername(response.getUsername());
-        this.loggedInViewModel.firePropertyChanged();
+        final HomepageState homepageState = homepageViewModel.getState();
+        homepageState.setUsername(response.getUsername());
+        this.homepageViewModel.firePropertyChanged();
 
         // and clear everything from the LoginViewModel's state
         loginViewModel.setState(new LoginState());
 
         // switch to the logged in view
-        this.viewManagerModel.setState(loggedInViewModel.getViewName());
+        this.viewManagerModel.setState(homepageViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 

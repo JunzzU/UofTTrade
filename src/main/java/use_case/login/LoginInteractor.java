@@ -41,4 +41,9 @@ public class LoginInteractor implements LoginInputBoundary {
 
     }
 
+    @Override
+    public void switchToRegisterView() {
+        outputBoundary.switchToRegisterView();
+    }
+
 }
