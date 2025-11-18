@@ -49,7 +49,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         imagePanel.setLayout(new BorderLayout(0, 0));
 
         imageLabel = new JLabel("");
-        imageLabel.setIcon(new ImageIcon("C:\\Users\\humbe\\IdeaProjects\\API Starter\\src\\resources\\images\\istockphoto-157334765-612x612.jpg"));
+        imageLabel.setIcon(new ImageIcon("src\\resources\\images\\istockphoto-157334765-612x612.jpg"));
         imagePanel.add(imageLabel);
 
         loginFormPanel = new JPanel();
