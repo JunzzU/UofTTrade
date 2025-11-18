@@ -10,9 +10,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         AppBuilder appBuilder = new AppBuilder();
         JFrame application = appBuilder
+                .addLoginView()
                 .addRegisterView()
+                .addHomepageView()
                 .addRegisterUseCase()
                 .addViewProfileUseCase()
+                .addLoginUseCase()
                 .build();
 
         application.pack();

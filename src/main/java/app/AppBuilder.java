@@ -2,13 +2,20 @@ package app;
 
 import data_access.UserDataAccessObject;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.homepage.HomepageViewModel;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.register.RegisterController;
 import interface_adapter.register.RegisterPresenter;
 import interface_adapter.register.RegisterViewModel;
+import use_case.login.LoginInputBoundary;
+import use_case.login.LoginInteractor;
+import use_case.login.LoginOutputBoundary;
 import use_case.register.RegisterInputBoundary;
 import use_case.register.RegisterInteractor;
 import use_case.register.RegisterOutputBoundary;
+import view.HomepageView;
 import view.LoginView;
 import view.RegisterView;
 import view.ViewManager;
@@ -41,6 +48,8 @@ public class AppBuilder {
     private ProfileView profileView;
     private ViewProfileViewModel viewProfileViewModel;
 
+    private HomepageViewModel homepageViewModel;
+    private HomepageView homepageView;
 
     public AppBuilder() throws IOException {
         contentPane.setLayout(cardLayout);
@@ -51,6 +60,24 @@ public class AppBuilder {
         registerViewModel = new RegisterViewModel();
         registerView = new RegisterView(registerViewModel);
         contentPane.add(registerView, registerView.getViewName());
+        return this;
+
+    }
+
+    public AppBuilder addLoginView() {
+
+        loginViewModel = new LoginViewModel();
+        loginView = new LoginView(loginViewModel);
+        contentPane.add(loginView, loginView.getViewName());
+        return this;
+
+    }
+
+    public AppBuilder addHomepageView() {
+
+        homepageViewModel = new HomepageViewModel();
+        homepageView = new HomepageView(homepageViewModel);
+        contentPane.add(homepageView, homepageView.getViewName());
         return this;
 
     }
@@ -97,6 +124,18 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addLoginUseCase() {
+
+        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
+                homepageViewModel, loginViewModel, registerViewModel);
+        final LoginInputBoundary loginInteractor = new LoginInteractor(
+                userDataAccessObject, loginOutputBoundary);
+
+        LoginController loginController = new LoginController(loginInteractor);
+        loginView.setLoginController(loginController);
+        return this;
+
+    }
 
     public JFrame build() {
         final JFrame application = new JFrame("UofTTrade");
@@ -113,4 +152,5 @@ public class AppBuilder {
     }
 
 
+}
 }
