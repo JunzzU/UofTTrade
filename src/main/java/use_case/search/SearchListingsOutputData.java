@@ -5,11 +5,13 @@ public class SearchListingsOutputData {
     private List<ListingResult> results;
     private String categoryName;
     private String keyword;
+    private boolean fallbackResults;
 
-    public SearchListingsOutputData(List<ListingResult> results, String keyword, String categoryName) {
+    public SearchListingsOutputData(List<ListingResult> results, String keyword, String categoryName, boolean fallbackResults) {
         this.results = results;
         this.keyword = keyword;
         this.categoryName = categoryName;
+        this.fallbackResults = fallbackResults;
     }
     public String getCategoryName() {
         return categoryName;
@@ -19,6 +21,9 @@ public class SearchListingsOutputData {
     }
     public List<ListingResult> getResults() {
         return results;
+    }
+    public boolean isFallbackResults() {
+        return fallbackResults;
     }
     public static class ListingResult {
         private final String name;
