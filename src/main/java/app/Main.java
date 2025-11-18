@@ -1,5 +1,7 @@
 package app;
 
+import interface_adapter.view_profile.ViewProfileController;
+
 import javax.swing.*;
 import java.io.IOException;
 
@@ -10,6 +12,7 @@ public class Main {
         JFrame application = appBuilder
                 .addRegisterView()
                 .addRegisterUseCase()
+                .addViewProfileUseCase()
                 .build();
 
         application.pack();
