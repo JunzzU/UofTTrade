@@ -58,8 +58,6 @@ public class AppBuilder {
     public JFrame build() {
         final JFrame application = new JFrame("UofTTrade");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        application.setMinimumSize(new Dimension(1920, 1080));
-        application.setResizable(false);
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setBounds(100, 100, 450, 300);
         application.add(contentPane);

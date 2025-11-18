@@ -20,17 +20,19 @@ public class RegisterView extends JPanel implements ActionListener, PropertyChan
     private final String viewName = "register";
     private RegisterController registerController = null;
     private RegisterViewModel registerViewModel;
-    private final JPanel backgroundPanel;
+    private final JPanel imagePanel;
+    private final JPanel registerFormPanel;
+    private final JPanel registerInfoPanel;
     private final JLabel usernameLabel;
     private final JLabel emailLabel;
     private final JLabel passwordLabel;
-    private final JLabel confirmPasswordLabel;
+    private final JLabel repeatPasswordLabel;
     private final JLabel titleLabel;
     private final JLabel imageLabel;
     private final JTextField emailField;
     private final JTextField usernameField;
     private final JPasswordField passwordField;
-    private final JPasswordField confirmPasswordField;
+    private final JPasswordField repeatPasswordField;
     private final JButton registerButton;
     private final JButton loginButton;
 
@@ -38,81 +40,126 @@ public class RegisterView extends JPanel implements ActionListener, PropertyChan
     public RegisterView(RegisterViewModel registerViewModel) {
 
         this.registerViewModel = registerViewModel;
+        registerViewModel.addPropertyChangeListener(this);
 
         setBackground(new Color(255, 255, 255));
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        setLayout(null);
+        setLayout(new BorderLayout(0, 0));
 
-        registerButton = new JButton(RegisterViewModel.REGISTER_BUTTON_LABEL);
-        registerButton.setBackground(new Color(0, 128, 0));
-        registerButton.setBounds(585, 758, 344, 139);
-        registerButton.setFont(new Font("Rubik", Font.PLAIN, 36));
-        add(registerButton);
-
-        titleLabel = new JLabel(RegisterViewModel.TITLE_LABEL);
-        titleLabel.setBounds(505, 10, 1059, 161);
-        titleLabel.setFont(new Font("Rubik", Font.BOLD, 96));
-        add(titleLabel);
-
-        backgroundPanel = new JPanel();
-        backgroundPanel.setBackground(new Color(0, 0, 128));
-        backgroundPanel.setBounds(0, 0, 488, 941);
-        add(backgroundPanel);
-        backgroundPanel.setLayout(null);
+        imagePanel = new JPanel();
+        imagePanel.setBackground(new Color(128, 128, 255));
+        add(imagePanel, BorderLayout.WEST);
+        imagePanel.setLayout(new BorderLayout(0, 0));
 
         imageLabel = new JLabel("");
-        imageLabel.setBounds(-90, -120, 695, 641);
-        backgroundPanel.add(imageLabel);
-        imageLabel.setIcon(new ImageIcon("C:\\Users\\humbe\\IdeaProjects\\API Starter\\src\\resources\\images\\istockphoto-157334765-612x612.jpg"));
+        imageLabel.setIcon(new ImageIcon("C:\\Users\\humbe\\IdeaProjects\\API Starter\\src\\resources\\images\\university-of-toronto-01.jpg"));
+        imagePanel.add(imageLabel);
 
-        usernameLabel = new JLabel(RegisterViewModel.USERNAME_LABEL);
-        usernameLabel.setBounds(585, 192, 375, 42);
-        usernameLabel.setFont(new Font("Rubik", Font.PLAIN, 48));
-        add(usernameLabel);
+        registerFormPanel = new JPanel();
+        registerFormPanel.setBackground(new Color(255, 255, 255));
+        add(registerFormPanel, BorderLayout.CENTER);
+        registerFormPanel.setLayout(new BorderLayout(0, 0));
 
-        usernameField = new JTextField(15);
-        usernameField.setBounds(585, 244, 750, 57);
-        usernameField.setFont(new Font("Rubik", Font.PLAIN, 40));
-        add(usernameField);
-        usernameField.setColumns(10);
+        titleLabel = new JLabel("UofTTrade Register");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Rubik", Font.BOLD, 48));
+        registerFormPanel.add(titleLabel, BorderLayout.NORTH);
 
-        emailLabel = new JLabel(RegisterViewModel.EMAIL_LABEL);
-        emailLabel.setFont(new Font("Rubik", Font.PLAIN, 48));
-        emailLabel.setBounds(585, 324, 375, 42);
-        add(emailLabel);
+        registerInfoPanel = new JPanel();
+        registerInfoPanel.setBackground(new Color(255, 255, 255));
+        registerFormPanel.add(registerInfoPanel, BorderLayout.CENTER);
+        GridBagLayout gbl_registerInfoPanel = new GridBagLayout();
+        gbl_registerInfoPanel.columnWidths = new int[]{0, 0};
+        gbl_registerInfoPanel.rowHeights = new int[]{125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        gbl_registerInfoPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+        gbl_registerInfoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        registerInfoPanel.setLayout(gbl_registerInfoPanel);
+
+        usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(new Font("Rubik", Font.PLAIN, 36));
+        GridBagConstraints gbc_usernameLabel = new GridBagConstraints();
+        gbc_usernameLabel.insets = new Insets(5, 5, 5, 0);
+        gbc_usernameLabel.gridx = 0;
+        gbc_usernameLabel.gridy = 2;
+        registerInfoPanel.add(usernameLabel, gbc_usernameLabel);
+
+        usernameField = new JTextField();
+        usernameField.setFont(new Font("Rubik", Font.PLAIN, 24));
+        GridBagConstraints gbc_usernameField = new GridBagConstraints();
+        gbc_usernameField.insets = new Insets(5, 5, 5, 0);
+        gbc_usernameField.gridx = 0;
+        gbc_usernameField.gridy = 3;
+        registerInfoPanel.add(usernameField, gbc_usernameField);
+        usernameField.setColumns(15);
+
+        emailLabel = new JLabel("Email:");
+        emailLabel.setFont(new Font("Rubik", Font.PLAIN, 36));
+        GridBagConstraints gbc_emailLabel = new GridBagConstraints();
+        gbc_emailLabel.insets = new Insets(5, 5, 5, 0);
+        gbc_emailLabel.gridx = 0;
+        gbc_emailLabel.gridy = 4;
+        registerInfoPanel.add(emailLabel, gbc_emailLabel);
 
         emailField = new JTextField();
-        emailField.setFont(new Font("Rubik", Font.PLAIN, 48));
-        emailField.setColumns(10);
-        emailField.setBounds(585, 376, 750, 57);
-        emailField.setFont(new Font("Rubik", Font.PLAIN, 40));
-        add(emailField);
+        emailField.setFont(new Font("Rubik", Font.PLAIN, 24));
+        GridBagConstraints gbc_emailField = new GridBagConstraints();
+        gbc_emailField.insets = new Insets(5, 5, 5, 0);
+        gbc_emailField.gridx = 0;
+        gbc_emailField.gridy = 5;
+        registerInfoPanel.add(emailField, gbc_emailField);
+        emailField.setColumns(15);
 
-        passwordLabel = new JLabel(RegisterViewModel.PASSWORD_LABEL);
-        passwordLabel.setFont(new Font("Rubik", Font.PLAIN, 48));
-        passwordLabel.setBounds(585, 467, 375, 42);
-        add(passwordLabel);
+        passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(new Font("Rubik", Font.PLAIN, 36));
+        GridBagConstraints gbc_passwordLabel = new GridBagConstraints();
+        gbc_passwordLabel.insets = new Insets(5, 5, 5, 0);
+        gbc_passwordLabel.gridx = 0;
+        gbc_passwordLabel.gridy = 6;
+        registerInfoPanel.add(passwordLabel, gbc_passwordLabel);
 
-        passwordField = new JPasswordField(15);
-        passwordField.setBounds(585, 519, 750, 57);
-        passwordField.setFont(new Font("Rubik", Font.PLAIN, 40));
-        add(passwordField);
+        passwordField = new JPasswordField();
+        passwordField.setFont(new Font("Rubik", Font.PLAIN, 24));
+        passwordField.setColumns(15);
+        GridBagConstraints gbc_passwordField = new GridBagConstraints();
+        gbc_passwordField.insets = new Insets(5, 5, 5, 0);
+        gbc_passwordField.gridx = 0;
+        gbc_passwordField.gridy = 7;
+        registerInfoPanel.add(passwordField, gbc_passwordField);
 
-        confirmPasswordLabel = new JLabel(RegisterViewModel.REPEAT_PASSWORD_LABEL);
-        confirmPasswordLabel.setFont(new Font("Rubik", Font.PLAIN, 48));
-        confirmPasswordLabel.setBounds(585, 605, 750, 42);
-        add(confirmPasswordLabel);
+        repeatPasswordLabel = new JLabel("Confirm Password:");
+        repeatPasswordLabel.setFont(new Font("Rubik", Font.PLAIN, 36));
+        GridBagConstraints gbc_repeatPasswordLabel = new GridBagConstraints();
+        gbc_repeatPasswordLabel.insets = new Insets(5, 5, 5, 0);
+        gbc_repeatPasswordLabel.gridx = 0;
+        gbc_repeatPasswordLabel.gridy = 8;
+        registerInfoPanel.add(repeatPasswordLabel, gbc_repeatPasswordLabel);
 
-        confirmPasswordField = new JPasswordField(15);
-        confirmPasswordField.setBounds(585, 657, 750, 57);
-        confirmPasswordField.setFont(new Font("Rubik", Font.PLAIN, 40));
-        add(confirmPasswordField);
+        repeatPasswordField = new JPasswordField();
+        repeatPasswordField.setFont(new Font("Rubik", Font.PLAIN, 24));
+        repeatPasswordField.setColumns(15);
+        GridBagConstraints gbc_repeatPasswordField = new GridBagConstraints();
+        gbc_repeatPasswordField.insets = new Insets(5, 5, 5, 0);
+        gbc_repeatPasswordField.gridx = 0;
+        gbc_repeatPasswordField.gridy = 9;
+        registerInfoPanel.add(repeatPasswordField, gbc_repeatPasswordField);
 
-        loginButton = new JButton(RegisterViewModel.LOGIN_BUTTON_LABEL);
+        registerButton = new JButton("Register");
+        registerButton.setBackground(new Color(0, 128, 0));
+        registerButton.setFont(new Font("Rubik", Font.PLAIN, 16));
+        GridBagConstraints gbc_registerButton = new GridBagConstraints();
+        gbc_registerButton.insets = new Insets(5, 5, 5, 0);
+        gbc_registerButton.gridx = 0;
+        gbc_registerButton.gridy = 11;
+        registerInfoPanel.add(registerButton, gbc_registerButton);
+
+        loginButton = new JButton("Login");
         loginButton.setBackground(new Color(128, 128, 255));
-        loginButton.setBounds(970, 758, 365, 139);
-        loginButton.setFont(new Font("Rubik", Font.PLAIN, 36));
-        add(loginButton);
+        loginButton.setFont(new Font("Rubik", Font.PLAIN, 16));
+        GridBagConstraints gbc_loginButton = new GridBagConstraints();
+        gbc_loginButton.insets = new Insets(5, 5, 5, 0);
+        gbc_loginButton.gridx = 0;
+        gbc_loginButton.gridy = 12;
+        registerInfoPanel.add(loginButton, gbc_loginButton);
 
         addUsernameListener();
         addEmailListener();
@@ -231,11 +278,11 @@ public class RegisterView extends JPanel implements ActionListener, PropertyChan
     }
 
     private void addRepeatPasswordListener() {
-        confirmPasswordField.getDocument().addDocumentListener(new DocumentListener() {
+        repeatPasswordField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
                 final RegisterState currentState = registerViewModel.getState();
-                currentState.setRepeatPassword(new String(confirmPasswordField.getPassword()));
+                currentState.setRepeatPassword(new String(repeatPasswordField.getPassword()));
                 registerViewModel.setState(currentState);
             }
 

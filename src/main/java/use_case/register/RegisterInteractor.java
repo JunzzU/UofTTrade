@@ -17,6 +17,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
     @Override
     public void execute(RegisterInputData registerInputData) throws IOException {
 
+
         if (userDataAccess.userExists(registerInputData.getUsername()) ||
                 userDataAccess.userExists(registerInputData.getEmail())) {
 
@@ -51,6 +52,7 @@ public class RegisterInteractor implements RegisterInputBoundary {
     public void switchToLoginView() {
 
         outputBoundary.switchToLoginView();
+
     }
 
 }
