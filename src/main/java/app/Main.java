@@ -14,8 +14,8 @@ public class Main {
                 .addRegisterView()
                 .addHomepageView()
                 .addRegisterUseCase()
-                .addViewProfileUseCase()
                 .addLoginUseCase()
+                .addViewProfileUseCase()
                 .build();
 
         application.pack();

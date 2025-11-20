@@ -93,9 +93,9 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
     @Override
     public List<String> getUserListings(String username) {
-        // If you don’t have listings yet, return an empty list for now
-        return new ArrayList<>();
+        return new ArrayList<>(); // WILL UPDATE THIS LATER
     }
+
 
 
     public void setUsername(String username) {this.username = username;}
