@@ -11,7 +11,7 @@ public class CreateListingState {
     private String name;
     private BufferedImage photo;
     private User owner;
-    private String ownerError;
+    private String nameError;
     private String photoError;
     private String listingIdError;
 
@@ -24,7 +24,9 @@ public class CreateListingState {
     public void set_owner(User owner) { this.owner = owner; }
 
 
-    public void set_owner_error(String ownerError) { this.ownerError = ownerError; }
+    public void set_name_error(String ownerError) { this.nameError = nameError; }
     public void set_photo_error(String photoError) { this.photoError = photoError; }
-    public void set_listingId_error(String listingIdError) { this.listingIdError = listingIdError; }
+
+    public String get_name_error() { return nameError; }
+    public String get_photo_error() { return photoError; }
 }

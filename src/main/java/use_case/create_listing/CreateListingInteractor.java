@@ -9,9 +9,9 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
     private final CreateListingUserDataAccessInterface createListingDataAccess;
     private final CreateListingOutputBoundary createListingPresenter;
 
-    public CreateListingInteractor(CreateListingUserDataAccessInterface createListingDataAccess, CreateListingOutputBoundary createListingPresenter) {
+    public CreateListingInteractor(CreateListingUserDataAccessInterface createListingDataAccess, CreateListingOutputBoundary createListingOutputBoundary) {
         this.createListingDataAccess = createListingDataAccess;
-        this.createListingPresenter = createListingPresenter;
+        this.createListingPresenter = createListingOutputBoundary;
     }
 
     @Override

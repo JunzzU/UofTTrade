@@ -13,6 +13,8 @@ public class Main {
                 .addLoginView()
                 .addRegisterView()
                 .addHomepageView()
+                .addCreateListingView()
+                .addCreateListingUseCase()
                 .addRegisterUseCase()
                 .addViewProfileUseCase()
                 .addLoginUseCase()
