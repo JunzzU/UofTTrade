@@ -1,12 +1,22 @@
 package interface_adapter.view_profile;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * State object for the View Profile screen.
+ * Stores the username, title text, listing names/photos, and any error message.
+ */
 public class ViewProfileState {
+
     private String username = "";
-    private List<String> listingNames = new ArrayList<>();
     private String titleText = "";
+
+    private List<String> listingNames = new ArrayList<>();
+    private List<BufferedImage> listingPhotos = new ArrayList<>();
+
+    private String errorMessage = "";
 
     public String getUsername() {
         return username;
@@ -14,7 +24,14 @@ public class ViewProfileState {
 
     public void setUsername(String username) {
         this.username = username;
-        this.titleText = username + "'s Account";
+    }
+
+    public String getTitleText() {
+        return titleText;
+    }
+
+    public void setTitleText(String titleText) {
+        this.titleText = titleText;
     }
 
     public List<String> getListingNames() {
@@ -25,7 +42,20 @@ public class ViewProfileState {
         this.listingNames = listingNames;
     }
 
-    public String getTitleText() {
-        return titleText;
+    public List<BufferedImage> getListingPhotos() {
+        return listingPhotos;
+    }
+
+    public void setListingPhotos(List<BufferedImage> listingPhotos) {
+        this.listingPhotos = listingPhotos;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }
+
