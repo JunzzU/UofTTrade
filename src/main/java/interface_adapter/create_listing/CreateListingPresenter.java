@@ -39,7 +39,10 @@ public class CreateListingPresenter implements CreateListingOutputBoundary {
         if (error == "Owner does not exist") {
             createListingState.set_owner_error(error);
         }
-        else {
+        else if (error == "Photo needs to be img or jpg file"){
+            createListingState.set_photo_error(error);
+        }
+        else if (error == "Listing with id already exists") {
             createListingState.set_listingId_error(error);
         }
 
