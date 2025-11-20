@@ -13,20 +13,18 @@ public class CreateListingInputData {
     private List<Category> categories = new ArrayList<>();
     private User owner;
 
-    public CreateListingInputData(String name, BufferedImage photo, List<Category> categories) {
+    public CreateListingInputData(String name, BufferedImage photo, List<Category> categories, User owner){
         this.name = name;
         this.categories = categories;
         this.photo = photo;
-        //NEED A WAY TO ATTACH USER CREATING THE LISTING AS OWNER
-//        this.owner = owner;
+        this.owner = owner;
     }
 
     //overload
-    public CreateListingInputData(String name, BufferedImage photo) {
+    public CreateListingInputData(String name, BufferedImage photo, User owner) {
         this.name = name;
         this.photo = photo;
-        //NEED A WAY TO ATTACH USER CREATING THE LISTING AS OWNER
-//        this.owner = owner;
+        this.owner = owner;
     }
 
     public void change_category(List<Category> new_categories) {

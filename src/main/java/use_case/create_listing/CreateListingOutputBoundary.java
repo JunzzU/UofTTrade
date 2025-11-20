@@ -12,4 +12,9 @@ public interface CreateListingOutputBoundary {
      * @param errorMessage the explanation of the failure
      */
     void prepareFailView(String errorMessage);
+
+    /**
+     * Executes the switch to profile view use case.
+     */
+    void switchToProfileView();
 }

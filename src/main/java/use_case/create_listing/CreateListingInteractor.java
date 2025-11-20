@@ -20,20 +20,32 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
         final BufferedImage photo = createListingInputData.get_img();
         final List<Category> categories = createListingInputData.get_categories();
 
-        if(createListingDataAccess.nameFieldIsNull(name) || createListingDataAccess.photoFieldIsNull(photo)){
-            createListingPresenter.prepareFailView("Item name or photo is missing.");
+        if(!createListingDataAccess.nameFieldIsNull(name)){
+            createListingPresenter.prepareFailView("A listing with this name already exists");
+        }
+        else if(createListingInputData.get_name() == null){
+            createListingPresenter.prepareFailView("A listing with a null name");
+        }
+        else if(createListingInputData.get_img() == null){
+            createListingPresenter.prepareFailView("The listing image is empty");
         }
         else {
             final CreateListingOutputData createListingOutputData;
 
-            if(createListingDataAccess.categoryFieldIsNull(categories)){
+            if (createListingInputData.get_categories().isEmpty()) {
                 createListingOutputData = new CreateListingOutputData(createListingInputData.get_name(), createListingInputData.get_img());
+
             }
             else {
                 createListingOutputData = new CreateListingOutputData(createListingInputData.get_name(), createListingInputData.get_img(), createListingInputData.get_categories());
-
             }
+
             createListingPresenter.prepareSuccessView(createListingOutputData);
         }
+    }
+
+    @Override
+    public void switchToProfileView() {
+        createListingPresenter.switchToProfileView();
     }
 }

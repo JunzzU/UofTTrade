@@ -17,15 +17,17 @@ public class CreateListingOutputData {
         this.name = name;
         this.photo = photo;
         this.categories = categories;
-        //NEED A WAY TO ATTACH USER CREATING THE LISTING AS OWNER
-//        this.owner = owner;
+        this.owner = owner;
     }
 
     //overloaded
     public CreateListingOutputData(String name, BufferedImage photo) {
         this.name = name;
         this.photo = photo;
-        //NEED A WAY TO ATTACH USER CREATING THE LISTING AS OWNER
-//        this.owner = owner;
+        this.owner = owner;
+    }
+
+    public User get_owner() {
+        return owner;
     }
 }
