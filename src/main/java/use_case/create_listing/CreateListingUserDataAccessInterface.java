@@ -1,10 +1,18 @@
 package use_case.create_listing;
+
+import entity.Listing;
+
 public interface CreateListingUserDataAccessInterface {
     /**
-     * Checks if a listing with the given name DOESN'T exist.
-     * @param name input
-     * @return true if name is Null
+     * Checks if the given name exists.
+     * @param name the name to look for
+     * @return true if a user with the given name exists; false otherwise
      */
-    boolean nameFieldIsNull(String name);
+    boolean existsByName(String name);
 
+    /**
+     * Saves the lisiting.
+     * @param listing the listing to save
+     */
+    void save(Listing listing);
 }

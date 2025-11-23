@@ -1,16 +1,17 @@
 package use_case.create_listing;
 
 import entity.Category;
+import entity.Listing;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class CreateListingInteractor implements CreateListingInputBoundary{
-    private final CreateListingUserDataAccessInterface createListingDataAccess;
+    private final CreateListingUserDataAccessInterface createListingDataAccessObject;
     private final CreateListingOutputBoundary createListingPresenter;
 
     public CreateListingInteractor(CreateListingUserDataAccessInterface createListingDataAccess, CreateListingOutputBoundary createListingOutputBoundary) {
-        this.createListingDataAccess = createListingDataAccess;
+        this.createListingDataAccessObject = createListingDataAccess;
         this.createListingPresenter = createListingOutputBoundary;
     }
 
@@ -20,7 +21,7 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
         final BufferedImage photo = createListingInputData.get_img();
         final List<Category> categories = createListingInputData.get_categories();
 
-        if(!createListingDataAccess.nameFieldIsNull(name)){
+        if(!createListingDataAccessObject.existsByName(createListingInputData.get_name())){
             createListingPresenter.prepareFailView("A listing with this name already exists");
         }
         else if(createListingInputData.get_name() == null){
@@ -31,15 +32,18 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
         }
         else {
             final CreateListingOutputData createListingOutputData;
+            final Listing listing;
 
             if (createListingInputData.get_categories().isEmpty()) {
+                listing = new Listing(createListingInputData.get_name(), createListingInputData.get_img());
                 createListingOutputData = new CreateListingOutputData(createListingInputData.get_name(), createListingInputData.get_img());
-
             }
             else {
+                listing = new Listing(createListingInputData.get_name(), createListingInputData.get_img(), createListingInputData.get_categories());
                 createListingOutputData = new CreateListingOutputData(createListingInputData.get_name(), createListingInputData.get_img(), createListingInputData.get_categories());
             }
 
+            createListingDataAccessObject.save(listing);
             createListingPresenter.prepareSuccessView(createListingOutputData);
         }
     }

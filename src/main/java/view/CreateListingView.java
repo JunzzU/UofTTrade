@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import app.Main;
 
 /**
  * The View for when the user is creating a new listing
@@ -32,9 +33,9 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
     private final JFileChooser imgFileChooser = new JFileChooser();
     private BufferedImage selectedImage = null;
 
-    private final JComboBox<String> listingCategory1ComboBox = new JComboBox<>();
+    private final JComboBox<String> listingCategory1ComboBox = new JComboBox(app.Main.categoriesArray);
 
-    private final JComboBox<String> listingCategory2ComboBox = new JComboBox<>();
+    private final JComboBox<String> listingCategory2ComboBox = new JComboBox(app.Main.categoriesArray);
 
     private final JButton publishListingButton;
     private final JButton cancelButton;
