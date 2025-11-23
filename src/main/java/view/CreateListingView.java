@@ -49,42 +49,90 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         this.createListingViewModel = createListingViewModel;
         createListingViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel(CreateListingViewModel.TITLE_LABEL);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // ---------------------- MAIN COLUMN (centered) ----------------------
+        JPanel mainColumn = new JPanel();
+        mainColumn.setLayout(new BoxLayout(mainColumn, BoxLayout.Y_AXIS));
+        mainColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainColumn.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40)); // form padding
 
-        // name
+
+        // ======= SPACING UTILITIES =======
+        int vSpace = 14;
+        int hSpace = 10;
+
+        // ---------------------- NAME FIELD ----------------------
         final LabelTextPanel listingNameInfo = new LabelTextPanel(
-                new JLabel(CreateListingViewModel.NAME_LABEL), listingNameInputField
+                new JLabel(CreateListingViewModel.NAME_LABEL),
+                listingNameInputField
         );
+        listingNameInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, vSpace, 0));
+        listingNameInfo.setMaximumSize(listingNameInfo.getPreferredSize());
+        mainColumn.add(listingNameInfo);
 
-        // img
+
+        // ---------------------- IMAGE PICKER ----------------------
         final JPanel listingImagePanel = new JPanel();
-        listingImagePanel.setLayout(new BoxLayout(listingImagePanel, BoxLayout.X_AXIS));
-        listingImagePanel.add(new JLabel(CreateListingViewModel.IMG_LABEL));
+        listingImagePanel.setLayout(new BoxLayout(listingImagePanel, BoxLayout.Y_AXIS));
+//        listingImagePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        listingImagePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, vSpace, 0));
+
+        JLabel imgLabel = new JLabel(CreateListingViewModel.IMG_LABEL);
+        imgLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, hSpace));
+
+        listingImagePanel.add(imgLabel);
         listingImagePanel.add(imgFileChooserButton);
 
-        // categories
-        final JPanel listingCategoryTitlePanel = new JPanel();
-        listingCategoryTitlePanel.setLayout(new BoxLayout(listingCategoryTitlePanel, BoxLayout.Y_AXIS));
-        listingCategoryTitlePanel.add(new JLabel(CreateListingViewModel.CATEGORIES_LABEL));
+        listingImagePanel.setMaximumSize(listingImagePanel.getPreferredSize());
+        mainColumn.add(listingImagePanel);
+
+
+        // ---------------------- CATEGORIES ----------------------
+        // label
+        final JPanel listingCategoryWrapperPanel = new JPanel();
+        listingCategoryWrapperPanel.setLayout(new BoxLayout(listingCategoryWrapperPanel, BoxLayout.X_AXIS));
+        listingCategoryWrapperPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel categoriesLabel = new JLabel(CreateListingViewModel.CATEGORIES_LABEL);
+        listingCategoryWrapperPanel.add(categoriesLabel);
+
+        listingCategoryWrapperPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 6, 0));
+        listingCategoryWrapperPanel.setMaximumSize(listingCategoryWrapperPanel.getPreferredSize());
+        mainColumn.add(listingCategoryWrapperPanel);
+
+
+        // combobox sizes
+        Dimension comboSize = new Dimension(200, 28);
+        listingCategory1ComboBox.setPreferredSize(comboSize);
+        listingCategory1ComboBox.setMaximumSize(comboSize);
+
+        listingCategory2ComboBox.setPreferredSize(comboSize);
+        listingCategory2ComboBox.setMaximumSize(comboSize);
 
         final JPanel listingCategoryDropdownPanel = new JPanel();
         listingCategoryDropdownPanel.setLayout(new BoxLayout(listingCategoryDropdownPanel, BoxLayout.Y_AXIS));
+        listingCategoryDropdownPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         listingCategoryDropdownPanel.add(listingCategory1ComboBox);
+        listingCategoryDropdownPanel.add(Box.createVerticalStrut(6));
         listingCategoryDropdownPanel.add(listingCategory2ComboBox);
 
-        final JPanel listingCategoryWrapperPanel = new JPanel();
-        listingCategoryWrapperPanel.setLayout(new BoxLayout(listingCategoryWrapperPanel, BoxLayout.X_AXIS));
-        listingCategoryWrapperPanel.add(listingCategoryTitlePanel);
-        listingCategoryWrapperPanel.add(listingCategoryDropdownPanel);
+        listingCategoryDropdownPanel.setMaximumSize(listingCategoryDropdownPanel.getPreferredSize());
+        mainColumn.add(listingCategoryDropdownPanel);
 
-        // buttons
+
+        // ---------------------- BUTTONS ----------------------
         publishListingButton = new JButton(CreateListingViewModel.PUBLISH_LISTING_BUTTON_LABEL);
         cancelButton = new JButton(CreateListingViewModel.CANCEL_BUTTON_LABEL);
+
         final JPanel buttons = new JPanel();
-        buttons.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttons.add(publishListingButton);
+        buttons.add(Box.createHorizontalStrut(12));
         buttons.add(cancelButton);
+
+        buttons.setBorder(BorderFactory.createEmptyBorder(vSpace, 0, 0, 0));
+        buttons.setMaximumSize(buttons.getPreferredSize());
+        mainColumn.add(buttons);
+
 
         publishListingButton.addActionListener(
                 new ActionListener() {
@@ -156,12 +204,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
 
         // put panels together
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(title);
-        this.add(listingNameInfo);
-        this.add(listingImagePanel);
-        this.add(listingCategoryWrapperPanel);
-        this.add(buttons);
-        this.add(buttons);
+        this.add(mainColumn, BorderLayout.CENTER);
     }
 
     @Override
