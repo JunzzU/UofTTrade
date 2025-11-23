@@ -13,7 +13,7 @@ public class Listing {
         this.name = name;
         this.photo = photo;
         this.categories = categories;
-    //        this.owner = owner;
+        this.owner = owner;
         listingId = generateListingId();
     }
 
@@ -21,21 +21,8 @@ public class Listing {
     public Listing(String name, BufferedImage photo, User owner) {
         this.name = name;
         this.photo = photo;
-//        this.owner = owner;
+        this.owner = owner;
         listingId = generateListingId();
-    }
-
-
-    public void change_category(List<Category> new_categories) {
-        this.categories = new_categories;
-    }
-
-    public void change_name(String new_name) {
-        this.name = new_name;
-    }
-
-    public void change_img(BufferedImage new_img) {
-        this.photo = new_img;
     }
 
     public List<Category> get_categories() { return categories; }
