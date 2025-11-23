@@ -24,8 +24,7 @@ public class CreateListingController {
      * @param owner the owner of the listing
      */
     public void execute(String name, BufferedImage image, List<Category> categories, User owner) {
-        final CreateListingInputData createListingInputData = new CreateListingInputData(
-                name, image, categories, owner);
+        final CreateListingInputData createListingInputData = new CreateListingInputData(name, image, categories, owner);
 
         createListingInteractor.execute(createListingInputData);
     }
