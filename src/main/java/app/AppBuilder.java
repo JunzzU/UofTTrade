@@ -168,6 +168,7 @@ public class AppBuilder {
         createListingViewModel = new CreateListingViewModel();
         createListingView = new CreateListingView(createListingViewModel);
         contentPane.add(createListingView, createListingView.getViewName());
+
         return this;
     }
 

@@ -79,7 +79,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         listingCategoryWrapperPanel.add(listingCategoryDropdownPanel);
 
         // buttons
-        publishListingButton = new JButton(CreateListingViewModel.CANCEL_BUTTON_LABEL);
+        publishListingButton = new JButton(CreateListingViewModel.PUBLISH_LISTING_BUTTON_LABEL);
         cancelButton = new JButton(CreateListingViewModel.CANCEL_BUTTON_LABEL);
         final JPanel buttons = new JPanel();
         buttons.setAlignmentX(Component.CENTER_ALIGNMENT);
