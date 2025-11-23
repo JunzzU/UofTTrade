@@ -181,7 +181,8 @@ public class AppBuilder {
 
         final CreateListingInputBoundary createListingInteractor= new CreateListingInteractor(
                 createListingDAO,
-                createListingOutputBoundary
+                createListingOutputBoundary,
+                userDataAccessObject
         );
 
         CreateListingController controller = new CreateListingController(createListingInteractor);

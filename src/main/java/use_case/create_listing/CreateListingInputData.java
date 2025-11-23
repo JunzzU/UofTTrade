@@ -11,20 +11,16 @@ public class CreateListingInputData {
     private String name;
     private BufferedImage photo;
     private List<Category> categories = new ArrayList<>();
-    private User owner;
-
-    public CreateListingInputData(String name, BufferedImage photo, List<Category> categories, User owner){
+    public CreateListingInputData(String name, BufferedImage photo, List<Category> categories){
         this.name = name;
         this.categories = categories;
         this.photo = photo;
-        this.owner = owner;
     }
 
     //overload
-    public CreateListingInputData(String name, BufferedImage photo, User owner) {
+    public CreateListingInputData(String name, BufferedImage photo) {
         this.name = name;
         this.photo = photo;
-        this.owner = owner;
     }
 
     public void change_category(List<Category> new_categories) {

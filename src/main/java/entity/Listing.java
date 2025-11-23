@@ -9,16 +9,16 @@ public class Listing {
     private User owner;
     private int listingId;
 
-    public Listing(String name, BufferedImage photo, List<Category> categories) {
+    public Listing(String name, BufferedImage photo, List<Category> categories, User owner) {
         this.name = name;
         this.photo = photo;
         this.categories = categories;
-//        this.owner = owner;
+    //        this.owner = owner;
         listingId = generateListingId();
     }
 
     //overload
-    public Listing(String name, BufferedImage photo) {
+    public Listing(String name, BufferedImage photo, User owner) {
         this.name = name;
         this.photo = photo;
 //        this.owner = owner;

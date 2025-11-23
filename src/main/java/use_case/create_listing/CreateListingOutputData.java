@@ -13,7 +13,7 @@ public class CreateListingOutputData {
     private User owner;
     private List<Category> categories = new ArrayList<>();
 
-    public CreateListingOutputData(String name, BufferedImage photo, List<Category> categories) {
+    public CreateListingOutputData(String name, BufferedImage photo, List<Category> categories, User owner) {
         this.name = name;
         this.photo = photo;
         this.categories = categories;
@@ -21,7 +21,7 @@ public class CreateListingOutputData {
     }
 
     //overloaded
-    public CreateListingOutputData(String name, BufferedImage photo) {
+    public CreateListingOutputData(String name, BufferedImage photo, User owner) {
         this.name = name;
         this.photo = photo;
         this.owner = owner;
