@@ -16,8 +16,8 @@ public class Main {
                 .addCreateListingView()
                 .addCreateListingUseCase()
                 .addRegisterUseCase()
-                .addViewProfileUseCase()
                 .addLoginUseCase()
+                .addViewProfileUseCase()
                 .build();
 
         application.pack();

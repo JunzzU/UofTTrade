@@ -34,6 +34,7 @@ import use_case.view_profile.ViewProfileInteractor;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public class AppBuilder {
 
@@ -50,7 +51,8 @@ public class AppBuilder {
     private LoginViewModel loginViewModel;
     private LoginView loginView;
     private ProfileView profileView;
-    private ViewProfileViewModel viewProfileViewModel;
+    private ViewProfileViewModel viewProfileViewModel = new ViewProfileViewModel();
+
 
     private HomepageViewModel homepageViewModel;
     private HomepageView homepageView;
@@ -100,9 +102,54 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addViewProfileUseCase() {
+    public AppBuilder addProfileView(ViewProfileController controller) {
 
-        viewProfileViewModel = new ViewProfileViewModel();
+        // --- navigation callbacks ---
+        Runnable gotoCreateListing = () -> {
+            // replace "create listing" with the real view name if different
+            viewManagerModel.setState("create listing");
+            viewManagerModel.firePropertyChanged();
+        };
+
+        Runnable gotoHome = () -> {
+            viewManagerModel.setState(homepageView.getViewName());
+            viewManagerModel.firePropertyChanged();
+        };
+
+        // delete handler: currently prints — replace this Consumer with your real delete wiring
+        Consumer<String> deleteHandler = listingName -> {
+            System.out.println("Delete " + listingName);
+        };
+
+        profileView = new ProfileView(
+                viewProfileViewModel,
+                controller,
+                gotoCreateListing,
+                gotoHome,
+                deleteHandler
+        );
+
+        // Ensure homepageView exists before adding listener. If homepageView is null, this will NPE
+        // which indicates you must call addHomepageView() before addViewProfileUseCase() in Main.
+        homepageView.addViewProfileListener(e -> {
+            // navigate to profile screen and trigger the use case to load data
+            viewManagerModel.setState(viewProfileViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+            profileView.loadProfile();
+        });
+
+        contentPane.add(profileView, viewProfileViewModel.getViewName());
+        viewManagerModel.addPropertyChangeListener(evt -> {
+            if (evt.getNewValue().equals(viewProfileViewModel.getViewName())) {
+                profileView.loadProfile();
+            }
+        });
+
+        return this;
+    }
+
+
+    public AppBuilder addViewProfileUseCase() {
 
         ViewProfileOutputBoundary presenter =
                 new ViewProfilePresenter(viewProfileViewModel);
@@ -110,6 +157,7 @@ public class AppBuilder {
         ViewProfileInputBoundary interactor =
                 new ViewProfileInteractor(userDataAccessObject, presenter);
 
+        // Pass homepageViewModel into the controller
         ViewProfileController controller =
                 new ViewProfileController(interactor);
 
@@ -140,20 +188,6 @@ public class AppBuilder {
         return this;
     }
 
-
-    public AppBuilder addProfileView(ViewProfileController controller) {
-
-        profileView = new ProfileView(
-                viewProfileViewModel,
-                controller,
-                () -> System.out.println("Create listing"),
-                () -> System.out.println("Home"),
-                listingName -> System.out.println("Delete " + listingName)
-        );
-
-        contentPane.add(profileView, viewProfileViewModel.getViewName());
-        return this;
-    }
 
     public AppBuilder addLoginUseCase() {
 

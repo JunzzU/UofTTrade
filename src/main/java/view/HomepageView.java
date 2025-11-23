@@ -152,4 +152,9 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
 
     }
 
+    public void addViewProfileListener(ActionListener listener) {
+        viewProfileButton.addActionListener(listener);
+    }
+
+
 }
