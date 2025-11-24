@@ -36,7 +36,7 @@ public class CreateListingPresenter implements CreateListingOutputBoundary {
     public void prepareFailView(String error) {
         final CreateListingState createListingState = createListingViewModel.getState();
 
-        if (error == "Photo needs to be img or jpg file" || error == "The listing image is empty") {
+        if (error == "File must be one of jpg, jpeg, png." || error == "The listing image is empty") {
             createListingState.set_photo_error(error);
         }
         else if (error == "A listing with this name already exists" || error == "A listing with a null name") {

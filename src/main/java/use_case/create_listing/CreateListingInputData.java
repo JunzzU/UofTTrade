@@ -1,45 +1,45 @@
 package use_case.create_listing;
 
 import entity.Category;
-import entity.User;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class CreateListingInputData {
     private String name;
-    private BufferedImage photo;
+    private String photoInBase64;
     private List<Category> categories = new ArrayList<>();
-    public CreateListingInputData(String name, BufferedImage photo, List<Category> categories){
+    public CreateListingInputData(String name, String photo, List<Category> categories){
         this.name = name;
         this.categories = categories;
-        this.photo = photo;
+        this.photoInBase64 = photo;
     }
 
     //overload
-    public CreateListingInputData(String name, BufferedImage photo) {
+    public CreateListingInputData(String name, String photo) {
         this.name = name;
-        this.photo = photo;
+        this.photoInBase64 = photo;
     }
 
-    public void change_category(List<Category> new_categories) {
-        this.categories = new_categories;
-    }
 
-    public void change_name(String new_name) {
-        this.name = new_name;
-    }
+    public BufferedImage get_img(BufferedImage new_img) throws IOException {
+        // reduce image into bytes
+        byte[] bytes = Base64.getDecoder().decode(this.photoInBase64);
+        //convert to buffered image
+        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 
-    public void change_img(BufferedImage new_img) {
-        this.photo = new_img;
+        return image;
     }
 
     public List<Category> get_categories() { return categories; }
 
     public String get_name() { return name; }
 
-    public BufferedImage get_img() { return photo; }
+    public String get_img_in_Base64() { return photoInBase64; }
 
-    public User get_owner() { return owner; }
 }

@@ -1,5 +1,6 @@
 package view;
 
+import data_access.CreateListingDAO;
 import interface_adapter.create_listing.CreateListingViewModel;
 import interface_adapter.create_listing.CreateListingState;
 import interface_adapter.create_listing.CreateListingController;
@@ -16,8 +17,11 @@ import javax.imageio.ImageIO;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
+
 import app.Main;
 
 /**
@@ -29,13 +33,15 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
 
     private final JTextField listingNameInputField = new JTextField(50);
 
+    private JLabel chosenImageLabel = new JLabel("No file selected");
     private final JButton imgFileChooserButton = new JButton();
     private final JFileChooser imgFileChooser = new JFileChooser();
-    private BufferedImage selectedImage = null;
+    private File file = null;
+    private String selectedImageBase64;
 
-    private final JComboBox<String> listingCategory1ComboBox = new JComboBox(app.Main.categoriesArray);
+    private final JComboBox<String> listingCategory1ComboBox = new JComboBox(Main.categoriesArray);
 
-    private final JComboBox<String> listingCategory2ComboBox = new JComboBox(app.Main.categoriesArray);
+    private final JComboBox<String> listingCategory2ComboBox = new JComboBox(Main.categoriesArray);
 
     private final JButton publishListingButton;
     private final JButton cancelButton;
@@ -45,6 +51,8 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
     private final JLabel nameErrorField = new JLabel();
     private final JLabel photoErrorField = new JLabel();
 
+    private JLabel errorLabel = new JLabel("");
+    private String errorMessage = "";
 
     public CreateListingView(CreateListingViewModel createListingViewModel) {
         this.createListingViewModel = createListingViewModel;
@@ -74,7 +82,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         // ---------------------- IMAGE PICKER ----------------------
         final JPanel listingImagePanel = new JPanel();
         listingImagePanel.setLayout(new BoxLayout(listingImagePanel, BoxLayout.Y_AXIS));
-//        listingImagePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        listingImagePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         listingImagePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, vSpace, 0));
 
         JLabel imgLabel = new JLabel(CreateListingViewModel.IMG_LABEL);
@@ -82,6 +90,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
 
         listingImagePanel.add(imgLabel);
         listingImagePanel.add(imgFileChooserButton);
+        listingImagePanel.add(chosenImageLabel);
 
         listingImagePanel.setMaximumSize(listingImagePanel.getPreferredSize());
         mainColumn.add(listingImagePanel);
@@ -120,6 +129,8 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         listingCategoryDropdownPanel.setMaximumSize(listingCategoryDropdownPanel.getPreferredSize());
         mainColumn.add(listingCategoryDropdownPanel);
 
+        // ---------------------- ERROR LABEL ----------------------
+        mainColumn.add(errorLabel);
 
         // ---------------------- BUTTONS ----------------------
         publishListingButton = new JButton(CreateListingViewModel.PUBLISH_LISTING_BUTTON_LABEL);
@@ -134,12 +145,73 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         buttons.setMaximumSize(buttons.getPreferredSize());
         mainColumn.add(buttons);
 
-
+        // other
         publishListingButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(null, "Listing published successfully!");
-                        createListingController.switchToProfileView();
+                        CreateListingDAO createListingDataAccessObject = new CreateListingDAO();
+
+                        try {
+                            if (listingNameInputField.getText() == null || listingNameInputField.getText().length() == 0) {
+                                System.out.println(listingNameInputField.getText());
+                                errorMessage = "A listing with a null name";
+                                errorLabel.setText(errorMessage);
+                                errorLabel.setForeground(Color.RED);
+                                CreateListingState state = createListingViewModel.getState();
+                                state.set_photo_error(errorMessage);
+                                createListingViewModel.setState(state);
+                            }
+                            else if (createListingDataAccessObject.existsByName(listingNameInputField.getText())) {
+                                errorMessage = "A listing with this name already exists";
+                                errorLabel.setText(errorMessage);
+                                errorLabel.setForeground(Color.RED);
+                                CreateListingState state = createListingViewModel.getState();
+                                state.set_photo_error(errorMessage);
+                                createListingViewModel.setState(state);
+                            }
+                            else if (file == null || chosenImageLabel.getText() == "No file selected") {
+                                errorMessage = "The listing image is empty";
+                                errorLabel.setText(errorMessage);
+                                errorLabel.setForeground(Color.RED);
+                                CreateListingState state = createListingViewModel.getState();
+                                state.set_photo_error(errorMessage);
+                                createListingViewModel.setState(state);
+                            }
+                            else if (file != null) {
+                                String filename = file.getName().toLowerCase();
+
+                                if (!(filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith(".png"))) {
+                                    errorMessage = "File must be one of jpg, jpeg, png.";
+
+                                    // set photo error state
+                                    CreateListingState state = createListingViewModel.getState();
+                                    state.set_photo_error(errorMessage);
+                                    createListingViewModel.setState(state);
+
+                                    // display message on UI
+                                    errorLabel.setText(errorMessage);
+                                    errorLabel.setForeground(Color.RED);
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(null, "Listing published successfully!");
+
+                                    //reset listing inputs
+                                    errorLabel.setText("");
+                                    errorMessage = "";
+                                    listingNameInputField.setText("");
+                                    listingCategory1ComboBox.setSelectedIndex(0);
+                                    listingCategory2ComboBox.setSelectedIndex(0);
+                                    chosenImageLabel.setText("");
+
+
+                                    createListingController.switchToProfileView();
+                                }
+
+                            }
+                        }
+                        catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 }
         );
@@ -147,12 +219,37 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         cancelButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        //reset listing inputs
+                        errorLabel.setText("");
+                        errorMessage = "";
+                        listingNameInputField.setText("");
+                        listingCategory1ComboBox.setSelectedIndex(0);
+                        listingCategory2ComboBox.setSelectedIndex(0);
+                        chosenImageLabel.setText("");
+
                         createListingController.switchToProfileView();
                     }
                 }
         );
 
-        // other
+        imgFileChooserButton.addActionListener(e -> {
+            if (imgFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                this.file = imgFileChooser.getSelectedFile();
+                chosenImageLabel.setText("Selected: " + file.getName());
+
+                // clear any error messages
+                errorLabel.setText("");
+                errorMessage = "";
+
+                try {
+                    this.selectedImageBase64 = encodeImageToBase64(file);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+
         listingNameInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -177,32 +274,6 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
             }
         });
 
-        imgFileChooserButton.addActionListener(e -> {
-            int result = imgFileChooser.showOpenDialog(CreateListingView.this);
-
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File file = imgFileChooser.getSelectedFile();
-
-                try {
-                    BufferedImage image = ImageIO.read(file);
-                    selectedImage = image; // Store locally if needed
-
-                    // Update ViewModel
-                    CreateListingState state = createListingViewModel.getState();
-                    state.set_photo(image);
-                    createListingViewModel.setState(state);
-
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-
-                    // If loading fails, update error
-                    CreateListingState state = createListingViewModel.getState();
-                    state.set_photo_error("Could not load image.");
-                    createListingViewModel.setState(state);
-                }
-            }
-        });
-
         // put panels together
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(mainColumn, BorderLayout.CENTER);
@@ -221,15 +292,21 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         photoErrorField.setText(state.get_photo_error());
     }
 
+    private String encodeImageToBase64(File file) throws IOException {
+        BufferedImage image = ImageIO.read(file);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", baos);  // always jpg
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    }
+
     private void setFields(CreateListingState state) {
         nameErrorField.setText(state.get_name_error());
         photoErrorField.setText(state.get_photo_error());
     }
 
-
     public String getViewName() { return viewName; }
 
     public void setCreateListingController(CreateListingController createListingController) {
-        this.createListingController =createListingController;
+        this.createListingController = createListingController;
     }
 }

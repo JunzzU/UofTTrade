@@ -62,28 +62,25 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
         Response response = client.newCall(request).execute();
     }
 
+    /**
+     * Returns a JSONArray of the Listing JSON objects
+     * @return JSONArray of the Listing JSON objects
+     * @throws IOException
+     */
     private JSONArray getListingData() throws IOException {
-        OkHttpClient client = new OkHttpClient();
-
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
                 .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS")
+                .get()
+                .addHeader("Content-Type", "application/json")
                 .build();
+        Response response = client.newCall(request).execute();
+        JSONObject users = new JSONObject(response.body().string());
 
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful() || response.body() != null) {
-                throw new IOException();
-            }
-
-            JSONObject jsonObject = new JSONObject(response.body().string());
-            JSONArray listingsJSONArray = jsonObject.getJSONArray("Listings");
-
-            return listingsJSONArray;
-
-        }
-        catch(IOException e) {
-            throw e;
-        }
+        return users.getJSONArray("Listings");
 
     }
 }
