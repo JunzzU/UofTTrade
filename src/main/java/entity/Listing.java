@@ -11,14 +11,14 @@ public class Listing {
     private String photoInBase64;
     private List<Category> categories;
     private User owner;
-    private int listingId;
+//    private int listingId;
 
     public Listing(String name, String photoInBase64, List<Category> categories, User owner) {
         this.name = name;
         this.photoInBase64 = photoInBase64;
         this.categories = categories;
         this.owner = owner;
-        listingId = generateListingId();
+//        listingId = generateListingId();
     }
 
     //overload
@@ -26,12 +26,14 @@ public class Listing {
         this.name = name;
         this.photoInBase64 = photoInBase64;
         this.owner = owner;
-        listingId = generateListingId();
+//        listingId = generateListingId();
     }
 
     public List<Category> get_categories() { return categories; }
 
     public String get_name() { return name; }
+
+//    public int get_listingId() { return listingId; }
 
     /**
      * Returns the listing image as a Buffered Image
@@ -48,14 +50,14 @@ public class Listing {
 
     public User get_owner() { return owner; }
 
-    /**
-     * Generates a unique ID for the Listing. Helper to the constructor.
-     * @return the generated ID
-     */
-    private int generateListingId() {
-        int result = owner.get_username().hashCode() + name.hashCode();
-        return result;
-    }
+//    /**
+//     * Generates a unique ID for the Listing. Helper to the constructor.
+//     * @return the generated ID
+//     */
+//    private int generateListingId() {
+//        int result = owner.get_username().hashCode() + name.hashCode();
+//        return result;
+//    }
 
     public String get_img_in_Base64() { return photoInBase64; }
 }

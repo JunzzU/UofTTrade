@@ -1,10 +1,12 @@
 package view;
 
 import data_access.CreateListingDAO;
+import data_access.UserDataAccessObject;
+import entity.Category;
+import entity.User;
 import interface_adapter.create_listing.CreateListingViewModel;
 import interface_adapter.create_listing.CreateListingState;
 import interface_adapter.create_listing.CreateListingController;
-import interface_adapter.login.LoginState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +22,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import app.Main;
 
@@ -39,9 +43,9 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
     private File file = null;
     private String selectedImageBase64;
 
-    private final JComboBox<String> listingCategory1ComboBox = new JComboBox(Main.categoriesArray);
+    private final JComboBox<String> listingCategory1ComboBox = new JComboBox(Main.categoriesNameArray);
 
-    private final JComboBox<String> listingCategory2ComboBox = new JComboBox(Main.categoriesArray);
+    private final JComboBox<String> listingCategory2ComboBox = new JComboBox(Main.categoriesNameArray);
 
     private final JButton publishListingButton;
     private final JButton cancelButton;
@@ -151,6 +155,12 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
                     public void actionPerformed(ActionEvent e) {
                         CreateListingDAO createListingDataAccessObject = new CreateListingDAO();
 
+//                        // determine what the ListingID will be
+//                        UserDataAccessObject userDataAccess = new UserDataAccessObject();
+//                        User owner = userDataAccess.getCurrentLoggedInUser();
+//                        String name = listingNameInputField.getText();
+//                        int listingID = generateListingId(owner, name);
+
                         try {
                             if (listingNameInputField.getText() == null || listingNameInputField.getText().length() == 0) {
                                 System.out.println(listingNameInputField.getText());
@@ -161,14 +171,14 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
                                 state.set_photo_error(errorMessage);
                                 createListingViewModel.setState(state);
                             }
-                            else if (createListingDataAccessObject.existsByName(listingNameInputField.getText())) {
-                                errorMessage = "A listing with this name already exists";
-                                errorLabel.setText(errorMessage);
-                                errorLabel.setForeground(Color.RED);
-                                CreateListingState state = createListingViewModel.getState();
-                                state.set_photo_error(errorMessage);
-                                createListingViewModel.setState(state);
-                            }
+//                            else if (createListingDataAccessObject.existsByListingID(listingID)) {
+//                                errorMessage = "You already have a listing with this name";
+//                                errorLabel.setText(errorMessage);
+//                                errorLabel.setForeground(Color.RED);
+//                                CreateListingState state = createListingViewModel.getState();
+//                                state.set_photo_error(errorMessage);
+//                                createListingViewModel.setState(state);
+//                            }
                             else if (file == null || chosenImageLabel.getText() == "No file selected") {
                                 errorMessage = "The listing image is empty";
                                 errorLabel.setText(errorMessage);
@@ -195,7 +205,20 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
                                 else {
                                     JOptionPane.showMessageDialog(null, "Listing published successfully!");
 
-                                    //reset listing inputs
+                                    // save the inputs into the state
+                                    String name = listingNameInputField.getText();
+                                    String img_in_base_64 = encodeImageToBase64(file);
+                                    List<Category> categories = new ArrayList<Category>();
+                                    categories.add(Main.categoriesArray.get(0)); // always add "Select a Category" Category
+                                    categories.add(Main.categoriesArray.get(listingCategory1ComboBox.getSelectedIndex()));
+                                    categories.add(Main.categoriesArray.get(listingCategory2ComboBox.getSelectedIndex()));
+
+                                    CreateListingState state = createListingViewModel.getState();
+                                    state.set_name(name);
+                                    state.set_photo(img_in_base_64);
+                                    state.set_categories(categories);
+
+                                    //reset all input fields
                                     errorLabel.setText("");
                                     errorMessage = "";
                                     listingNameInputField.setText("");
@@ -203,8 +226,12 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
                                     listingCategory2ComboBox.setSelectedIndex(0);
                                     chosenImageLabel.setText("");
 
-
-                                    createListingController.switchToProfileView();
+                                    // execute the usecase
+                                    createListingController.execute(
+                                            name,
+                                            img_in_base_64,
+                                            categories
+                                    );
                                 }
 
                             }
@@ -309,4 +336,9 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
     public void setCreateListingController(CreateListingController createListingController) {
         this.createListingController = createListingController;
     }
+
+//    private int generateListingId(User owner, String name) {
+//        int result = owner.get_username().hashCode() + name.hashCode();
+//        return result;
+//    }
 }

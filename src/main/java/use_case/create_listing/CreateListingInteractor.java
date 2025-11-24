@@ -1,13 +1,10 @@
 package use_case.create_listing;
 
-import data_access.CreateListingDAO;
-import data_access.UserDataAccessObject;
 import entity.Category;
 import entity.Listing;
 import entity.User;
 import use_case.view_profile.ViewProfileUserDataAccessInterface;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,10 +25,13 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
         final String photo = createListingInputData.get_img_in_Base64();
         final List<Category> categories = createListingInputData.get_categories();
 
-        if(createListingDataAccessObject.existsByName(createListingInputData.get_name())){
-            createListingPresenter.prepareFailView("A listing with this name already exists");
-        }
-        else if(createListingInputData.get_name() == ""){
+        User user = userDataAccess.getCurrentLoggedInUser();
+//        createListingInputData.set_owner_and_listingID(user);
+
+//        if(createListingDataAccessObject.existsByListingID(createListingInputData.get_listing_id())){
+//            createListingPresenter.prepareFailView("You already have a listing with this name");
+//        }
+        if(createListingInputData.get_name() == ""){
             createListingPresenter.prepareFailView("A listing with a null name");
         }
         else if(createListingInputData.get_img_in_Base64() == ""){
@@ -40,8 +40,6 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
         else {
             final CreateListingOutputData createListingOutputData;
             final Listing listing;
-
-            User user = userDataAccess.getCurrentLoggedInUser();
 
             if (createListingInputData.get_categories().isEmpty()) {
                 listing = new Listing(createListingInputData.get_name(), createListingInputData.get_img_in_Base64(), user);
