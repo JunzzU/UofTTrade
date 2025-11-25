@@ -4,7 +4,6 @@ import interface_adapter.view_profile.ViewProfileState;
 import interface_adapter.view_profile.ViewProfileViewModel;
 import use_case.create_listing.CreateListingOutputBoundary;
 import use_case.create_listing.CreateListingOutputData;
-import view.CreateListingView;
 
 /**
  * The Presenter for the CreateListing Use Case.
@@ -25,7 +24,6 @@ public class CreateListingPresenter implements CreateListingOutputBoundary {
         // On success, switch to the View Profile view.
         final ViewProfileState viewProfileState = viewProfileViewModel.getState();
         viewProfileState.setUsername(response.get_owner().get_username());
-        this.viewProfileViewModel.setState(viewProfileState);
         viewProfileViewModel.firePropertyChanged();
 
         viewManagerModel.setState(viewProfileViewModel.getViewName());
@@ -36,10 +34,10 @@ public class CreateListingPresenter implements CreateListingOutputBoundary {
     public void prepareFailView(String error) {
         final CreateListingState createListingState = createListingViewModel.getState();
 
-        if (error == "Photo needs to be img or jpg file" || error == "The listing image is empty") {
+        if (error == "File must be one of jpg, jpeg, png." || error == "The listing image is empty") {
             createListingState.set_photo_error(error);
         }
-        else if (error == "A listing with this name already exists" || error == "A listing with a null name") {
+        else if (error == "You already have a listing with this name" || error == "A listing with a null name") {
             createListingState.set_name_error(error);
         }
 

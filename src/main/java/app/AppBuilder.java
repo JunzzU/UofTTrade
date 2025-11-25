@@ -168,6 +168,7 @@ public class AppBuilder {
         createListingViewModel = new CreateListingViewModel();
         createListingView = new CreateListingView(createListingViewModel);
         contentPane.add(createListingView, createListingView.getViewName());
+
         return this;
     }
 
@@ -180,7 +181,8 @@ public class AppBuilder {
 
         final CreateListingInputBoundary createListingInteractor= new CreateListingInteractor(
                 createListingDAO,
-                createListingOutputBoundary
+                createListingOutputBoundary,
+                userDataAccessObject
         );
 
         CreateListingController controller = new CreateListingController(createListingInteractor);
