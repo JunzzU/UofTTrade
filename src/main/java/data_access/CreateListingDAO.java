@@ -58,8 +58,8 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
                 .addHeader("Content-Type", "application/json")
                 .build();
         Response response = client.newCall(request).execute();
-        JSONObject users = new JSONObject(response.body().string());
-        return users.getJSONArray("Listings");
+        JSONObject listings = new JSONObject(response.body().string());
+        return listings.getJSONArray("Listings");
 
     }
 
