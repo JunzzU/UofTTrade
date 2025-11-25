@@ -49,7 +49,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
             String email = userData.getString("Email");
             String password = userData.getString("Password");
 
-            return new User(username, email, password);
+            return new User(username, password, email);
         } catch (Exception e) {
             return null;
         }
