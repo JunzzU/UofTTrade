@@ -167,7 +167,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
             // Delete button
             JButton deleteBtn = new JButton("Delete");
-            deleteBtn.addActionListener(e -> onDeleteListing.accept(listingName));
+            deleteBtn.addActionListener(e -> onDeleteListing.accept(nameLabel.getText().trim()));
             row.add(deleteBtn, BorderLayout.EAST);
 
             listingsPanel.add(row);

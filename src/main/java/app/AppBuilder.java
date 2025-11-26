@@ -2,6 +2,8 @@ package app;
 
 import data_access.UserDataAccessObject;
 import data_access.CreateListingDAO;
+import entity.Listing;
+import entity.User;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_listing.CreateListingController;
 import interface_adapter.create_listing.CreateListingPresenter;
@@ -13,6 +15,8 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.register.RegisterController;
 import interface_adapter.register.RegisterPresenter;
 import interface_adapter.register.RegisterViewModel;
+import interface_adapter.update_listing.UpdateListingController;
+import interface_adapter.update_listing.UpdateListingPresenter;
 import use_case.create_listing.CreateListingInputBoundary;
 import use_case.create_listing.CreateListingInteractor;
 import use_case.create_listing.CreateListingOutputBoundary;
@@ -22,6 +26,10 @@ import use_case.login.LoginOutputBoundary;
 import use_case.register.RegisterInputBoundary;
 import use_case.register.RegisterInteractor;
 import use_case.register.RegisterOutputBoundary;
+import use_case.update_listing.UpdateListingInputBoundary;
+import use_case.update_listing.UpdateListingInteractor;
+import use_case.update_listing.UpdateListingOutputBoundary;
+import use_case.update_listing.UpdateListingUserDataAccessInterface;
 import view.*;
 import interface_adapter.view_profile.ViewProfileViewModel;
 import interface_adapter.view_profile.ViewProfileController;
@@ -29,6 +37,7 @@ import interface_adapter.view_profile.ViewProfilePresenter;
 import use_case.view_profile.ViewProfileInputBoundary;
 import use_case.view_profile.ViewProfileOutputBoundary;
 import use_case.view_profile.ViewProfileInteractor;
+
 
 
 import javax.swing.*;
@@ -46,6 +55,7 @@ public class AppBuilder {
     final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
     final CreateListingDAO createListingDAO = new CreateListingDAO();
 
+
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
     private LoginViewModel loginViewModel;
@@ -59,9 +69,16 @@ public class AppBuilder {
 
     private CreateListingView createListingView;
     private CreateListingViewModel createListingViewModel;
+    private UpdateListingController updateListingController;
+
 
     public AppBuilder() throws IOException {
         contentPane.setLayout(cardLayout);
+    }
+
+    public AppBuilder addUpdateListingController(UpdateListingController controller) {
+        this.updateListingController = controller;
+        return this;
     }
 
     public AppBuilder addRegisterView() {
@@ -104,9 +121,7 @@ public class AppBuilder {
 
     public AppBuilder addProfileView(ViewProfileController controller) {
 
-        // --- navigation callbacks ---
         Runnable gotoCreateListing = () -> {
-            // replace "create listing" with the real view name if different
             viewManagerModel.setState("create listing");
             viewManagerModel.firePropertyChanged();
         };
@@ -116,11 +131,36 @@ public class AppBuilder {
             viewManagerModel.firePropertyChanged();
         };
 
-        // delete handler: currently prints — replace this Consumer with your real delete wiring
-        Consumer<String> deleteHandler = listingName -> {
-            System.out.println("Delete " + listingName);
+        Consumer<String> deleteHandler = rawListingName -> {
+            // Sanitize the input name: remove brackets and trim whitespace
+            String listingName = rawListingName.replaceAll("\\[|\\]", "").trim();
+
+            User currentUser = viewProfileViewModel.getState().getUser();
+
+
+            if (currentUser == null) {
+                return;
+            }
+
+            currentUser.get_listings().forEach(l -> System.out.println(">" + l.get_name() + "<"));
+
+            // Find the listing by name
+            Listing listingToDelete = currentUser.get_listings().stream()
+                    .filter(l -> l.get_name().equalsIgnoreCase(listingName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (listingToDelete != null) {
+                System.out.println("✅ Deleting listing: " + listingToDelete.get_name());
+                updateListingController.execute(true, currentUser, listingToDelete);
+                profileView.loadProfile();
+            } else {
+
+                // No matching listing found
+            }
         };
 
+        // Initialize the ProfileView before adding it
         profileView = new ProfileView(
                 viewProfileViewModel,
                 controller,
@@ -129,16 +169,17 @@ public class AppBuilder {
                 deleteHandler
         );
 
-        // Ensure homepageView exists before adding listener. If homepageView is null, this will NPE
-        // which indicates you must call addHomepageView() before addViewProfileUseCase() in Main.
+        // Add listener from homepageView
         homepageView.addViewProfileListener(e -> {
-            // navigate to profile screen and trigger the use case to load data
             viewManagerModel.setState(viewProfileViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
             profileView.loadProfile();
         });
 
+        // Add the profileView to the content pane
         contentPane.add(profileView, viewProfileViewModel.getViewName());
+
+        // Add a property change listener to update profileView when its view is active
         viewManagerModel.addPropertyChangeListener(evt -> {
             if (evt.getNewValue().equals(viewProfileViewModel.getViewName())) {
                 profileView.loadProfile();
@@ -147,7 +188,6 @@ public class AppBuilder {
 
         return this;
     }
-
 
     public AppBuilder addViewProfileUseCase() {
 
@@ -163,6 +203,7 @@ public class AppBuilder {
 
         return addProfileView(controller);
     }
+
 
     public AppBuilder addCreateListingView() {
         createListingViewModel = new CreateListingViewModel();
