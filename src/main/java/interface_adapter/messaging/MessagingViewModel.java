@@ -1,10 +1,10 @@
 package interface_adapter.messaging;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import interface_adapter.ViewModel;
 
-public class MessagingViewModel {
-
+public class MessagingViewModel extends ViewModel<MessagingViewModel.State> {
+    // Distinguish as Messaging view model
+    public static final String VIEW_NAME = "messaging";
 
     public static class State {
         public String title;
@@ -12,34 +12,14 @@ public class MessagingViewModel {
         public String error;
     }
 
-    private State state = new State();
+    public MessagingViewModel() {
+        super(VIEW_NAME);
 
+        State initial = new State();
+        initial.title = "";
+        initial.gmailUrl = null;
+        initial.error = null;
 
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-
-
-    public State getState() {
-        return state;
+        setState(initial);
     }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
-
-    public void firePropertyChanged() {
-        support.firePropertyChange("state", null, this.state);
-    }
-
-
 }

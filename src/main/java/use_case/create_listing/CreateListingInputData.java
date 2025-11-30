@@ -13,12 +13,14 @@ import java.util.List;
 
 public class CreateListingInputData {
     private String name;
+    private String description;
     private String photoInBase64;
     private List<Category> categories = new ArrayList<>();
 //    private int listingId;
     private User owner;
-    public CreateListingInputData(String name, String photo, List<Category> categories){
+    public CreateListingInputData(String name, String description,String photo, List<Category> categories){
         this.name = name;
+        this.description = description;
         this.categories = categories;
         this.photoInBase64 = photo;
     }
@@ -49,6 +51,7 @@ public class CreateListingInputData {
 
     public List<Category> get_categories() { return categories; }
 
+    public String get_description() { return description; }
     public String get_name() { return name; }
 
     public String get_img_in_Base64() { return photoInBase64; }

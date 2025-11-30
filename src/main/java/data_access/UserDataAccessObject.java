@@ -8,13 +8,14 @@ import use_case.login.LoginUserDataAccessInterface;
 import okhttp3.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import use_case.messaging.MessagingUserDataAccessInterface;
 import use_case.register.RegisterUserDataAccessInterface;
 import use_case.view_profile.ViewProfileUserDataAccessInterface;
 
 import java.io.IOException;
 
-
-public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface, ViewProfileUserDataAccessInterface{
+public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface, ViewProfileUserDataAccessInterface, MessagingUserDataAccessInterface {
 
     private String username;
     private String email;
@@ -51,7 +52,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
             String email = userData.getString("Email");
             String password = userData.getString("Password");
 
-            return new User(username, email, password);
+            return new User(username, password, email);
         } catch (Exception e) {
             return null;
         }
@@ -158,6 +159,28 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         Response response = client.newCall(request).execute();
         JSONObject users = new JSONObject(response.body().string());
         return users.getJSONArray("Users");
+
+    }
+
+    @Override
+    public String getValidEmailForUser(String userIdentifier) throws IOException {
+        User currentLoggedInUser = getUser(userIdentifier);
+        if  (currentLoggedInUser == null) {
+            return null;
+        }
+        String email = currentLoggedInUser.get_email();
+        if (isPlasuibleEmail(email)){
+            return email;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isPlasuibleEmail(String email) {
+        if(email == null){
+            return false;
+        }
+        return email.contains("@") && email.contains(".") && email.indexOf("@") > 0;
 
     }
 }

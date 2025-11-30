@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Main {
     public static List<Category> categoriesArray = new ArrayList<Category>();
-    public static String[] categoriesNameArray = new String[4];
+    public static String[] categoriesNameArray = new String[9];
 
     public static void main(String[] args) throws IOException {
         AppBuilder appBuilder = new AppBuilder();
@@ -20,6 +20,11 @@ public class Main {
         Category category2 = new Category("Technology");
         Category category3 = new Category("Furniture");
         Category category4 = new Category("Sports");
+        Category category5 = new Category("Textbooks");
+        Category category6 = new Category("Clothing");
+        Category category7 = new Category("Collectibles");
+        Category category8 = new Category("Crafts");
+        Category category9 = new Category("Art");
         categoriesNameArray[0] = category1.getName();
         categoriesArray.add(category1);
         categoriesNameArray[1] = category2.getName();
@@ -28,16 +33,28 @@ public class Main {
         categoriesArray.add(category3);
         categoriesNameArray[3] = category4.getName();
         categoriesArray.add(category4);
+        categoriesNameArray[4] = category5.getName();
+        categoriesArray.add(category5);
+        categoriesNameArray[5] = category6.getName();
+        categoriesArray.add(category6);
+        categoriesNameArray[6] = category7.getName();
+        categoriesArray.add(category7);
+        categoriesNameArray[7] = category8.getName();
+        categoriesArray.add(category8);
+        categoriesNameArray[8] = category9.getName();
+        categoriesArray.add(category9);
 
         JFrame application = appBuilder
                 .addLoginView()
                 .addRegisterView()
                 .addHomepageView()
                 .addCreateListingView()
+                .addSearchListingsView()
                 .addCreateListingUseCase()
                 .addRegisterUseCase()
                 .addLoginUseCase()
                 .addViewProfileUseCase()
+                .addSearchUseCase()
                 .build();
 
         application.pack();

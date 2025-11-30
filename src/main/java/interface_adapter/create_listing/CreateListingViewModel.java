@@ -5,6 +5,7 @@ import interface_adapter.ViewModel;
 public class CreateListingViewModel extends ViewModel<CreateListingState> {
     public static final String TITLE_LABEL = "Create Listing";
     public static final String NAME_LABEL = "Name of the item";
+    public static final String DESCRIPTION_LABEL = "Description";
     public static final String IMG_LABEL = "Image of the item (.png, .jpeg or .jpg)";
     public static final String CATEGORIES_LABEL = "Categories of the item (optional)";
 

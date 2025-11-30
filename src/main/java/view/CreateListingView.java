@@ -36,6 +36,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
     private final CreateListingViewModel createListingViewModel;
 
     private final JTextField listingNameInputField = new JTextField(50);
+    private final JTextArea descriptionInputField = new JTextArea(5, 50);
 
     private JLabel chosenImageLabel = new JLabel("No file selected");
     private final JButton imgFileChooserButton = new JButton();
@@ -82,7 +83,29 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         listingNameInfo.setMaximumSize(listingNameInfo.getPreferredSize());
         mainColumn.add(listingNameInfo);
 
+        // ---------------------- DESCRIPTION FIELD ----------------------
+        JPanel descriptionPanel = new JPanel();
+        descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
+        descriptionPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        JLabel descLabel = new JLabel(CreateListingViewModel.DESCRIPTION_LABEL);
+        descLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        descriptionInputField.setLineWrap(true);
+        descriptionInputField.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(descriptionInputField);
+        scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        Dimension boxSize = new Dimension(getMaximumSize().width, 100);
+        scrollPane.setPreferredSize(boxSize);
+        scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+
+        descriptionPanel.add(descLabel);
+        descriptionPanel.add(Box.createVerticalStrut(5));
+        descriptionPanel.add(scrollPane);
+
+        descriptionPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, vSpace, 0));
+
+        mainColumn.add(descriptionPanel);
         // ---------------------- IMAGE PICKER ----------------------
         final JPanel listingImagePanel = new JPanel();
         listingImagePanel.setLayout(new BoxLayout(listingImagePanel, BoxLayout.Y_AXIS));
@@ -207,6 +230,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
 
                                     // save the inputs into the state
                                     String name = listingNameInputField.getText();
+                                    String description = descriptionInputField.getText();
                                     String img_in_base_64 = encodeImageToBase64(file);
                                     List<Category> categories = new ArrayList<Category>();
                                     categories.add(Main.categoriesArray.get(0)); // always add "Select a Category" Category
@@ -229,6 +253,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
                                     // execute the usecase
                                     createListingController.execute(
                                             name,
+                                            description,
                                             img_in_base_64,
                                             categories
                                     );
@@ -276,6 +301,16 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
             }
         });
 
+        descriptionInputField.getDocument().addDocumentListener(new DocumentListener() {
+            private void updateDescription() {
+                CreateListingState currentState = createListingViewModel.getState();
+                currentState.set_description(descriptionInputField.getText());
+                createListingViewModel.setState(currentState);
+            }
+            @Override public void insertUpdate(DocumentEvent e) { updateDescription(); }
+            @Override public void removeUpdate(DocumentEvent e) { updateDescription(); }
+            @Override public void changedUpdate(DocumentEvent e) { updateDescription(); }
+        });
 
         listingNameInputField.getDocument().addDocumentListener(new DocumentListener() {
 

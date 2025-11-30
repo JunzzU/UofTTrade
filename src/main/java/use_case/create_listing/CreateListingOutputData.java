@@ -13,17 +13,18 @@ import java.util.List;
 
 public class CreateListingOutputData {
     private String name;
+    private String description;
     private String photoInBase64;
     private User owner;
     private List<Category> categories = new ArrayList<>();
 
-    public CreateListingOutputData(String name, String photoInBase64, List<Category> categories, User owner) {
+    public CreateListingOutputData(String name, String description, String photoInBase64, List<Category> categories, User owner) {
         this.name = name;
+        this.description = description;
         this.photoInBase64 = photoInBase64;
         this.categories = categories;
         this.owner = owner;
     }
-
     //overloaded
     public CreateListingOutputData(String name, String photoInBase64, User owner) {
         this.name = name;
@@ -31,6 +32,7 @@ public class CreateListingOutputData {
         this.owner = owner;
     }
 
+    public String get_description() { return description; }
     public String get_img_in_Base64() { return photoInBase64; }
 
     public BufferedImage get_img() throws IOException {

@@ -22,6 +22,7 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
     @Override
     public void execute(CreateListingInputData createListingInputData) throws IOException {
         final String name = createListingInputData.get_name();
+        final String description = createListingInputData.get_description();
         final String photo = createListingInputData.get_img_in_Base64();
         final List<Category> categories = createListingInputData.get_categories();
 
@@ -50,14 +51,11 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
                 );
             }
             else {
-                listing = new Listing(
-                        createListingInputData.get_name(),
-                        createListingInputData.get_img_in_Base64(),
-                        createListingInputData.get_categories(),
-                        user
-                );
+                listing = new Listing(name, description, photo, categories, user);
+
                 createListingOutputData = new CreateListingOutputData(
                         createListingInputData.get_name(),
+                        createListingInputData.get_description(),
                         createListingInputData.get_img_in_Base64(),
                         createListingInputData.get_categories(),
                         user

@@ -15,8 +15,7 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.register.RegisterController;
 import interface_adapter.register.RegisterPresenter;
 import interface_adapter.register.RegisterViewModel;
-import interface_adapter.update_listing.UpdateListingController;
-import interface_adapter.update_listing.UpdateListingPresenter;
+import interface_adapter.search.SearchListingsViewModel;
 import use_case.create_listing.CreateListingInputBoundary;
 import use_case.create_listing.CreateListingInteractor;
 import use_case.create_listing.CreateListingOutputBoundary;
@@ -37,6 +36,8 @@ import interface_adapter.view_profile.ViewProfilePresenter;
 import use_case.view_profile.ViewProfileInputBoundary;
 import use_case.view_profile.ViewProfileOutputBoundary;
 import use_case.view_profile.ViewProfileInteractor;
+import use_case.search.SearchListingsInteractor;
+
 
 
 
@@ -72,6 +73,10 @@ public class AppBuilder {
     private UpdateListingController updateListingController;
 
 
+    private SearchListingsView searchListingsView;
+    private SearchListingsViewModel searchListingsViewModel;
+    final data_access.SearchListingsDataAccessObject searchDataAccessObject = new data_access.SearchListingsDataAccessObject();
+
     public AppBuilder() throws IOException {
         contentPane.setLayout(cardLayout);
     }
@@ -90,6 +95,33 @@ public class AppBuilder {
 
     }
 
+    public AppBuilder addSearchListingsView() {
+        searchListingsViewModel = new interface_adapter.search.SearchListingsViewModel(searchDataAccessObject.getAllCategories());
+        searchListingsView = new SearchListingsView(searchListingsViewModel);
+        contentPane.add(searchListingsView, searchListingsView.viewName);
+        return this;
+    }
+
+    public AppBuilder addSearchUseCase() {
+        use_case.search.SearchListingsOutputBoundary searchPresenter =
+                new interface_adapter.search.SearchListingsPresenter(searchListingsViewModel);
+
+        use_case.search.SearchListingsInputBoundary searchInteractor =
+                new use_case.search.SearchListingsInteractor(searchDataAccessObject, searchPresenter);
+
+        interface_adapter.search.SearchListingsController searchController =
+                new interface_adapter.search.SearchListingsController(searchInteractor);
+
+        searchListingsView.setSearchListingsController(searchController);
+
+        searchListingsView.addBackListener(e -> {
+            viewManagerModel.setState(homepageViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+        });
+
+        return this;
+    }
+
     public AppBuilder addLoginView() {
 
         loginViewModel = new LoginViewModel();
@@ -103,6 +135,23 @@ public class AppBuilder {
 
         homepageViewModel = new HomepageViewModel();
         homepageView = new HomepageView(homepageViewModel);
+        homepageView.addViewProfileListener(e -> {
+            viewManagerModel.setState(viewProfileViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+            profileView.loadProfile();
+        });
+
+        //temp create listings view
+        homepageView.addCreateListingListener(e -> {
+            viewManagerModel.setState("create listing");
+            viewManagerModel.firePropertyChanged();
+        });
+
+        homepageView.addSearchListener(e -> {
+            // Switch to the search view
+            viewManagerModel.setState(searchListingsViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+        });
         contentPane.add(homepageView, homepageView.getViewName());
         return this;
 

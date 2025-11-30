@@ -8,13 +8,15 @@ import java.util.List;
 
 public class Listing {
     private String name;
+    private String description;
     private String photoInBase64;
     private List<Category> categories;
     private User owner;
 //    private int listingId;
 
-    public Listing(String name, String photoInBase64, List<Category> categories, User owner) {
+    public Listing(String name, String description, String photoInBase64, List<Category> categories, User owner) {
         this.name = name;
+        this.description = description;
         this.photoInBase64 = photoInBase64;
         this.categories = categories;
         this.owner = owner;
@@ -24,6 +26,14 @@ public class Listing {
     //overload
     public Listing(String name, String photoInBase64, User owner) {
         this.name = name;
+        this.photoInBase64 = photoInBase64;
+        this.owner = owner;
+//        listingId = generateListingId();
+    }
+    //overload for searrch
+    public Listing(String name, String photoInBase64, List<Category> categories, User owner) {
+        this.name = name;
+        this.categories = categories;
         this.photoInBase64 = photoInBase64;
         this.owner = owner;
 //        listingId = generateListingId();
@@ -49,6 +59,7 @@ public class Listing {
     }
 
     public User get_owner() { return owner; }
+    public String get_description() { return description; }
 
 //    /**
 //     * Generates a unique ID for the Listing. Helper to the constructor.
