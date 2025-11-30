@@ -1,5 +1,7 @@
 package data_access;
-
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
 import entity.Category;
 import entity.Listing;
 import entity.User;
@@ -52,7 +54,37 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
 
     @Override
     public List<String> getAllCategories() {
-        return List.of("Select a Category", "Technology", "Furniture", "Sports");
+        Set<String> uniqueCategories = new HashSet<>();
+        uniqueCategories.add("Select a Category");
+        uniqueCategories.add("Technology");
+        uniqueCategories.add("Furniture");
+        uniqueCategories.add("Sports");
+        uniqueCategories.add("Textbooks");
+        uniqueCategories.add("Clothing");
+        uniqueCategories.add("Collectibles");
+        uniqueCategories.add("Crafts");
+        uniqueCategories.add("Art");
+        //Fetch all current listings from the API
+        List<Listing> listings = fetchAllListings();
+
+        //Extract categories from every listing
+        for (Listing listing : listings) {
+            if (listing.get_categories() != null) {
+                for (Category category : listing.get_categories()) {
+                    if (category.getName() != null && !category.getName().isEmpty()) {
+                        uniqueCategories.add(category.getName());
+                    }
+                }
+            }
+        }
+
+        // 5. Convert to a List and Sort alphabetically for the UI
+        List<String> result = new ArrayList<>(uniqueCategories);
+        result.remove("Select a Category"); // Remove it temporarily to sort the rest
+        Collections.sort(result);
+        result.add(0, "Select a Category"); // Add it back at the top
+
+        return result;
     }
 
     private List<Listing> fetchAllListings() {
