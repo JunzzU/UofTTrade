@@ -6,10 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="67b6cbc8-de7a-4ddf-9a63-f74472710dcf" name="Changes" comment="Third Attempts to merge the MessagingSubpageView and update MessagingViewModel">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SearchListingsDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SearchListingsDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/SearchListingsDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/SearchListingsDataAccessObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Listing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Listing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/create_listing/CreateListingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/create_listing/CreateListingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/create_listing/CreateListingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/create_listing/CreateListingState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/create_listing/CreateListingViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/create_listing/CreateListingViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/create_listing/CreateListingInputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/create_listing/CreateListingInputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/create_listing/CreateListingInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/create_listing/CreateListingInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/create_listing/CreateListingOutputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/create_listing/CreateListingOutputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/CreateListingView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/CreateListingView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +65,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "additioncategories",
+    "git-widget-placeholder": "descriptions",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -120,7 +125,7 @@
       <workItem from="1764090141192" duration="217000" />
       <workItem from="1764090362699" duration="104000" />
       <workItem from="1764091547614" duration="737000" />
-      <workItem from="1764464371992" duration="13914000" />
+      <workItem from="1764464371992" duration="17477000" />
     </task>
     <servers />
   </component>
