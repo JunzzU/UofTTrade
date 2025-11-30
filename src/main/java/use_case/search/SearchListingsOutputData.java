@@ -27,9 +27,12 @@ public class SearchListingsOutputData {
     }
     public static class ListingResult {
         private final String name;
+        private final String description;
         private final List<String> categories;
-        public ListingResult(String name, List<String> categories) {
+
+        public ListingResult(String name, String description, List<String> categories) {
             this.name = name;
+            this.description = description;
             this.categories = categories;
         }
         public String getName() {
@@ -37,6 +40,10 @@ public class SearchListingsOutputData {
         }
         public List<String> getCategories() {
             return categories;
+        }
+
+        public String getDescription() {
+            return description;
         }
     }
 

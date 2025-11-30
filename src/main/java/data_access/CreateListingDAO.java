@@ -18,6 +18,7 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
         // create a JSON object of the new listing
         JSONObject newListing = new JSONObject();
         newListing.put("Name", listing.get_name());
+        newListing.put("Description", listing.get_description());
         newListing.put("Photo", listing.get_img_in_Base64());
         newListing.put("Categories", listing.get_categories());
         newListing.put("Owner", listing.get_owner());

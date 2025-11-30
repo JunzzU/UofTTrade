@@ -79,6 +79,7 @@ public class SearchListingsPresenter implements SearchListingsOutputBoundary {
         return results.stream()
                 .map(result -> new SearchListingsState.ListingViewModel(
                         result.getName(),
+                        result.getDescription(),
                         formatCategories(result.getCategories())
                 ))
                 .collect(Collectors.toList());

@@ -5,7 +5,7 @@ import entity.Listing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-public class SearchListingsInteractor {
+public class SearchListingsInteractor implements SearchListingsInputBoundary{
     private final SearchListingsDataAccessInterface searchListingsDataAccess;
     private final SearchListingsOutputBoundary presenter;
 
@@ -56,6 +56,7 @@ public class SearchListingsInteractor {
         for (Listing listing : listings) {
             outputResults.add(new SearchListingsOutputData.ListingResult(
                     listing.get_name(),
+                    listing.get_description(),
                     extractCategoryNames(listing)
             ));
         }

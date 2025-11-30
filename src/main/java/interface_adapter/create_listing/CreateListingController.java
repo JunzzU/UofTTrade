@@ -23,8 +23,10 @@ public class CreateListingController {
      * @param imageBase64 an image of the listing item in Base 64
      * @param categories the categories of the listing
      */
-    public void execute(String name, String imageBase64, List<Category> categories) throws IOException {
-        final CreateListingInputData createListingInputData = new CreateListingInputData(name, imageBase64, categories);
+    public void execute(String name, String description, String imageBase64, List<Category> categories) throws
+            IOException {
+        final CreateListingInputData createListingInputData = new CreateListingInputData(name, description, imageBase64,
+                categories);
 
         createListingInteractor.execute(createListingInputData);
     }

@@ -105,14 +105,17 @@ public class SearchListingsState {
      */
     public static class ListingViewModel {
         private final String name;
+        private final String description;
         private final String categorySummary;
 
         /**
          * @param name             listing title shown to the user
+         * @param description      description of item
          * @param categorySummary  comma-separated category labels
          */
-        public ListingViewModel(String name, String categorySummary) {
+        public ListingViewModel(String name, String description, String categorySummary) {
             this.name = name;
+            this.description = description;
             this.categorySummary = categorySummary;
         }
 
@@ -128,6 +131,10 @@ public class SearchListingsState {
          */
         public String getCategorySummary() {
             return categorySummary;
+        }
+
+        public String getDescription() {
+            return description;
         }
     }
 }
