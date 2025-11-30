@@ -167,7 +167,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
             // Delete button
             JButton deleteBtn = new JButton("Delete");
-            deleteBtn.addActionListener(e -> onDeleteListing.accept(listingName));
+            deleteBtn.addActionListener(e -> onDeleteListing.accept(nameLabel.getText().trim()));
             row.add(deleteBtn, BorderLayout.EAST);
 
             listingsPanel.add(row);
@@ -179,7 +179,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
     /**
      * Called by another view when the user clicks their Profile button.
-     * It triggers the View Profile use case.
+     * It triggers the View Profile use case
      */
     public void loadProfile() {
         profileController.onProfileButtonClicked();

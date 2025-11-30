@@ -4,26 +4,37 @@ import use_case.view_profile.ViewProfileInputBoundary;
 import use_case.view_profile.ViewProfileInputData;
 
 /**
- * Controller for viewing a user's profile.
+ * Controller for the View Profile use case.
  */
 public class ViewProfileController {
 
     private final ViewProfileInputBoundary interactor;
+    private String username;
 
     /**
-     * Creates a controller for the View Profile use case.
+     * Constructs a controller for the View Profile use case.
      *
-     * @param interactor the interactor to run the use case
+     * @param interactor the interactor that performs the use case logic
      */
     public ViewProfileController(ViewProfileInputBoundary interactor) {
         this.interactor = interactor;
     }
 
     /**
-     * Runs the View Profile use case when the profile button is clicked.
+     * Sets the username for the profile to view.
+     *
+     * @param username the username of the profile to load
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Executes the View Profile use case when triggered by the UI.
      */
     public void onProfileButtonClicked() {
-        ViewProfileInputData inputData = new ViewProfileInputData();
+        ViewProfileInputData inputData = new ViewProfileInputData(username);
         interactor.execute(inputData);
     }
 }
+

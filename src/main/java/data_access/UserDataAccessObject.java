@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.Listing;
 import entity.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -93,12 +94,47 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         return currentLoggedInUser;
     }
 
-    @Override
-    public List<String> getUserListings(String username) {
-        return new ArrayList<>(); // WILL UPDATE THIS LATER
+    private JSONArray getListingData() throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        Request request = new Request.Builder()
+                .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .build();
+        Response response = client.newCall(request).execute();
+        JSONObject listings = new JSONObject(response.body().string());
+        return listings.getJSONArray("Listings");
     }
 
+    @Override
+    public List<Listing> getUserListings(String username) {
 
+        List<Listing> result = new ArrayList<>();
+
+        try {
+            CreateListingDAO listingDAO = new CreateListingDAO();
+            JSONArray listings = listingDAO.getListingData();
+
+            for (int i = 0; i < listings.length(); i++) {
+                JSONObject listingJSON = listings.getJSONObject(i);
+
+                String name = listingJSON.getString("Name");
+                String photo = listingJSON.getString("Photo");
+                String ownerUsername = listingJSON.getString("Owner");
+
+                if (ownerUsername.equals(username)) {
+                    User owner = new User(ownerUsername, "", "");
+                    Listing listing = new Listing(name, photo, owner);
+                    result.add(listing);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error loading user listings: " + e.getMessage());
+        }
+
+        return result;
+    }
 
     public void setUsername(String username) {this.username = username;}
 

@@ -1,13 +1,14 @@
 package interface_adapter.view_profile;
 
+import entity.Listing;
+import java.util.List;
 import use_case.view_profile.ViewProfileOutputBoundary;
 import use_case.view_profile.ViewProfileOutputData;
 
-import java.util.List;
-
 /**
  * Presenter for the View Profile use case.
- * Updates the ViewModel's state after success or failure and notifies the view.
+ * Updates the ViewModel's state after success or failure
+ * and notifies the view.
  */
 public class ViewProfilePresenter implements ViewProfileOutputBoundary {
 
@@ -22,19 +23,27 @@ public class ViewProfilePresenter implements ViewProfileOutputBoundary {
         ViewProfileState state = viewModel.getState();
 
         state.setUsername(outputData.getUsername());
-        state.setListingNames(outputData.getListingNames());
 
-        // Set dynamic title text
+        // Convert List<Listing> to List<String> of listing names.
+        List<String> listingNames = outputData.getListings()
+                .stream()
+                .map(Listing::get_name)
+                .toList();
+
+        state.setListingNames(listingNames);
+        state.setUser(outputData.getUser());
+
+        // Dynamic title
         state.setTitleText("Profile: " + outputData.getUsername());
 
-        // Clear previous error
+        // Clear error
         state.setErrorMessage("");
 
-        // NEW: Show "No Listings yet..." when listingNames is empty
-        if (outputData.getListingNames().isEmpty()) {
+        // Show "No listings yet..." when list is empty
+        if (listingNames.isEmpty()) {
             state.setNoListingsMessage("No listings yet...");
         } else {
-            state.setNoListingsMessage(""); // clear message when listings exist
+            state.setNoListingsMessage("");
         }
 
         viewModel.setState(state);
@@ -45,14 +54,11 @@ public class ViewProfilePresenter implements ViewProfileOutputBoundary {
     public void prepareFailView(String errorMessage) {
         ViewProfileState state = viewModel.getState();
 
-        // Set error
         state.setErrorMessage(errorMessage);
-
-        // Clear fields that shouldn’t show on failure
         state.setUsername("");
         state.setListingNames(List.of());
         state.setTitleText("");
-        state.setNoListingsMessage("");  // ensure this stays empty on failure
+        state.setNoListingsMessage("");
 
         viewModel.setState(state);
         viewModel.firePropertyChanged();

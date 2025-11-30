@@ -1,5 +1,7 @@
 package interface_adapter.view_profile;
 
+import entity.User;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +18,23 @@ public class ViewProfileState {
 
     private List<String> listingNames = new ArrayList<>();
     private List<BufferedImage> listingPhotos = new ArrayList<>();
+    private User user;
 
-    private String errorMessage = "";
+    private String errorMessage = "Unable to load profile.";
 
-    // NEW: Message to display when there are zero listings
+    // Message to display when there are zero listings
     private String noListingsMessage = "";
 
     public String getUsername() {
         return username;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setUsername(String username) {
