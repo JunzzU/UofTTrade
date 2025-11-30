@@ -36,6 +36,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
     private final CreateListingViewModel createListingViewModel;
 
     private final JTextField listingNameInputField = new JTextField(50);
+    private final JTextArea descriptionInputField = new JTextArea(5, 50);
 
     private final JComboBox<String> listingCategory1ComboBox = new JComboBox(Main.categoriesNameArray);
 
@@ -76,6 +77,21 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         listingNameInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, vSpace, 0));
         listingNameInfo.setMaximumSize(listingNameInfo.getPreferredSize());
         mainColumn.add(listingNameInfo);
+
+        // --- DESCRIPTION FIELD ---
+        JLabel descLabel = new JLabel(CreateListingViewModel.DESCRIPTION_LABEL);
+        descLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        descriptionInputField.setLineWrap(true);
+        descriptionInputField.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(descriptionInputField);
+        scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        mainColumn.add(descLabel);
+        mainColumn.add(Box.createVerticalStrut(5));
+        mainColumn.add(scrollPane);
+        mainColumn.add(Box.createVerticalStrut(vSpace));
+
 
         // ---------------------- CATEGORIES ----------------------
         // label
@@ -127,24 +143,28 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         mainColumn.add(buttons);
 
         // other
-        publishListingButton.addActionListener(e ->{
+        publishListingButton.addActionListener(e -> {
             String name = listingNameInputField.getText();
+            String description = descriptionInputField.getText();
+            List<Category> categories = new ArrayList<>();
+            if (!Main.categoriesArray.isEmpty()) categories.add(Main.categoriesArray.get(0));
 
-            List<Category> categories = new ArrayList<Category>();
-            categories.add(Main.categoriesArray.get(0)); // always add "Select a Category" Category
-            categories.add(Main.categoriesArray.get(listingCategory1ComboBox.getSelectedIndex()));
-            categories.add(Main.categoriesArray.get(listingCategory2ComboBox.getSelectedIndex()));
-            // execute the usecase
-                    try {
-                        createListingController.execute(
-                                name,
-                                categories
-                        );
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-        );
+            if (listingCategory1ComboBox.getSelectedIndex() >= 0 && listingCategory1ComboBox.getSelectedIndex() <
+                    Main.categoriesArray.size()) {
+                categories.add(Main.categoriesArray.get(listingCategory1ComboBox.getSelectedIndex()));
+            }
+            if (listingCategory2ComboBox.getSelectedIndex() >= 0 && listingCategory2ComboBox.getSelectedIndex() <
+                    Main.categoriesArray.size()) {
+                categories.add(Main.categoriesArray.get(listingCategory2ComboBox.getSelectedIndex()));
+            }
+
+            try {
+                // Pass description to controller
+                createListingController.execute(name, description, categories);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         cancelButton.addActionListener(
                 new ActionListener() {
@@ -160,6 +180,17 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
                     }
                 }
         );
+
+        descriptionInputField.getDocument().addDocumentListener(new DocumentListener() {
+            private void update() {
+                CreateListingState currentState = createListingViewModel.getState();
+                currentState.set_description(descriptionInputField.getText());
+                createListingViewModel.setState(currentState);
+            }
+            public void insertUpdate(DocumentEvent e) { update(); }
+            public void removeUpdate(DocumentEvent e) { update(); }
+            public void changedUpdate(DocumentEvent e) { update(); }
+        });
 
         listingNameInputField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -218,6 +249,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
 
             // reset all input fields
             listingNameInputField.setText("");
+            descriptionInputField.setText("");
             listingCategory1ComboBox.setSelectedIndex(0);
             listingCategory2ComboBox.setSelectedIndex(0);
         }

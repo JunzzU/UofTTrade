@@ -14,7 +14,8 @@ import java.util.List;
  * The state for the create listing View Model.
  */
 public class CreateListingState {
-    private String name;
+    private String name = "";
+    private String description = "";
     private User owner;
     private String nameError;
     private List<Category> categories;
@@ -34,4 +35,9 @@ public class CreateListingState {
 
     public String get_name_error() { return nameError; }
     public String get_successMessage() { return successMessage; }
+
+    public void set_description(String description) {
+        this.description = description;
+    }
+    public String get_description() { return description; }
 }

@@ -8,12 +8,14 @@ import java.util.List;
 
 public class Listing {
     private String name;
+    private String description;
     private List<Category> categories;
     private User owner;
     private int listingId;
 
-    public Listing(String name, List<Category> categories, User owner) {
+    public Listing(String name, String description, List<Category> categories, User owner) {
         this.name = name;
+        this.description = description;
         this.categories = categories;
         this.owner = owner;
         this.listingId = generateListingId();
@@ -25,6 +27,7 @@ public class Listing {
         this.owner = owner;
         this.listingId = generateListingId();
     }
+
 
     public List<Category> get_categories() { return categories; }
 
@@ -40,5 +43,9 @@ public class Listing {
      */
     private int generateListingId() {
         return owner.get_username().hashCode() + name.hashCode();
+    }
+
+    public String get_description() {
+        return description;
     }
 }

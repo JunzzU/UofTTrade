@@ -113,18 +113,28 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
         try {
             CreateListingDAO listingDAO = new CreateListingDAO();
-            JSONArray listings = listingDAO.getListingData();
+            JSONObject data = listingDAO.getListingData();
+            if (!data.has("Listings")) return result;
+
+            JSONArray listings = data.getJSONArray("Listings");
 
             for (int i = 0; i < listings.length(); i++) {
                 JSONObject listingJSON = listings.getJSONObject(i);
 
                 String name = listingJSON.getString("Name");
-                String photo = listingJSON.getString("Photo");
-                String ownerUsername = listingJSON.getString("Owner");
+                String description = listingJSON.optString("Description", "");
+
+                String ownerUsername = "";
+                if (listingJSON.has("Owner")) {
+                    Object ownerObj = listingJSON.get("Owner");
+                    if (ownerObj instanceof JSONObject) ownerUsername = ((JSONObject)ownerObj).optString("name");
+                    else ownerUsername = ownerObj.toString();
+                }
 
                 if (ownerUsername.equals(username)) {
                     User owner = new User(ownerUsername, "", "");
-                    Listing listing = new Listing(name, photo, owner);
+                    // Using updated Listing constructor
+                    Listing listing = new Listing(name, description, new ArrayList<>(), owner);
                     result.add(listing);
                 }
             }

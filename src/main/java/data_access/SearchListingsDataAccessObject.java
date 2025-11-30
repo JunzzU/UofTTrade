@@ -31,7 +31,8 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
             // Check Name OR Description
             boolean matchesKeyword = normKeyword.isEmpty() ||
                     listing.get_name().toLowerCase().contains(normKeyword) ||
-                    listing.get_description().toLowerCase().contains(normKeyword);
+                    (listing.get_description() != null && listing.get_description().
+                            toLowerCase().contains(normKeyword));
 
             // Check Category
             boolean matchesCategory = normCategory.isEmpty() ||
@@ -114,7 +115,6 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
 
     private Listing mapJsonToListing(JSONObject json) {
         String name = json.getString("Name");
-        String photoBase64 = json.getString("Photo");
         String description = json.optString("Description", "No description available.");
 
         List<Category> categories = new ArrayList<>();
@@ -139,7 +139,7 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
         }
         User owner = new User(ownerName, "", "");
 
-        return new Listing(name, description, photoBase64, categories, owner);
+        return new Listing(name, description, categories, owner);
     }
 
     private boolean hasCategory(Listing listing, String categoryName) {

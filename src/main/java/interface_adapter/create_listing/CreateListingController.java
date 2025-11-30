@@ -22,8 +22,8 @@ public class CreateListingController {
      * @param name the name of the listing
      * @param categories the categories of the listing
      */
-    public void execute(String name, List<Category> categories) throws IOException {
-        final CreateListingInputData createListingInputData = new CreateListingInputData(name, categories);
+    public void execute(String name, String description, List<Category> categories) throws IOException {
+        final CreateListingInputData createListingInputData = new CreateListingInputData(name, description, categories);
 
         createListingInteractor.execute(createListingInputData);
     }
