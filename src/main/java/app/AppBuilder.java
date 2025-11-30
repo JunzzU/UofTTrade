@@ -126,6 +126,12 @@ public class AppBuilder {
             profileView.loadProfile();
         });
 
+        //temp create listings view
+        homepageView.addCreateListingListener(e -> {
+            viewManagerModel.setState("create listing");
+            viewManagerModel.firePropertyChanged();
+        });
+
         homepageView.addSearchListener(e -> {
             // Switch to the search view
             viewManagerModel.setState(searchListingsViewModel.getViewName());

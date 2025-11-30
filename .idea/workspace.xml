@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67b6cbc8-de7a-4ddf-9a63-f74472710dcf" name="Changes" comment="Third Attempts to merge the MessagingSubpageView and update MessagingViewModel">
-      <change afterPath="$PROJECT_DIR$/src/main/java/data_access/SearchListingsDataAccessObject.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/view/SearchListingsView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UofTTrade.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UofTTrade.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/search/SearchListingsInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/search/SearchListingsInteractor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/HomepageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/HomepageView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +57,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "searchlistings",
+    "git-widget-placeholder": "fixing",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -123,7 +117,7 @@
       <workItem from="1764090141192" duration="217000" />
       <workItem from="1764090362699" duration="104000" />
       <workItem from="1764091547614" duration="737000" />
-      <workItem from="1764464371992" duration="11725000" />
+      <workItem from="1764464371992" duration="12988000" />
     </task>
     <servers />
   </component>
