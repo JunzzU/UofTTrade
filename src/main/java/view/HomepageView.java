@@ -19,7 +19,9 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
     private final JLabel userGreetingLabel;
     private final JLabel recentItemsLabel;
     private final JButton viewProfileButton;
+    private final JButton createListing;
     private final JButton search;
+    //private final JButton logout; maybe this could be implemented
 
     private final String viewName = "logged in";
     private String username = "";
@@ -61,6 +63,7 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         gbc_userGreetingLabel.gridy = 1;
         optionsPanel.add(userGreetingLabel, gbc_userGreetingLabel);
 
+        //View My Profile Button
         viewProfileButton = new JButton("View My Profile");
         GridBagConstraints gbc_viewProfileButton = new GridBagConstraints();
         gbc_viewProfileButton.fill = GridBagConstraints.HORIZONTAL;
@@ -69,6 +72,16 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         gbc_viewProfileButton.gridy = 3;
         optionsPanel.add(viewProfileButton, gbc_viewProfileButton);
 
+        //Create Listings Button
+        createListing = new JButton("Create Listing");
+        GridBagConstraints gbc_createListing = new GridBagConstraints();
+        gbc_createListing.fill = GridBagConstraints.HORIZONTAL;
+        gbc_createListing.insets = new Insets(0, 0, 5, 0);
+        gbc_createListing.gridx = 0;
+        gbc_createListing.gridy = 5;
+        optionsPanel.add(createListing, gbc_createListing);
+
+        //Search Listings Button
         search = new JButton("Search Listings");
         GridBagConstraints gbc_search = new GridBagConstraints();
         gbc_search.fill = GridBagConstraints.BOTH;
@@ -112,8 +125,6 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
             userGreetingLabel.setText("Hello, " + username);
         }
 
-
-
     }
 
     private static JPanel createItemPanel(String name, String description) {
@@ -140,7 +151,7 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
     public void addViewProfileListener(ActionListener listener) {
         viewProfileButton.addActionListener(listener);
     }
-
-
-
+    public void addCreateListingListener(ActionListener listener) {
+        createListing.addActionListener(listener);
+    }
 }
