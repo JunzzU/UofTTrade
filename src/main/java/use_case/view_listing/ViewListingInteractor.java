@@ -1,5 +1,6 @@
 package use_case.view_listing;
 
+import entity.Category;
 import entity.Listing;
 import org.json.JSONArray;
 import org.json.JSONObject;

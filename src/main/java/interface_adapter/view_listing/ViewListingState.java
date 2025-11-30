@@ -1,5 +1,7 @@
 package interface_adapter.view_listing;
 
+import entity.Category;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 

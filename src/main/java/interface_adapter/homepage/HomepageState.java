@@ -1,8 +1,14 @@
 package interface_adapter.homepage;
 
+import entity.Listing;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomepageState {
 
     private String username = "";
+    private List<Listing> listings = new ArrayList<>();
 
     public HomepageState(HomepageState copy) {
         username = copy.username;
@@ -20,7 +26,5 @@ public class HomepageState {
     public void setUsername(String username) {
         this.username = username;
     }
-
-
 
 }

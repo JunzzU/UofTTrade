@@ -13,6 +13,7 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.register.RegisterController;
 import interface_adapter.register.RegisterPresenter;
 import interface_adapter.register.RegisterViewModel;
+import org.json.JSONObject;
 import use_case.create_listing.CreateListingInputBoundary;
 import use_case.create_listing.CreateListingInteractor;
 import use_case.create_listing.CreateListingOutputBoundary;
@@ -35,6 +36,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.function.Consumer;
+import java.util.List;
 
 public class AppBuilder {
 
@@ -82,10 +84,12 @@ public class AppBuilder {
 
     }
 
-    public AppBuilder addHomepageView() {
+    public AppBuilder addHomepageView() throws IOException {
 
         homepageViewModel = new HomepageViewModel();
         homepageView = new HomepageView(homepageViewModel);
+        final List<JSONObject> allListings = userDataAccessObject.getAllListings();
+        homepageView.getListingPanels(allListings);
         contentPane.add(homepageView, homepageView.getViewName());
         return this;
 
