@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class CreateListingState {
     private String name;
+    private String description = "";
     private String photoInBase64;
     private User owner;
     private String nameError;
@@ -42,7 +43,8 @@ public class CreateListingState {
 
     public void set_name_error(String ownerError) { this.nameError = nameError; }
     public void set_photo_error(String photoError) { this.photoError = photoError; }
-
+    public void set_description(String description) { this.description = description; }
     public String get_name_error() { return nameError; }
     public String get_photo_error() { return photoError; }
+    public String get_description() { return description; }
 }
