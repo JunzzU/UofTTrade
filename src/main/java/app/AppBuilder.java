@@ -13,6 +13,9 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.register.RegisterController;
 import interface_adapter.register.RegisterPresenter;
 import interface_adapter.register.RegisterViewModel;
+import interface_adapter.view_listing.ViewListingController;
+import interface_adapter.view_listing.ViewListingPresenter;
+import interface_adapter.view_listing.ViewListingViewModel;
 import org.json.JSONObject;
 import use_case.create_listing.CreateListingInputBoundary;
 import use_case.create_listing.CreateListingInteractor;
@@ -23,6 +26,9 @@ import use_case.login.LoginOutputBoundary;
 import use_case.register.RegisterInputBoundary;
 import use_case.register.RegisterInteractor;
 import use_case.register.RegisterOutputBoundary;
+import use_case.view_listing.ViewListingInputBoundary;
+import use_case.view_listing.ViewListingInteractor;
+import use_case.view_listing.ViewListingOutputBoundary;
 import view.*;
 import interface_adapter.view_profile.ViewProfileViewModel;
 import interface_adapter.view_profile.ViewProfileController;
@@ -54,7 +60,8 @@ public class AppBuilder {
     private LoginView loginView;
     private ProfileView profileView;
     private ViewProfileViewModel viewProfileViewModel = new ViewProfileViewModel();
-
+    private ViewListingView viewListingView;
+    private ViewListingViewModel viewListingViewModel;
 
     private HomepageViewModel homepageViewModel;
     private HomepageView homepageView;
@@ -89,6 +96,13 @@ public class AppBuilder {
         homepageViewModel = new HomepageViewModel();
         homepageView = new HomepageView(homepageViewModel);
         final List<JSONObject> allListings = userDataAccessObject.getAllListings();
+        final ViewListingOutputBoundary viewListingOutputBoundary = new ViewListingPresenter(homepageViewModel,
+                viewManagerModel, new ViewListingViewModel());
+        final ViewListingInputBoundary viewListingInteractor = new ViewListingInteractor(
+                createListingDAO, viewListingOutputBoundary);
+
+        ViewListingController controller = new ViewListingController(viewListingInteractor);
+        homepageView.setViewListingController(controller);
         homepageView.getListingPanels(allListings);
         contentPane.add(homepageView, homepageView.getViewName());
         return this;
@@ -197,6 +211,7 @@ public class AppBuilder {
 
     public AppBuilder addLoginUseCase() {
 
+        contentPane.add(createListingView, createListingView.getViewName());
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
                 homepageViewModel, loginViewModel, registerViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
@@ -204,6 +219,29 @@ public class AppBuilder {
 
         LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
+        return this;
+
+    }
+
+    public AppBuilder addViewListingView() {
+
+        viewListingViewModel = new ViewListingViewModel();
+        createListingView = new CreateListingView(createListingViewModel);
+        contentPane.add(viewListingView, viewListingView.getViewName());
+
+        return this;
+
+    }
+
+    public AppBuilder addViewListingUseCase() {
+
+        final ViewListingOutputBoundary viewListingOutputBoundary = new ViewListingPresenter(homepageViewModel,
+                viewManagerModel, new ViewListingViewModel());
+        final ViewListingInputBoundary viewListingInteractor = new ViewListingInteractor(
+                createListingDAO, viewListingOutputBoundary);
+
+        final ViewListingController controller = new ViewListingController(viewListingInteractor);
+        viewListingView.setViewListingController(controller);
         return this;
 
     }

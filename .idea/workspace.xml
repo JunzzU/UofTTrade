@@ -5,20 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67b6cbc8-de7a-4ddf-9a63-f74472710dcf" name="Changes" comment="Third Attempts to merge the MessagingSubpageView and update MessagingViewModel">
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/data_access/UserDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/UserDataAccessObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Listing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Listing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/homepage/HomepageState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/homepage/HomepageState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_listing/ViewListingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_listing/ViewListingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_listing/ViewListingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_listing/ViewListingState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_listing/ViewListingPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_listing/ViewListingPresenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/use_case/view_listing/ViewListingInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/view_listing/ViewListingInteractor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/use_case/view_listing/ViewListingOutputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/view_listing/ViewListingOutputData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/HomepageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/HomepageView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/UserDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/UserDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/HomepageView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/HomepageView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/ListingPreviewPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ListingPreviewPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +128,8 @@
       <workItem from="1764267655718" duration="483000" />
       <workItem from="1764270825626" duration="440000" />
       <workItem from="1764444827386" duration="15372000" />
-      <workItem from="1764522345977" duration="6343000" />
+      <workItem from="1764522345977" duration="7582000" />
+      <workItem from="1764532342359" duration="4870000" />
     </task>
     <servers />
   </component>

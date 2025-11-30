@@ -34,9 +34,8 @@ public class ViewListingInteractor implements ViewListingInputBoundary {
             listingCategories.add(listingCategoriesJSON.getString(i));
         }
 
-        final BufferedImage listingImage = new BufferedImage(900, 600, 0);
-        ViewListingOutputData viewListingOutputData = new ViewListingOutputData(listingName, listingOwner,
-                listingCategories, listingImage);
+        final ViewListingOutputData viewListingOutputData = new ViewListingOutputData(listingName, listingOwner,
+                listingCategories);
         viewListingOutputBoundary.switchToListingView(viewListingOutputData);
 
     }

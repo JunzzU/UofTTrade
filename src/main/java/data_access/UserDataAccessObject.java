@@ -130,7 +130,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         catch (IOException ex) {
             ex.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private JSONArray getUserData() throws IOException {

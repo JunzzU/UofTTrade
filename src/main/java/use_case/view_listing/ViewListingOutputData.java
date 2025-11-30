@@ -10,14 +10,11 @@ public class ViewListingOutputData {
     private final String listingName;
     private final String listingOwner;
     private final List<String> listingCategories;
-    private final BufferedImage listingImage;
 
-    public ViewListingOutputData(String listingName, String listingOwner, List<String> listingCategories,
-                                 BufferedImage listingImage) {
+    public ViewListingOutputData(String listingName, String listingOwner, List<String> listingCategories) {
         this.listingName = listingName;
         this.listingOwner = listingOwner;
         this.listingCategories = listingCategories;
-        this.listingImage = listingImage;
     }
 
     public String getListingName() {
@@ -32,8 +29,5 @@ public class ViewListingOutputData {
         return listingOwner;
     }
 
-    public BufferedImage getListingImage() {
-        return listingImage;
-    }
 
 }

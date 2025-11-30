@@ -22,9 +22,11 @@ public class ListingPreviewPanel extends JPanel {
     private static final int PANEL_HEIGHT = 300;
     private static final String FONT = "Rubik";
     private final JSONObject listing;
+    private final ViewListingController viewListingController;
 
-    public ListingPreviewPanel(JSONObject listing) {
+    public ListingPreviewPanel(JSONObject listing, ViewListingController viewListingController) {
         this.listing = listing;
+        this.viewListingController = viewListingController;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         this.setBackground(Color.WHITE);
@@ -47,6 +49,20 @@ public class ListingPreviewPanel extends JPanel {
         this.add(nameLabel);
         this.add(categoryLabel);
         this.add(ownerLabel);
+
+        final MouseListener ml = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    viewListingController.execute((String) listing.get("Name"), (String) listing.get("Owner"));
+                }
+                catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+
+        this.addMouseListener(ml);
 
     }
 
