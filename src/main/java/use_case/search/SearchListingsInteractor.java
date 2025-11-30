@@ -56,6 +56,7 @@ public class SearchListingsInteractor implements SearchListingsInputBoundary{
         for (Listing listing : listings) {
             outputResults.add(new SearchListingsOutputData.ListingResult(
                     listing.get_name(),
+                    listing.get_description(),
                     extractCategoryNames(listing)
             ));
         }

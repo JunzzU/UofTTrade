@@ -5,6 +5,7 @@ import interface_adapter.search.SearchListingsState;
 import interface_adapter.search.SearchListingsViewModel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -16,12 +17,14 @@ public class SearchListingsView extends JPanel implements PropertyChangeListener
     private final SearchListingsViewModel viewModel;
     private SearchListingsController controller;
 
-    private final JTextField keywordField = new JTextField(20);
+    // --- Search Inputs ---
+    private final JTextField keywordField = new JTextField(15);
     private final JComboBox<String> categoryBox;
     private final JButton searchButton = new JButton("Search");
     private final JButton backButton = new JButton("Back to Home");
-    private final JList<String> resultsList = new JList<>();
-    private final DefaultListModel<String> listModel = new DefaultListModel<>();
+
+    // --- Results Area ---
+    private final JPanel resultsPanel = new JPanel();
     private final JLabel messageLabel = new JLabel("");
 
     public SearchListingsView(SearchListingsViewModel viewModel) {
@@ -30,43 +33,55 @@ public class SearchListingsView extends JPanel implements PropertyChangeListener
 
         setLayout(new BorderLayout());
 
-        // --- Top Panel: Search Controls ---
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout());
+        // 1. TOP PANEL: Filters and Search Button
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        topPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         categoryBox = new JComboBox<>();
-        // Populate categories from ViewModel
+        // Populate category dropdown
         if (viewModel.getCategories() != null) {
             for (String cat : viewModel.getCategories()) {
                 categoryBox.addItem(cat);
             }
         }
 
-        topPanel.add(new JLabel("Keyword:"));
+        topPanel.add(new JLabel("Key:"));
         topPanel.add(keywordField);
-        topPanel.add(new JLabel("Category:"));
+        topPanel.add(new JLabel("Cat:"));
         topPanel.add(categoryBox);
         topPanel.add(searchButton);
 
         add(topPanel, BorderLayout.NORTH);
 
-        // --- Center Panel: Results ---
-        resultsList.setModel(listModel);
-        JScrollPane scrollPane = new JScrollPane(resultsList);
+        //Results Grid
+        resultsPanel.setLayout(new GridLayout(0, 4, 10, 10));
+        resultsPanel.setBackground(new Color(245, 245, 245));
 
-        JPanel centerPanel = new JPanel(new BorderLayout());
+        JPanel gridWrapper = new JPanel(new BorderLayout());
+        gridWrapper.setBackground(new Color(245, 245, 245));
+        gridWrapper.add(resultsPanel, BorderLayout.NORTH);
+
+        JScrollPane scrollPane = new JScrollPane(gridWrapper);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Smoother scrolling speed
+
+        // Container for Message + ScrollPane
+        JPanel centerContainer = new JPanel(new BorderLayout());
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        centerPanel.add(messageLabel, BorderLayout.NORTH);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
+        messageLabel.setBorder(new EmptyBorder(5, 0, 5, 0));
 
-        add(centerPanel, BorderLayout.CENTER);
+        centerContainer.add(messageLabel, BorderLayout.NORTH);
+        centerContainer.add(scrollPane, BorderLayout.CENTER);
 
-        // --- Bottom Panel: Navigation ---
-        JPanel bottomPanel = new JPanel();
+        add(centerContainer, BorderLayout.CENTER);
+
+        // 3. BOTTOM PANEL: Navigation
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bottomPanel.add(backButton);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // --- Listeners ---
+        // --- Action Listeners ---
         searchButton.addActionListener(e -> {
             if (controller != null) {
                 String keyword = keywordField.getText();
@@ -92,9 +107,12 @@ public class SearchListingsView extends JPanel implements PropertyChangeListener
         }
     }
 
+    /**
+     * Rebuilds the grid of cards based on the new state.
+     */
     private void updateView(SearchListingsState state) {
-        // Update Results List
-        listModel.clear();
+        resultsPanel.removeAll(); // Clear old cards
+
         List<SearchListingsState.ListingViewModel> results = state.getResults();
 
         if (results.isEmpty()) {
@@ -107,14 +125,71 @@ public class SearchListingsView extends JPanel implements PropertyChangeListener
             }
         } else {
             String msg = state.isShowingFallbackResults()
-                    ? "No keyword matches found. Showing results for category: " + state.getCategoryName()
+                    ? "No exact match. Showing results for: " + state.getCategoryName()
                     : "Results found: " + results.size();
             messageLabel.setText(msg);
             messageLabel.setForeground(Color.BLACK);
 
+            // Create a card for each listing
             for (SearchListingsState.ListingViewModel listing : results) {
-                listModel.addElement(listing.getName() + " [" + listing.getCategorySummary() + "]");
+                resultsPanel.add(createListingCard(listing));
             }
         }
+
+        // Refresh UI to show new cards
+        resultsPanel.revalidate();
+        resultsPanel.repaint();
+    }
+
+    /**
+     * Creates a single visual card for a listing.
+     */
+    private JPanel createListingCard(SearchListingsState.ListingViewModel listing) {
+        JPanel card = new JPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY, 1),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        card.setBackground(Color.WHITE);
+
+        // Fixed height ensures the grid rows stay uniform
+        card.setPreferredSize(new Dimension(100, 200));
+
+        // -- 1. Title --
+        JLabel nameLabel = new JLabel(listing.getName());
+        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // -- 2. Categories --
+        JLabel categoryLabel = new JLabel(listing.getCategorySummary());
+        categoryLabel.setFont(new Font("SansSerif", Font.ITALIC, 10));
+        categoryLabel.setForeground(Color.DARK_GRAY);
+        categoryLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // -- 3. Description --
+        JTextArea descArea = new JTextArea(listing.getDescription());
+        descArea.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        descArea.setLineWrap(true);
+        descArea.setWrapStyleWord(true);
+        descArea.setEditable(false);
+        descArea.setFocusable(false);
+        descArea.setOpaque(false);
+
+        JScrollPane descScroll = new JScrollPane(descArea);
+        descScroll.setBorder(null);
+        descScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
+        descScroll.getViewport().setOpaque(false);
+        descScroll.setOpaque(false);
+
+
+        // Assemble Card
+        card.add(nameLabel);
+        card.add(Box.createVerticalStrut(4));
+        card.add(categoryLabel);
+        card.add(Box.createVerticalStrut(8));
+        card.add(descScroll);
+
+        return card;
     }
 }
