@@ -5,10 +5,11 @@ import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.create_listing.CreateListingUserDataAccessInterface;
+import use_case.view_listing.ViewListingDataAccessInterface;
 
 import java.io.IOException;
 
-public class CreateListingDAO implements CreateListingUserDataAccessInterface {
+public class CreateListingDAO implements CreateListingUserDataAccessInterface, ViewListingDataAccessInterface {
     /**
      * Saves the lisiting to the API database.
      * @param listing the listing to save
@@ -41,6 +42,18 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
                 .addHeader("Content-Type", "application/json")
                 .build();
         Response response = client.newCall(request).execute();
+    }
+
+    public JSONObject getSpecificListingInfo(String listingName, String listingOwner) throws IOException {
+        final JSONArray listingsArray = getListingData();
+        for (int i = 0; i < listingsArray.length(); i++) {
+            final boolean isListingName = listingsArray.getJSONObject(i).getString("Name").equals(listingName);
+            final boolean isOwner = listingsArray.getJSONObject(i).getString("Owner").equals(listingOwner);
+            if (isListingName && isOwner) {
+                return listingsArray.getJSONObject(i);
+            }
+        }
+        return new JSONObject();
     }
 
     /**
