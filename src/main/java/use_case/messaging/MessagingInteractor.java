@@ -18,9 +18,12 @@ public class MessagingInteractor implements MessagingInputBoundary {
     public void execute(MessagingInputData inputData) {
         try {
 
-            String email = inputData.getUrl();
-            String name  = inputData.getName();
+            String name = inputData.getUsername();
+            String email = inputData.getUsername();
 
+            if (email == null){
+                presenter.presentFailureView("Invalid email address");
+            }
 
             String gmailUrl = buildGmailComposeUrl(
                     email,
