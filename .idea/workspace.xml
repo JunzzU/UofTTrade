@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b6cbc8-de7a-4ddf-9a63-f74472710dcf" name="Changes" comment="Third Attempts to merge the MessagingSubpageView and update MessagingViewModel">
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SearchListingsDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SearchListingsDataAccessObject.java" afterDir="false" />
-    </list>
+    <list default="true" id="67b6cbc8-de7a-4ddf-9a63-f74472710dcf" name="Changes" comment="Third Attempts to merge the MessagingSubpageView and update MessagingViewModel" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -116,7 +114,7 @@
       <workItem from="1764090141192" duration="217000" />
       <workItem from="1764090362699" duration="104000" />
       <workItem from="1764091547614" duration="737000" />
-      <workItem from="1764464371992" duration="21324000" />
+      <workItem from="1764464371992" duration="21709000" />
     </task>
     <servers />
   </component>
