@@ -34,10 +34,12 @@ public class Main {
                 .addRegisterView()
                 .addHomepageView()
                 .addCreateListingView()
+                .addSearchListingsView()
                 .addCreateListingUseCase()
                 .addRegisterUseCase()
                 .addLoginUseCase()
                 .addViewProfileUseCase()
+                .addSearchUseCase()
                 .build();
 
         application.pack();

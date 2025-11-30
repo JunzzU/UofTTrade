@@ -5,7 +5,7 @@ import entity.Listing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-public class SearchListingsInteractor {
+public class SearchListingsInteractor implements SearchListingsInputBoundary{
     private final SearchListingsDataAccessInterface searchListingsDataAccess;
     private final SearchListingsOutputBoundary presenter;
 
