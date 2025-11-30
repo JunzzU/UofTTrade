@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.Category;
 import entity.Listing;
 import entity.User;
 import org.json.JSONArray;
@@ -12,7 +13,7 @@ import java.util.List;
 import use_case.messaging.MessagingUserDataAccessInterface;
 import use_case.register.RegisterUserDataAccessInterface;
 import use_case.view_profile.ViewProfileUserDataAccessInterface;
-
+import java.util.Iterator;
 import java.io.IOException;
 
 public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface, ViewProfileUserDataAccessInterface, MessagingUserDataAccessInterface {
@@ -114,28 +115,37 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         try {
             CreateListingDAO listingDAO = new CreateListingDAO();
             JSONObject data = listingDAO.getListingData();
-            if (!data.has("Listings")) return result;
+            Iterator<String> keys = data.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                if (data.get(key) instanceof JSONObject) {
+                    JSONObject listingJSON = data.getJSONObject(key);
 
-            JSONArray listings = data.getJSONArray("Listings");
+                    String ownerUsername = "";
+                    if (listingJSON.has("Owner")) {
+                        Object ownerObj = listingJSON.get("Owner");
+                        if (ownerObj instanceof JSONObject) ownerUsername = ((JSONObject)ownerObj).optString("name");
+                        else ownerUsername = ownerObj.toString();
+                    }
 
-            for (int i = 0; i < listings.length(); i++) {
-                JSONObject listingJSON = listings.getJSONObject(i);
+                    if (ownerUsername.equals(username)) {
+                        String name = listingJSON.optString("Name", "Unknown");
+                        String description = listingJSON.optString("Description", "");
 
-                String name = listingJSON.getString("Name");
-                String description = listingJSON.optString("Description", "");
+                        // Reconstruct categories
+                        List<Category> cats = new ArrayList<>();
+                        if (listingJSON.has("Categories")) {
+                            JSONArray catArr = listingJSON.getJSONArray("Categories");
+                            for(int i=0; i<catArr.length(); i++) {
+                                Object c = catArr.get(i);
+                                if (c instanceof String) cats.add(new Category((String)c));
+                                else if (c instanceof JSONObject) cats.add(new Category(((JSONObject)c).optString("name")));
+                            }
+                        }
 
-                String ownerUsername = "";
-                if (listingJSON.has("Owner")) {
-                    Object ownerObj = listingJSON.get("Owner");
-                    if (ownerObj instanceof JSONObject) ownerUsername = ((JSONObject)ownerObj).optString("name");
-                    else ownerUsername = ownerObj.toString();
-                }
-
-                if (ownerUsername.equals(username)) {
-                    User owner = new User(ownerUsername, "", "");
-                    // Using updated Listing constructor
-                    Listing listing = new Listing(name, description, new ArrayList<>(), owner);
-                    result.add(listing);
+                        Listing listing = new Listing(name, description, cats, new User(ownerUsername, "",""));
+                        result.add(listing);
+                    }
                 }
             }
 

@@ -1,14 +1,16 @@
 package data_access;
 
+import entity.Category;
 import entity.Listing;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.create_listing.CreateListingUserDataAccessInterface;
-
+import java.util.ArrayList;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class CreateListingDAO implements CreateListingUserDataAccessInterface {
     /**
@@ -19,24 +21,28 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
     public void save(Listing listing) throws IOException {
 
         String listingID = String.valueOf(listing.get_listingId());
-        JSONObject listings  = getListingData();
+        JSONObject listings = getListingData();
         if (listings.has(listingID)) {
             throw new DuplicateListingException(listingID);
+        }
+
+        List<String> categoryNames = new ArrayList<>();
+        for (Category c : listing.get_categories()) {
+            categoryNames.add(c.getName());
         }
         // create a JSON object of the new listing
         JSONObject newListing = new JSONObject();
         newListing.put("Name", listing.get_name());
         newListing.put("Description", listing.get_description());
-        newListing.put("Categories", listing.get_categories());
-        newListing.put("Owner", listing.get_owner());
+        newListing.put("Categories", categoryNames);
+        newListing.put("Owner", listing.get_owner().get_username());
         newListing.put("ListingID", listing.get_listingId());
 
         // map the listing to the ID
         JSONObject updatedListings = new JSONObject();
         updatedListings.put(listingID, newListing);
 
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, updatedListings.toString());
         Request request = new Request.Builder()

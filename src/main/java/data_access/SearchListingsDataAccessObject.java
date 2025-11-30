@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Iterator;
 
 public class SearchListingsDataAccessObject implements SearchListingsDataAccessInterface {
 
@@ -66,11 +67,13 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
         uniqueCategories.add("Clothing");
 
         List<Listing> listings = fetchAllListings();
-
         for (Listing listing : listings) {
             if (listing.get_categories() != null) {
                 for (Category category : listing.get_categories()) {
-                    if (category.getName() != null && !category.getName().isEmpty()) {
+                    // Filter out the placeholder if it exists in old data
+                    if (category.getName() != null &&
+                            !category.getName().equals("Select a Category") &&
+                            !category.getName().isEmpty()) {
                         uniqueCategories.add(category.getName());
                     }
                 }
@@ -78,10 +81,8 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
         }
 
         List<String> result = new ArrayList<>(uniqueCategories);
-        result.remove("Select a Category");
         Collections.sort(result);
-        result.add(0, "Select a Category");
-
+        result.add(0, "Select a Category"); // Add it safely at the top
         return result;
     }
 
@@ -99,10 +100,12 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
                 String responseBody = response.body().string();
                 JSONObject json = new JSONObject(responseBody);
 
-                if (json.has("Listings")) {
-                    JSONArray listingsArray = json.getJSONArray("Listings");
-                    for (int i = 0; i < listingsArray.length(); i++) {
-                        JSONObject listJson = listingsArray.getJSONObject(i);
+                Iterator<String> keys = json.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    // Check if the item is actually a listing object
+                    if (json.get(key) instanceof JSONObject) {
+                        JSONObject listJson = json.getJSONObject(key);
                         listings.add(mapJsonToListing(listJson));
                     }
                 }
@@ -114,17 +117,19 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
     }
 
     private Listing mapJsonToListing(JSONObject json) {
-        String name = json.getString("Name");
+        String name = json.optString("Name", "Untitled Item");
         String description = json.optString("Description", "No description available.");
 
         List<Category> categories = new ArrayList<>();
-        JSONArray catsArray = json.getJSONArray("Categories");
-        for (int i = 0; i < catsArray.length(); i++) {
-            Object catObj = catsArray.get(i);
-            if (catObj instanceof JSONObject) {
-                categories.add(new Category(((JSONObject) catObj).optString("name", "Unknown")));
-            } else if (catObj instanceof String) {
-                categories.add(new Category((String) catObj));
+        if (json.has("Categories")) {
+            JSONArray catsArray = json.getJSONArray("Categories");
+            for (int i = 0; i < catsArray.length(); i++) {
+                Object catObj = catsArray.get(i);
+                if (catObj instanceof JSONObject) {
+                    categories.add(new Category(((JSONObject) catObj).optString("name", "Unknown")));
+                } else if (catObj instanceof String) {
+                    categories.add(new Category((String) catObj));
+                }
             }
         }
 
