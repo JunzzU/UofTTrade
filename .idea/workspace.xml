@@ -54,7 +54,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "descriptionfix",
+    "git-widget-placeholder": "checkoutbugwithoutsearch",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -114,7 +114,7 @@
       <workItem from="1764090141192" duration="217000" />
       <workItem from="1764090362699" duration="104000" />
       <workItem from="1764091547614" duration="737000" />
-      <workItem from="1764464371992" duration="21709000" />
+      <workItem from="1764464371992" duration="22036000" />
     </task>
     <servers />
   </component>
