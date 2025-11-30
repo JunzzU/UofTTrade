@@ -20,9 +20,9 @@ public class ViewProfileState {
     private List<BufferedImage> listingPhotos = new ArrayList<>();
     private User user;
 
-    private String errorMessage = "";
+    private String errorMessage = "Unable to load profile.";
 
-    // NEW: Message to display when there are zero listings
+    // Message to display when there are zero listings
     private String noListingsMessage = "";
 
     public String getUsername() {

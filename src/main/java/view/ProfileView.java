@@ -179,7 +179,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
     /**
      * Called by another view when the user clicks their Profile button.
-     * It triggers the View Profile use case.
+     * It triggers the View Profile use case
      */
     public void loadProfile() {
         profileController.onProfileButtonClicked();

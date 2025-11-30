@@ -36,7 +36,7 @@ public class ViewProfilePresenter implements ViewProfileOutputBoundary {
         // Dynamic title
         state.setTitleText("Profile: " + outputData.getUsername());
 
-        // Clear previous error
+        // Clear error
         state.setErrorMessage("");
 
         // Show "No listings yet..." when list is empty

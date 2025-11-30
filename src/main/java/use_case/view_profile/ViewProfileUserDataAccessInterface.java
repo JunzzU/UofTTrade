@@ -5,7 +5,7 @@ import entity.User;
 import java.util.List;
 
 /**
- * Interface for accessing profile-related data.
+ * Interface for accessing profile related data.
  * Provides methods to retrieve user information and their listings.
  */
 public interface ViewProfileUserDataAccessInterface {

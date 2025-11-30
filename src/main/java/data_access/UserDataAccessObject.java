@@ -13,6 +13,7 @@ import use_case.view_profile.ViewProfileUserDataAccessInterface;
 
 import java.io.IOException;
 
+
 public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface, ViewProfileUserDataAccessInterface{
 
     private String username;
@@ -110,10 +111,10 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         List<Listing> result = new ArrayList<>();
 
         try {
-            JSONArray listings = getListingData();
+            CreateListingDAO listingDAO = new CreateListingDAO();
+            JSONArray listings = listingDAO.getListingData();
 
             for (int i = 0; i < listings.length(); i++) {
-
                 JSONObject listingJSON = listings.getJSONObject(i);
 
                 String name = listingJSON.getString("Name");
@@ -121,9 +122,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
                 String ownerUsername = listingJSON.getString("Owner");
 
                 if (ownerUsername.equals(username)) {
-
                     User owner = new User(ownerUsername, "", "");
-
                     Listing listing = new Listing(name, photo, owner);
                     result.add(listing);
                 }
@@ -135,7 +134,6 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
         return result;
     }
-
 
     public void setUsername(String username) {this.username = username;}
 

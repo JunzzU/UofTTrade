@@ -5,7 +5,7 @@ import entity.User;
 import java.util.List;
 
 /**
- * Output data for the View Profile use case.
+ * Output data for the View Profile use case
  * Contains the user's username, listings, and user entity.
  */
 public class ViewProfileOutputData {

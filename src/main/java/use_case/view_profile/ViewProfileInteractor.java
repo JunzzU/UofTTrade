@@ -5,7 +5,7 @@ import entity.User;
 import java.util.List;
 
 /**
- * The interactor for the View Profile use case.
+ * The interactor for the View Profile use case
  *
  * <p>This class coordinates data flow between the controller, the data access layer,
  * and the presenter. It retrieves the currently logged-in user's profile information

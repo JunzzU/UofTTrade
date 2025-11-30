@@ -1,7 +1,7 @@
 package use_case.view_profile;
 
 /**
- * Input data for the View Profile use case.
+ * Input data for the View Profile use case
  * Contains the username of the user whose profile should be viewed.
  */
 public class ViewProfileInputData {

@@ -5,7 +5,6 @@ import use_case.view_profile.ViewProfileInputData;
 
 /**
  * Controller for the View Profile use case.
- * Receives UI events, constructs input data, and delegates to the interactor.
  */
 public class ViewProfileController {
 

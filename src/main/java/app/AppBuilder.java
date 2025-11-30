@@ -176,7 +176,7 @@ public class AppBuilder {
             profileView.loadProfile();
         });
 
-        // Add the profileView to the content pane
+        
         contentPane.add(profileView, viewProfileViewModel.getViewName());
 
         // Add a property change listener to update profileView when its view is active
