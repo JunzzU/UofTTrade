@@ -13,11 +13,14 @@ import java.util.List;
 
 public class CreateListingOutputData {
     private String name;
+    private String description;
     private User owner;
     private List<Category> categories = new ArrayList<>();
 
-    public CreateListingOutputData(String name, List<Category> categories, User owner) {
+
+    public CreateListingOutputData(String name, String description, List<Category> categories, User owner) {
         this.name = name;
+        this.description = description;
         this.categories = categories;
         this.owner = owner;
     }

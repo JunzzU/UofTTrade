@@ -23,13 +23,13 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
     @Override
     public void execute(CreateListingInputData createListingInputData) throws IOException {
         final String name = createListingInputData.get_name();
+        final String description = createListingInputData.get_description();
         final List<Category> categories = createListingInputData.get_categories();
         User user = userDataAccess.getCurrentLoggedInUser();
         if(name == null || name.isEmpty()){
             createListingPresenter.prepareFailView("A listing with a null name");
             return;
         }
-
         final CreateListingOutputData createListingOutputData;
         final Listing listing;
 
@@ -43,11 +43,13 @@ public class CreateListingInteractor implements CreateListingInputBoundary{
         else {
             listing = new Listing(
                     createListingInputData.get_name(),
+                    description,
                     createListingInputData.get_categories(),
                     user
             );
             createListingOutputData = new CreateListingOutputData(
                     createListingInputData.get_name(),
+                    description,
                     createListingInputData.get_categories(),
                     user
             );

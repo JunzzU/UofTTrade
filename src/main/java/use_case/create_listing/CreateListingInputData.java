@@ -13,10 +13,12 @@ import java.util.List;
 
 public class CreateListingInputData {
     private String name;
+    private String description;
     private List<Category> categories = new ArrayList<>();
     private User owner;
-    public CreateListingInputData(String name, List<Category> categories){
+    public CreateListingInputData(String name, String description, List<Category> categories){
         this.name = name;
+        this.description = description;
         this.categories = categories;
     }
 
@@ -29,6 +31,7 @@ public class CreateListingInputData {
     public List<Category> get_categories() { return categories; }
 
     public String get_name() { return name; }
+    public String get_description() { return description; }
 
     public User get_owner() { return owner; }
 
