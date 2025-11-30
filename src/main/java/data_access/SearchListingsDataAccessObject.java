@@ -1,7 +1,5 @@
 package data_access;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
+
 import entity.Category;
 import entity.Listing;
 import entity.User;
@@ -12,7 +10,10 @@ import use_case.search.SearchListingsDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SearchListingsDataAccessObject implements SearchListingsDataAccessInterface {
 
@@ -24,13 +25,14 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
         List<Listing> filtered = new ArrayList<>();
 
         String normKeyword = (keyword == null) ? "" : keyword.toLowerCase().trim();
-        // "Select a Category" is the default first option in Main.java
         String normCategory = (categoryName == null || categoryName.equals("Select a Category")) ? "" : categoryName;
 
         for (Listing listing : allListings) {
-            // Check Name
+            // Check Name OR Description
             boolean matchesKeyword = normKeyword.isEmpty() ||
-                    listing.get_name().toLowerCase().contains(normKeyword);
+                    listing.get_name().toLowerCase().contains(normKeyword) ||
+                    listing.get_description().toLowerCase().contains(normKeyword);
+
             // Check Category
             boolean matchesCategory = normCategory.isEmpty() ||
                     hasCategory(listing, normCategory);
@@ -61,13 +63,9 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
         uniqueCategories.add("Sports");
         uniqueCategories.add("Textbooks");
         uniqueCategories.add("Clothing");
-        uniqueCategories.add("Collectibles");
-        uniqueCategories.add("Crafts");
-        uniqueCategories.add("Art");
-        //Fetch all current listings from the API
+
         List<Listing> listings = fetchAllListings();
 
-        //Extract categories from every listing
         for (Listing listing : listings) {
             if (listing.get_categories() != null) {
                 for (Category category : listing.get_categories()) {
@@ -78,11 +76,10 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
             }
         }
 
-        // 5. Convert to a List and Sort alphabetically for the UI
         List<String> result = new ArrayList<>(uniqueCategories);
-        result.remove("Select a Category"); // Remove it temporarily to sort the rest
+        result.remove("Select a Category");
         Collections.sort(result);
-        result.add(0, "Select a Category"); // Add it back at the top
+        result.add(0, "Select a Category");
 
         return result;
     }
@@ -118,6 +115,7 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
     private Listing mapJsonToListing(JSONObject json) {
         String name = json.getString("Name");
         String photoBase64 = json.getString("Photo");
+        String description = json.optString("Description", "No description available.");
 
         List<Category> categories = new ArrayList<>();
         JSONArray catsArray = json.getJSONArray("Categories");
@@ -130,7 +128,6 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
             }
         }
 
-        // Placeholder
         String ownerName = "Unknown";
         if (json.has("Owner")) {
             Object ownerObj = json.get("Owner");
@@ -142,7 +139,7 @@ public class SearchListingsDataAccessObject implements SearchListingsDataAccessI
         }
         User owner = new User(ownerName, "", "");
 
-        return new Listing(name, photoBase64, categories, owner);
+        return new Listing(name, description, photoBase64, categories, owner);
     }
 
     private boolean hasCategory(Listing listing, String categoryName) {
