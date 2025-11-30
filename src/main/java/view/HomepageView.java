@@ -134,8 +134,13 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
 
     }
 
+    public void addSearchListener(ActionListener listener) {
+        search.addActionListener(listener);
+    }
     public void addViewProfileListener(ActionListener listener) {
         viewProfileButton.addActionListener(listener);
     }
+
+
 
 }
