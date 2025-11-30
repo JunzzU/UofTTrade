@@ -147,22 +147,17 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
             String name = listingNameInputField.getText();
             String description = descriptionInputField.getText();
             List<Category> categories = new ArrayList<>();
-            if (!Main.categoriesArray.isEmpty()) categories.add(Main.categoriesArray.get(0));
-
-            if (listingCategory1ComboBox.getSelectedIndex() >= 0 && listingCategory1ComboBox.getSelectedIndex() <
-                    Main.categoriesArray.size()) {
+            if (listingCategory1ComboBox.getSelectedIndex() > 0) {
                 categories.add(Main.categoriesArray.get(listingCategory1ComboBox.getSelectedIndex()));
             }
-            if (listingCategory2ComboBox.getSelectedIndex() >= 0 && listingCategory2ComboBox.getSelectedIndex() <
-                    Main.categoriesArray.size()) {
+            if (listingCategory2ComboBox.getSelectedIndex() > 0) {
                 categories.add(Main.categoriesArray.get(listingCategory2ComboBox.getSelectedIndex()));
             }
 
             try {
-                // Pass description to controller
                 createListingController.execute(name, description, categories);
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         });
 
