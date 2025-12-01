@@ -50,13 +50,15 @@ public class Main {
                 .addHomepageView()
                 .addCreateListingView()
                 .addSearchListingsView()
+                .addViewListingView()
+                .addMessagingView()
                 .addCreateListingUseCase()
                 .addRegisterUseCase()
                 .addLoginUseCase()
                 .addViewProfileUseCase()
+                .addViewListingUseCase()
                 .addSearchUseCase()
                 .addMessagingUseCase()
-                .addMessagingView()
                 .build();
 
         application.pack();

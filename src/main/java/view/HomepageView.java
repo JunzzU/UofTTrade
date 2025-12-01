@@ -2,6 +2,8 @@ package view;
 
 import interface_adapter.homepage.HomepageState;
 import interface_adapter.homepage.HomepageViewModel;
+import interface_adapter.view_listing.ViewListingController;
+import org.json.JSONObject;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.messaging.MessagingController;
@@ -13,12 +15,13 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public class HomepageView extends JPanel implements PropertyChangeListener {
 
     private final JPanel optionsPanel;
     private final JPanel homepageContentPanel;
-    private final JPanel itemsPanel;
+    private JPanel itemsPanel;
     private final JLabel sidebarTitle;
     private final JLabel userGreetingLabel;
     private final JLabel recentItemsLabel;
@@ -30,6 +33,7 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
     private final String viewName = "logged in";
     private String username = "";
     private final HomepageViewModel homepageViewModel;
+    private ViewListingController viewListingController = null;
 
     private MessagingController messagingController;
     private MessagingViewModel messagingViewModel;
@@ -106,12 +110,20 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         recentItemsLabel.setFont(new Font("Rubik", Font.PLAIN, 40));
         homepageContentPanel.add(recentItemsLabel);
         recentItemsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void getListingPanels(List<JSONObject> allListings) {
+
         itemsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         itemsPanel.setPreferredSize(new Dimension(1250, 4320));
 
-
-        for (int i = 1; i <= 100; i++) {
-            itemsPanel.add(createItemPanel("Item " + i, "This is the description for item " + i));
+        for (int i = 0; i < allListings.size(); i++) {
+            itemsPanel.add(createItemPanel(allListings.get(i), viewListingController));
         }
         JScrollPane itemsScroll = new JScrollPane(homepageContentPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(itemsScroll, BorderLayout.CENTER);
@@ -120,10 +132,6 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         homepageContentPanel.revalidate();
         homepageContentPanel.repaint();
 
-    }
-
-    public String getViewName() {
-        return viewName;
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
@@ -135,44 +143,13 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
 
     }
 
-    private JPanel createItemPanel(String name, String description) {
+    public void setViewListingController(ViewListingController viewListingController) {
+        this.viewListingController = viewListingController;
+    }
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+    private JPanel createItemPanel(JSONObject listing, ViewListingController viewListingController) {
 
-        panel.setBackground(new Color(255, 255, 255));
-        panel.setPreferredSize(new Dimension(150, 300));
-
-        JLabel nameLabel = new JLabel(name);
-        nameLabel.setFont(new Font("Rubik", Font.BOLD, 14));
-
-        JLabel descLabel = new JLabel(description);
-        descLabel.setFont(new Font("Rubik", Font.PLAIN, 10));
-
-        JButton contactButton = new JButton("Contact seller");
-        contactButton.addActionListener(event -> {
-            if (messagingController == null || messagingViewModel == null || viewManagerModel == null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Messaging is not available yet",
-                        "error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-
-            String sellerIdentifier = username;
-            messagingController.createGmailComposeLink(sellerIdentifier);
-
-            viewManagerModel.setState(MessagingViewModel.VIEW_NAME);
-            viewManagerModel.firePropertyChanged();
-        });
-        panel.add(nameLabel);
-        panel.add(descLabel);
-        panel.add(contactButton);
-
-        return panel;
+        return new ListingPreviewPanel(listing, viewListingController);
 
     }
 
