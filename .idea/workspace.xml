@@ -4,19 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2e5f196-2657-481f-bdfd-ed5a5a6338be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/UpdateListingDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/UpdateListingDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/view_profile/ViewProfileInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/view_profile/ViewProfileInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/UpdateListingDataAccessObject$ListingNotFoundException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/UpdateListingDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/UpdateListingDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/view_profile/ViewProfileInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/view_profile/ViewProfileInteractor.class" afterDir="false" />
+    <list default="true" id="c2e5f196-2657-481f-bdfd-ed5a5a6338be" name="Changes" comment="update delete listings use case">
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +53,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "git-widget-placeholder": "fix-update-listing",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -114,7 +104,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764617202020</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update delete listings use case">
+      <option name="closed" value="true" />
+      <created>1764628122768</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764628122768</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,6 +131,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Solve merging issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="Solve merging issue" />
+    <MESSAGE value="update delete listings use case" />
+    <option name="LAST_COMMIT_MESSAGE" value="update delete listings use case" />
   </component>
 </project>
