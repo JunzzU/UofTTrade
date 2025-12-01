@@ -111,6 +111,14 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface, V
         }
     }
 
+    public boolean existsById(String listingID) throws IOException {
+        JSONObject listingData = getListingData();
+        if (listingData.keySet().contains(listingID)) {
+            return true;
+        }
+        return false;
+    }
+
     public class DuplicateListingException extends RuntimeException {
         public DuplicateListingException(String listingId) {
             super("Listing already exists: " + listingId);
