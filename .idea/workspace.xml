@@ -6,17 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c2e5f196-2657-481f-bdfd-ed5a5a6338be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/SearchListingsDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/SearchListingsDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/UserDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/UserDataAccessObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/CreateListingView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/CreateListingView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO$DuplicateListingException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO$DuplicateListingException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/data_access/SearchListingsDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/SearchListingsDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateListingView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateListingView$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateListingView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateListingView$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateListingView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateListingView$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateListingView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateListingView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/UserDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/UserDataAccessObject.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +87,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1764538482399</updated>
-      <workItem from="1764538485495" duration="6762000" />
+      <workItem from="1764538485495" duration="8695000" />
     </task>
     <servers />
   </component>

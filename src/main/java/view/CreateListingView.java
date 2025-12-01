@@ -142,7 +142,7 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
         buttons.setMaximumSize(buttons.getPreferredSize());
         mainColumn.add(buttons);
 
-        // other
+        // ---------------------- LISTENERS ----------------------
         publishListingButton.addActionListener(e -> {
             String name = listingNameInputField.getText();
             String description = descriptionInputField.getText();
@@ -154,10 +154,15 @@ public class CreateListingView extends JPanel implements ActionListener, Propert
                 categories.add(Main.categoriesArray.get(listingCategory2ComboBox.getSelectedIndex()));
             }
 
+            //If BOTH were left blank, "Select a Category" BECOMES the category
+            if (categories.isEmpty()) {
+                categories.add(Main.categoriesArray.get(0));
+            }
+
             try {
                 createListingController.execute(name, description, categories);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                throw new RuntimeException(ex);
             }
         });
 
