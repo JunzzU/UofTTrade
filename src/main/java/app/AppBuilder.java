@@ -40,6 +40,13 @@ import use_case.view_profile.ViewProfileOutputBoundary;
 import use_case.view_profile.ViewProfileInteractor;
 import use_case.search.SearchListingsInteractor;
 import interface_adapter.update_listing.UpdateListingController;
+import interface_adapter.messaging.MessagingViewModel;
+import interface_adapter.messaging.MessagingPresenter;
+import interface_adapter.messaging.MessagingController;
+import use_case.messaging.MessagingInteractor;
+import use_case.messaging.MessagingOutputBoundary;
+import use_case.messaging.MessagingInputBoundary;
+
 
 
 
@@ -79,6 +86,10 @@ public class AppBuilder {
     private SearchListingsView searchListingsView;
     private SearchListingsViewModel searchListingsViewModel;
     final data_access.SearchListingsDataAccessObject searchDataAccessObject = new data_access.SearchListingsDataAccessObject();
+
+    private MessagingViewModel messagingViewModel;
+    private MessagingController messagingController;
+    private MessagingSubpageView messagingSubpageView;
 
     public AppBuilder() throws IOException {
         contentPane.setLayout(cardLayout);
@@ -295,6 +306,37 @@ public class AppBuilder {
         loginView.setLoginController(loginController);
         return this;
 
+    }
+
+    public AppBuilder addMessagingUseCase() {
+        // viewmodel
+        messagingViewModel = new MessagingViewModel();
+        // presenter
+        MessagingOutputBoundary messagingPresenter = new MessagingPresenter(messagingViewModel);
+        //Interactor
+        MessagingInputBoundary messagingInteractor = new MessagingInteractor(userDataAccessObject, messagingPresenter);
+        //Controller
+        this.messagingController = new MessagingController(messagingInteractor);
+
+        if(homepageView != null) {
+            homepageView.setMessagingDependencies(messagingController,messagingViewModel,viewManagerModel);
+        }
+        return this;
+    }
+
+    public AppBuilder addMessagingView() {
+        if (messagingViewModel == null || messagingController == null) {
+            throw new IllegalStateException("Call the messaging use case before create the messaging view ");
+        }
+
+        Runnable onBack = () -> {
+            viewManagerModel.setState(homepageView.getViewName());
+            viewManagerModel.firePropertyChanged();
+        };
+        messagingSubpageView = new MessagingSubpageView(messagingViewModel, onBack);
+        contentPane.add(messagingSubpageView, messagingViewModel.getViewName());
+
+        return this;
     }
 
     public AppBuilder addUpdateListingUseCase() {

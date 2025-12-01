@@ -78,7 +78,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         RequestBody body = RequestBody.create(mediaType, updatedUsers.toString());
         Request request = new Request.Builder()
                 .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/USERS")
-                .method("PUT", body)
+                .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Response response = client.newCall(request).execute();

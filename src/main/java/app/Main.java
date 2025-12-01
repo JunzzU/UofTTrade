@@ -55,6 +55,8 @@ public class Main {
                 .addLoginUseCase()
                 .addViewProfileUseCase()
                 .addSearchUseCase()
+                .addMessagingUseCase()
+                .addMessagingView()
                 .build();
 
         application.pack();
