@@ -1,23 +1,16 @@
 package interface_adapter.view_listing;
 
-import entity.Category;
-
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class ViewListingState {
 
-    private String listingName;
+    private String listingName = "";
     private List<String> listingCategories;
-    private String listingOwner;
-    private BufferedImage listingImage;
+    private String listingOwner = "";
+    private String listingDescription = "";
 
     public String getListingName() {
         return listingName;
-    }
-
-    public void setListingImage(BufferedImage listingImage) {
-        this.listingImage = listingImage;
     }
 
     public List<String> getListingCategories() {
@@ -40,8 +33,12 @@ public class ViewListingState {
         this.listingName = listingName;
     }
 
-    public BufferedImage getListingImage() {
-        return listingImage;
+    public void setListingDescription(String listingDescription) {
+        this.listingDescription = listingDescription;
+    }
+
+    public String getListingDescription() {
+        return listingDescription;
     }
 
 }

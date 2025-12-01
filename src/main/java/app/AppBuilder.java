@@ -174,8 +174,9 @@ public class AppBuilder {
             viewManagerModel.firePropertyChanged();
         });
         final List<JSONObject> allListings = userDataAccessObject.getAllListings();
+        viewListingViewModel = new ViewListingViewModel();
         final ViewListingOutputBoundary viewListingOutputBoundary = new ViewListingPresenter(homepageViewModel,
-                viewManagerModel, new ViewListingViewModel());
+                viewManagerModel, viewListingViewModel);
         final ViewListingInputBoundary viewListingInteractor = new ViewListingInteractor(
                 createListingDAO, viewListingOutputBoundary);
 
@@ -327,8 +328,7 @@ public class AppBuilder {
 
     public AppBuilder addViewListingView() {
 
-        viewListingViewModel = new ViewListingViewModel();
-        createListingView = new CreateListingView(createListingViewModel);
+        viewListingView = new ViewListingView(viewListingViewModel);
         contentPane.add(viewListingView, viewListingView.getViewName());
 
         return this;

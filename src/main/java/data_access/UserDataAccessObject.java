@@ -79,7 +79,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         RequestBody body = RequestBody.create(mediaType, updatedUsers.toString());
         Request request = new Request.Builder()
                 .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/USERS")
-                .method("PUT", body)
+                .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
         Response response = client.newCall(request).execute();
@@ -96,7 +96,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         return currentLoggedInUser;
     }
 
-    private JSONArray getListingData() throws IOException {
+    private JSONObject getListingData() throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Request request = new Request.Builder()
                 .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS")
@@ -105,7 +105,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
                 .build();
         Response response = client.newCall(request).execute();
         JSONObject listings = new JSONObject(response.body().string());
-        return listings.getJSONArray("Listings");
+        return listings;
     }
 
     @Override
@@ -115,7 +115,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
         try {
             CreateListingDAO listingDAO = new CreateListingDAO();
-            JSONObject data = listingDAO.getListingData();
+            JSONObject data = getListingData();
             Iterator<String> keys = data.keys();
             while (keys.hasNext()) {
                 String key = keys.next();

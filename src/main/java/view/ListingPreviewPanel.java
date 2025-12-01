@@ -36,10 +36,10 @@ public class ListingPreviewPanel extends JPanel {
         final StringBuilder categories = new StringBuilder();
         final JSONArray categoryList = (JSONArray) listing.get("Categories");
         for (int i = 0; i < categoryList.length() - 1; i++) {
-            final JSONObject category = categoryList.getJSONObject(i);
-            categories.append((String) category.get("name")).append(", ");
+
+            categories.append((String) categoryList.get(i)).append(", ");
         }
-        categories.append((String) categoryList.getJSONObject(categoryList.length() - 1).get("name"));
+        categories.append((String) categoryList.get(categoryList.length() - 1));
         final JLabel categoryLabel = new JLabel("Categories: " + categories);
         categoryLabel.setFont(new Font(FONT, Font.PLAIN, OTHER_FONT_SIZE));
 

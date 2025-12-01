@@ -1,8 +1,5 @@
 package use_case.view_listing;
 
-import entity.Category;
-
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class ViewListingOutputData {
@@ -10,11 +7,14 @@ public class ViewListingOutputData {
     private final String listingName;
     private final String listingOwner;
     private final List<String> listingCategories;
+    private final String listingDescription;
 
-    public ViewListingOutputData(String listingName, String listingOwner, List<String> listingCategories) {
+    public ViewListingOutputData(String listingName, String listingOwner, List<String> listingCategories,
+                                 String listingDescription) {
         this.listingName = listingName;
         this.listingOwner = listingOwner;
         this.listingCategories = listingCategories;
+        this.listingDescription = listingDescription;
     }
 
     public String getListingName() {
@@ -29,5 +29,8 @@ public class ViewListingOutputData {
         return listingOwner;
     }
 
+    public String getListingDescription() {
+        return listingDescription;
+    }
 
 }

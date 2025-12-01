@@ -1,14 +1,11 @@
 package use_case.view_listing;
 
-import entity.Category;
-import entity.Listing;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ViewListingInteractor implements ViewListingInputBoundary {
 
@@ -35,7 +32,7 @@ public class ViewListingInteractor implements ViewListingInputBoundary {
         }
 
         final ViewListingOutputData viewListingOutputData = new ViewListingOutputData(listingName, listingOwner,
-                listingCategories);
+                listingCategories, (String) listing.get("Description"));
         viewListingOutputBoundary.switchToListingView(viewListingOutputData);
 
     }

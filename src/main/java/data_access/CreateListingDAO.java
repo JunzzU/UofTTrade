@@ -35,7 +35,7 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface, V
         // create a JSON object of the new listing
         JSONObject newListing = new JSONObject();
         newListing.put("Name", listing.get_name());
-        newListing.put("Categories", listing.get_categories());
+        newListing.put("Categories", categoryNames);
         newListing.put("Owner", listing.get_owner());
         newListing.put("ListingID", listing.get_listingId());
         newListing.put("Description", listing.get_description());
@@ -71,7 +71,7 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface, V
      * Fetches the listings from the API database.
      * @return JSON Object of the data
      */
-    private JSONArray getListingData() throws IOException {
+    private JSONObject getListingData() throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -81,9 +81,8 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface, V
                 .get()
                 .addHeader("Content-Type", "application/json")
                 .build();
-        Response response = client.newCall(request).execute();
-        JSONObject listings = new JSONObject(response.body().string());
-        return listings;
+        final Response response = client.newCall(request).execute();
+        return new JSONObject(response.body().string());
 
     }
 

@@ -24,7 +24,6 @@ public class Listing {
         this.listingId = generateListingId();
     }
 
-
     public List<Category> get_categories() { return categories; }
 
     public String get_name() { return name; }

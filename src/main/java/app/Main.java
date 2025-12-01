@@ -51,6 +51,7 @@ public class Main {
                 .addCreateListingView()
                 .addSearchListingsView()
                 .addViewListingView()
+                .addMessagingUseCase()
                 .addMessagingView()
                 .addCreateListingUseCase()
                 .addRegisterUseCase()
@@ -58,7 +59,6 @@ public class Main {
                 .addViewProfileUseCase()
                 .addViewListingUseCase()
                 .addSearchUseCase()
-                .addMessagingUseCase()
                 .build();
 
         application.pack();
