@@ -161,7 +161,7 @@ public class AppBuilder {
         homepageView.addViewProfileListener(e -> {
             viewManagerModel.setState(viewProfileViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
-            profileView.loadProfile();
+            //profileView.loadProfile();
         });
 
         //temp create listings view
@@ -235,7 +235,7 @@ public class AppBuilder {
             if (listingToDelete != null) {
                 System.out.println("✅ Deleting listing: " + listingToDelete.get_name());
                 updateListingController.execute(true, currentUser, listingToDelete);
-                profileView.loadProfile();
+                //profileView.loadProfile();
             } else {
 
                 // No matching listing found
@@ -255,7 +255,7 @@ public class AppBuilder {
         homepageView.addViewProfileListener(e -> {
             viewManagerModel.setState(viewProfileViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
-            profileView.loadProfile();
+            //profileView.loadProfile();
         });
 
 

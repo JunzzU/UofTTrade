@@ -56,8 +56,8 @@ public class ViewProfileInteractor implements ViewProfileInputBoundary {
         List<Listing> listings = userDataAccess.getUserListings(user.get_username());
 
         // ✔ Correct place to update the user entity
-        user.get_listings().clear();
-        user.get_listings().addAll(listings);
+        //user.get_listings().clear();
+        //user.get_listings().addAll(listings);
 
         // Prepare output
         ViewProfileOutputData outputData =
