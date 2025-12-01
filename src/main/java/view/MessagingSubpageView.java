@@ -51,7 +51,7 @@ public class MessagingSubpageView extends JPanel {
         errorLabel = new JLabel();
         errorLabel.setForeground(Color.RED);
 
-        backButton = new JButton("返回");
+        backButton = new JButton("Back to the previous page.");
         bottomPanel.add(errorLabel, BorderLayout.CENTER);
         bottomPanel.add(backButton, BorderLayout.EAST);
 
