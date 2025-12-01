@@ -6,13 +6,15 @@ import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.create_listing.CreateListingUserDataAccessInterface;
+import use_case.view_listing.ViewListingDataAccessInterface;
+
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class CreateListingDAO implements CreateListingUserDataAccessInterface {
+public class CreateListingDAO implements CreateListingUserDataAccessInterface, ViewListingDataAccessInterface {
     /**
      * Saves the listing to the API database.
      * @param listing the listing to save
@@ -33,10 +35,10 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
         // create a JSON object of the new listing
         JSONObject newListing = new JSONObject();
         newListing.put("Name", listing.get_name());
-        newListing.put("Description", listing.get_description());
         newListing.put("Categories", categoryNames);
-        newListing.put("Owner", listing.get_owner().get_username());
+        newListing.put("Owner", listing.get_owner());
         newListing.put("ListingID", listing.get_listingId());
+        newListing.put("Description", listing.get_description());
 
         // map the listing to the ID
         JSONObject updatedListings = new JSONObject();
@@ -53,11 +55,23 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
         client.newCall(request).execute();
     }
 
+    public JSONObject getSpecificListingInfo(String listingName, String listingOwner) throws IOException {
+        final JSONObject listingsObject = getListingData();
+        for (String key: listingsObject.keySet()) {
+            final boolean isListingName = listingsObject.getJSONObject(key).getString("Name").equals(listingName);
+            final boolean isOwner = listingsObject.getJSONObject(key).getString("Owner").equals(listingOwner);
+            if (isListingName && isOwner) {
+                return listingsObject.getJSONObject(key);
+            }
+        }
+        return new JSONObject();
+    }
+
     /**
      * Fetches the listings from the API database.
      * @return JSON Object of the data
      */
-    public JSONObject getListingData() throws IOException {
+    JSONObject getListingData() throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -67,8 +81,9 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface {
                 .get()
                 .addHeader("Content-Type", "application/json")
                 .build();
-        Response response = client.newCall(request).execute();
+        final Response response = client.newCall(request).execute();
         return new JSONObject(response.body().string());
+
     }
 
     public class DuplicateListingException extends RuntimeException {

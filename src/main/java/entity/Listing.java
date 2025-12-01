@@ -1,9 +1,5 @@
 package entity;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Base64;
+
 import java.util.List;
 
 public class Listing {
@@ -27,7 +23,6 @@ public class Listing {
         this.owner = owner;
         this.listingId = generateListingId();
     }
-
 
     public List<Category> get_categories() { return categories; }
 
