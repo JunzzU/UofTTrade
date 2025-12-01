@@ -1,5 +1,6 @@
 package app;
 
+import data_access.UpdateListingDataAccessObject;
 import data_access.UserDataAccessObject;
 import data_access.CreateListingDAO;
 import entity.Listing;
@@ -16,6 +17,7 @@ import interface_adapter.register.RegisterController;
 import interface_adapter.register.RegisterPresenter;
 import interface_adapter.register.RegisterViewModel;
 import interface_adapter.search.SearchListingsViewModel;
+import interface_adapter.update_listing.UpdateListingPresenter;
 import use_case.create_listing.CreateListingInputBoundary;
 import use_case.create_listing.CreateListingInteractor;
 import use_case.create_listing.CreateListingOutputBoundary;
@@ -63,7 +65,7 @@ public class AppBuilder {
 
     final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
     final CreateListingDAO createListingDAO = new CreateListingDAO();
-
+    final UpdateListingDataAccessObject updateListingDataAccessObject = new UpdateListingDataAccessObject();
 
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
@@ -333,6 +335,18 @@ public class AppBuilder {
         };
         messagingSubpageView = new MessagingSubpageView(messagingViewModel, onBack);
         contentPane.add(messagingSubpageView, messagingViewModel.getViewName());
+
+        return this;
+    }
+
+    public AppBuilder addUpdateListingUseCase() {
+        UpdateListingOutputBoundary outputBoundary =
+                new UpdateListingPresenter(viewProfileViewModel, viewManagerModel);
+
+        UpdateListingInputBoundary interactor =
+                new UpdateListingInteractor(updateListingDataAccessObject, outputBoundary);
+
+        this.updateListingController = new UpdateListingController(interactor);
 
         return this;
     }
