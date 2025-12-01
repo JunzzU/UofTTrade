@@ -4,27 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2e5f196-2657-481f-bdfd-ed5a5a6338be" name="Changes" comment="Merge branch 'main' of https://github.com/Grace273/UofTTrade into Fix-email-not-occured&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;target/classes/app/AppBuilder.class&#10;#&#9;target/classes/data_access/UserDataAccessObject.class">
-      <change afterPath="$PROJECT_DIR$/src/test/java/use_case/ViewProfileInteractorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/CreateListingDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/UpdateListingDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/UpdateListingDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/UserDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/UserDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_profile/ViewProfilePresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_profile/ViewProfilePresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/view_profile/ViewProfileState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/view_profile/ViewProfileState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/view_profile/ViewProfileInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/view_profile/ViewProfileInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/ProfileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ProfileView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO$DuplicateListingException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO$DuplicateListingException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/CreateListingDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/UpdateListingDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/UpdateListingDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/UserDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/UserDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/view_profile/ViewProfilePresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/view_profile/ViewProfilePresenter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/view_profile/ViewProfileState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/view_profile/ViewProfileState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/view_profile/ViewProfileInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/view_profile/ViewProfileInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/ProfileView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ProfileView.class" afterDir="false" />
-    </list>
+    <list default="true" id="c2e5f196-2657-481f-bdfd-ed5a5a6338be" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +51,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#79 on Fix-email-not-occured",
+    "git-widget-placeholder": "#76 on view-profile",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
