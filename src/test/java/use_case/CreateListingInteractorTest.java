@@ -1,6 +1,7 @@
 package use_case;
 
 import data_access.CreateListingDAO;
+import data_access.UpdateListingDataAccessObject;
 import data_access.UserDataAccessObject;
 import entity.Category;
 import entity.User;
@@ -46,8 +47,8 @@ public class CreateListingInteractorTest {
 //        categories.add(category2);
 //
 //        CreateListingInputData inputData = new CreateListingInputData(
-//                "UofT shirt",
-//                "Size medium",
+//                "Adidas Forum high",
+//                "Size 7 US women's. Never worn",
 //                categories
 //        );
 //
@@ -62,10 +63,14 @@ public class CreateListingInteractorTest {
 //                //assertEquals(user, outputData.get_owner());
 //
 //                assertFalse(listingDAO.existById(outputData.getListingID()+""));
+//
+//                //delete listing so test doesn't have unexpected fail next time
+//                UpdateListingDataAccessObject updateListingDAO= new UpdateListingDataAccessObject();
+//                updateListingDAO.updateListing(outputData.getListingID());
 //            }
 //
 //            @Override
-//            public void prepareFailView(String errorMessage) { fail(errorMessage); }
+//            public void prepareFailView(String errorMessage) { fail("Use case fail is unexpected."); }
 //
 //            @Override
 //            public void switchToProfileView() {}
@@ -78,6 +83,7 @@ public class CreateListingInteractorTest {
 //                (UserDataAccessObject)userDataAccessObject
 //        );
 //        interactor.execute(inputData);
+//
 //    }
 
     @Test
