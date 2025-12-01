@@ -2,6 +2,8 @@ package interface_adapter.view_profile;
 
 import entity.Listing;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import use_case.view_profile.ViewProfileOutputBoundary;
 import use_case.view_profile.ViewProfileOutputData;
 
@@ -22,29 +24,32 @@ public class ViewProfilePresenter implements ViewProfileOutputBoundary {
     public void prepareSuccessView(ViewProfileOutputData outputData) {
         ViewProfileState state = viewModel.getState();
 
-        state.setUsername(outputData.getUsername());
-
-        // Convert List<Listing> to List<String> of listing names.
-        List<String> listingNames = outputData.getListings()
-                .stream()
-                .map(Listing::get_name)
-                .toList();
-
-        state.setListingNames(listingNames);
         state.setUser(outputData.getUser());
-
-        // Dynamic title
+        state.setUsername(outputData.getUsername());
         state.setTitleText("Profile: " + outputData.getUsername());
 
-        // Clear error
-        state.setErrorMessage("");
+        // Convert List<Listing> → names + descriptions
+        List<Listing> listings = outputData.getListings();
 
-        // Show "No listings yet..." when list is empty
+        List<String> listingNames = new java.util.ArrayList<>();
+        List<String> listingDescriptions = new java.util.ArrayList<>();
+
+        for (Listing l : listings) {
+            listingNames.add(l.get_name());
+            String desc = l.get_description();
+            listingDescriptions.add(desc == null ? "" : desc);
+        }
+
+        state.setListingNames(listingNames);
+        state.setListingDescriptions(listingDescriptions);
+
+        // "No listings yet..." message
         if (listingNames.isEmpty()) {
             state.setNoListingsMessage("No listings yet...");
         } else {
             state.setNoListingsMessage("");
         }
+        state.setErrorMessage("");
 
         viewModel.setState(state);
         viewModel.firePropertyChanged();
