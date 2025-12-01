@@ -1,12 +1,13 @@
 package view;
 
+import entity.Listing;
+import entity.User;
 import interface_adapter.view_profile.ViewProfileController;
 import interface_adapter.view_profile.ViewProfileState;
 import interface_adapter.view_profile.ViewProfileViewModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -14,18 +15,16 @@ import java.util.function.Consumer;
 
 /**
  * The ProfileView is responsible for rendering the user's profile screen.
- * <p>
- * displays:
- * <ul>
- *     <li>The username title </li>
- *     <li>A scrollable list of listings, each with its photo and a delete button</li>
- *     <li>A "Create Listing" button</li>
- *     <li>A "Home" button</li>
- *     <li>An error message when profile loading fails</li>
- * </ul>
  *
- * This class listens to changes in the {@link ViewProfileViewModel}
- * and updates the Swing components accordingly.
+ * Displays:
+ *  - The username title
+ *  - A scrollable list of listings (for the current user), each with:
+ *      * Listing name
+ *      * Listing description
+ *      * Delete button
+ *  - A "Create Listing" button
+ *  - A "Home" button
+ *  - An error message when profile loading fails
  */
 public class ProfileView extends JPanel implements PropertyChangeListener {
 
@@ -38,23 +37,23 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     /** Callback for Home button navigation. */
     private final Runnable onHome;
 
-    /** Callback for Delete Listing use case, accepts listing name. */
+    /** Callback for Delete Listing use case. */
     private final Consumer<String> onDeleteListing;
 
     // UI Components
     private final JLabel titleLabel = new JLabel();
-    private final JLabel noListingsLabel = new JLabel();   // << added
+    private final JLabel noListingsLabel = new JLabel();
     private final JLabel errorLabel = new JLabel();
     private final JPanel listingsPanel = new JPanel();
 
     /**
      * Constructs a ProfileView screen.
      *
-     * @param viewModel          the ViewModel holding the profile state
-     * @param controller         the View Profile controller to trigger the use case
-     * @param onCreateListing    callback executed when Create Listing is pressed
-     * @param onHome             callback executed when Home is pressed
-     * @param onDeleteListing    callback executed when Delete is pressed for a specific listing
+     * @param viewModel       the ViewModel holding the profile state
+     * @param controller      the View Profile controller to trigger the use case
+     * @param onCreateListing callback executed when Create Listing is pressed
+     * @param onHome          callback executed when Home is pressed
+     * @param onDeleteListing callback executed when Delete is pressed for a specific listing
      */
     public ProfileView(ViewProfileViewModel viewModel,
                        ViewProfileController controller,
@@ -84,6 +83,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         noListingsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         titlePanel.add(titleLabel);
+        titlePanel.add(Box.createVerticalStrut(4));
         titlePanel.add(noListingsLabel);
 
         add(titlePanel, BorderLayout.NORTH);
@@ -125,52 +125,58 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         ViewProfileState state = (ViewProfileState) evt.getNewValue();
 
-        // Update title
+        // ---- Title & error text ----
         titleLabel.setText(state.getTitleText());
 
-        // Update "No Listings" message
-        if (state.getNoListingsMessage().isEmpty()) {
-            noListingsLabel.setText("");
-        } else {
-            noListingsLabel.setText(state.getNoListingsMessage());
-        }
-
-        // Update error message
-        if (state.getErrorMessage().isEmpty()) {
+        String err = state.getErrorMessage();
+        if (err == null || err.isEmpty()) {
             errorLabel.setText("");
         } else {
-            errorLabel.setText(state.getErrorMessage());
+            errorLabel.setText(err);
         }
 
-        // Update listings
+        // ---- Clear old rows ----
         listingsPanel.removeAll();
 
-        List<String> names = state.getListingNames();
-        List<BufferedImage> photos = state.getListingPhotos();
+        // ---- Prefer full Listing entities from the User, so we can show descriptions ----
+        User currentUser = state.getUser();
+        List<Listing> listings = null;
+        if (currentUser != null && currentUser.get_listings() != null) {
+            listings = currentUser.get_listings();
+        }
 
-        for (int i = 0; i < names.size(); i++) {
-            String listingName = names.get(i);
-            BufferedImage img = (i < photos.size()) ? photos.get(i) : null;
+        if (listings != null && !listings.isEmpty()) {
+            // We have full Listing objects → show name + description
+            noListingsLabel.setText("");
 
-            JPanel row = new JPanel(new BorderLayout());
+            for (Listing listing : listings) {
+                String name = listing.get_name();
+                String description = listing.get_description();
+                JPanel row = createListingRow(name, description);
+                listingsPanel.add(row);
+                listingsPanel.add(Box.createVerticalStrut(6));
+            }
+        } else {
+            // Fallback: use listingNames from state, in case listings are not populated
+            List<String> names = state.getListingNames();
+            List<String> descriptions = state.getListingDescriptions();
+            if (names == null) names = java.util.Collections.emptyList();
+            if (descriptions == null) descriptions = java.util.Collections.emptyList();
 
-            // Listing image
-            if (img != null) {
-                Image scaled = img.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-                JLabel photoLabel = new JLabel(new ImageIcon(scaled));
-                row.add(photoLabel, BorderLayout.WEST);
+            if (names.isEmpty()) {
+                noListingsLabel.setText("No listings yet...");
+            } else {
+                noListingsLabel.setText("");
             }
 
-            // Listing name
-            JLabel nameLabel = new JLabel(listingName);
-            row.add(nameLabel, BorderLayout.CENTER);
-
-            // Delete button
-            JButton deleteBtn = new JButton("Delete");
-            deleteBtn.addActionListener(e -> onDeleteListing.accept(nameLabel.getText().trim()));
-            row.add(deleteBtn, BorderLayout.EAST);
-
-            listingsPanel.add(row);
+            int size = names.size();
+            for (int i = 0; i < size; i++) {
+                String name = names.get(i);
+                String desc = (i < descriptions.size()) ? descriptions.get(i) : "";
+                JPanel row = createListingRow(name, desc);  // your helper
+                listingsPanel.add(row);
+                listingsPanel.add(Box.createVerticalStrut(6));
+            }
         }
 
         listingsPanel.revalidate();
@@ -178,8 +184,56 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
     }
 
     /**
+     * Creates a row panel for a single listing, showing its name,
+     * description, and delete button.
+     */
+    private JPanel createListingRow(String name, String description) {
+        JPanel row = new JPanel(new BorderLayout());
+        row.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)
+        ));
+
+        // ---- Text area (name + description) ----
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+
+        // Name
+        JLabel nameLabel = new JLabel(name);
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+
+        // Description (handle null/empty)
+        if (description == null || description.isEmpty()) {
+            description = "(No description)";
+        }
+        JLabel descLabel = new JLabel("<html>" + description + "</html>");
+        descLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        textPanel.add(nameLabel);
+        textPanel.add(Box.createVerticalStrut(2));
+        textPanel.add(descLabel);
+
+        row.add(textPanel, BorderLayout.CENTER);
+
+        // ---- Delete button ----
+        JButton deleteBtn = new JButton("Delete");
+        // keep same contract: pass name back to the delete handler
+        deleteBtn.addActionListener(e -> onDeleteListing.accept(name));
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.add(Box.createVerticalGlue());
+        buttonPanel.add(deleteBtn);
+        buttonPanel.add(Box.createVerticalGlue());
+
+        row.add(buttonPanel, BorderLayout.EAST);
+
+        return row;
+    }
+
+    /**
      * Called by another view when the user clicks their Profile button.
-     * It triggers the View Profile use case
+     * It triggers the View Profile use case.
      */
     public void loadProfile() {
         profileController.onProfileButtonClicked();

@@ -17,7 +17,7 @@ public class ViewProfileState {
     private String titleText = "";
 
     private List<String> listingNames = new ArrayList<>();
-    private List<BufferedImage> listingPhotos = new ArrayList<>();
+    private List<String> listingDescriptions = new ArrayList<>();
     private User user;
 
     private String errorMessage = "Unable to load profile.";
@@ -57,14 +57,6 @@ public class ViewProfileState {
         this.listingNames = listingNames;
     }
 
-    public List<BufferedImage> getListingPhotos() {
-        return listingPhotos;
-    }
-
-    public void setListingPhotos(List<BufferedImage> listingPhotos) {
-        this.listingPhotos = listingPhotos;
-    }
-
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -80,6 +72,13 @@ public class ViewProfileState {
 
     public void setNoListingsMessage(String noListingsMessage) {
         this.noListingsMessage = noListingsMessage;
+    }
+
+    public List<String> getListingDescriptions() {
+        return listingDescriptions;
+    }
+    public void setListingDescriptions(List<String> listingDescriptions) {
+        this.listingDescriptions = listingDescriptions;
     }
 }
 

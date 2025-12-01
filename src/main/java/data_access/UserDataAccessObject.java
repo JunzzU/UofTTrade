@@ -96,7 +96,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         return currentLoggedInUser;
     }
 
-    private JSONObject getListingData() throws IOException {
+    private JSONArray getListingData() throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Request request = new Request.Builder()
                 .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS")
@@ -105,7 +105,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
                 .build();
         Response response = client.newCall(request).execute();
         JSONObject listings = new JSONObject(response.body().string());
-        return listings;
+        return listings.getJSONArray("Listings");
     }
 
     @Override
@@ -115,39 +115,40 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
         try {
             CreateListingDAO listingDAO = new CreateListingDAO();
-            JSONObject data = getListingData();
+            JSONObject data = listingDAO.getListingData();
+
             Iterator<String> keys = data.keys();
             while (keys.hasNext()) {
                 String key = keys.next();
-                if (data.get(key) instanceof JSONObject) {
-                    JSONObject listingJSON = data.getJSONObject(key);
+                Object value = data.get(key);
+                if (!(value instanceof JSONObject)) {
+                    // skip anything that isn't a listing object
+                    continue;
+                }
 
-                    String ownerUsername = "";
-                    if (listingJSON.has("Owner")) {
-                        Object ownerObj = listingJSON.get("Owner");
-                        if (ownerObj instanceof JSONObject) ownerUsername = ((JSONObject)ownerObj).optString("name");
-                        else ownerUsername = ownerObj.toString();
-                    }
+                JSONObject listingJSON = (JSONObject) value;
 
-                    if (ownerUsername.equals(username)) {
-                        String name = listingJSON.optString("Name", "Unknown");
-                        String description = listingJSON.optString("Description", "");
+                String ownerUsername = listingJSON.optString("Owner", "");
+                if (!ownerUsername.equals(username)) {
+                    continue;
+                }
 
-                        // Reconstruct categories
-                        List<Category> cats = new ArrayList<>();
-                        if (listingJSON.has("Categories")) {
-                            JSONArray catArr = listingJSON.getJSONArray("Categories");
-                            for(int i=0; i<catArr.length(); i++) {
-                                Object c = catArr.get(i);
-                                if (c instanceof String) cats.add(new Category((String)c));
-                                else if (c instanceof JSONObject) cats.add(new Category(((JSONObject)c).optString("name")));
-                            }
-                        }
+                String name = listingJSON.optString("Name", "Unknown");
+                String description = listingJSON.optString("Description", "");
 
-                        Listing listing = new Listing(name, description, cats, new User(ownerUsername, "",""));
-                        result.add(listing);
+                // categories are saved as array of strings
+                List<Category> cats = new ArrayList<>();
+                if (listingJSON.has("Categories")) {
+                    JSONArray catArr = listingJSON.getJSONArray("Categories");
+                    for (int i = 0; i < catArr.length(); i++) {
+                        String catName = catArr.getString(i);
+                        cats.add(new Category(catName));
                     }
                 }
+
+                User owner = new User(ownerUsername, "", "");
+                Listing listing = new Listing(name, description, cats, owner);
+                result.add(listing);
             }
 
         } catch (Exception e) {

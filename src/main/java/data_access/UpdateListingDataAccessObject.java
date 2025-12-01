@@ -20,21 +20,22 @@ public class UpdateListingDataAccessObject implements UpdateListingUserDataAcces
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
-    /**
-     * Delete the listing with the given id from the database.
-     */
     public void updateListing(int listingId) {
         try {
             String key = String.valueOf(listingId);
 
+            // 1. Fetch current JSON
             JSONObject listings = createListingDAO.getListingData();
 
+            // 2. Check existence
             if (!listings.has(key)) {
                 throw new ListingNotFoundException(key);
             }
 
+            // 3. Remove the listing
             listings.remove(key);
 
+            // 4. PUT updated object
             MediaType mediaType = MediaType.parse("application/json");
             RequestBody body = RequestBody.create(mediaType, listings.toString());
 
@@ -46,13 +47,12 @@ public class UpdateListingDataAccessObject implements UpdateListingUserDataAcces
 
             try (Response response = client.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
-                    throw new IOException("Failed to delete listing: " +
-                            response.code() + " " + response.message());
+                    throw new IOException("Failed to delete listing: "
+                            + response.code() + " " + response.message());
+                }
             }
-        }
-    }
-        catch(IOException e) {
-        System.err.println("Failed to delete listing: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Failed to delete listing: " + e.getMessage());
         }
     }
 
