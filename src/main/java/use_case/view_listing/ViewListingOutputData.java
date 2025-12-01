@@ -6,13 +6,18 @@ public class ViewListingOutputData {
 
     private final String listingName;
     private final String listingOwner;
+    private final String listingOwnerEamil;
     private final List<String> listingCategories;
     private final String listingDescription;
 
-    public ViewListingOutputData(String listingName, String listingOwner, List<String> listingCategories,
+    public ViewListingOutputData(String listingName,
+                                 String listingOwner,
+                                 String listingOwnerEamil,
+                                 List<String> listingCategories,
                                  String listingDescription) {
         this.listingName = listingName;
         this.listingOwner = listingOwner;
+        this.listingOwnerEamil = listingOwnerEamil;
         this.listingCategories = listingCategories;
         this.listingDescription = listingDescription;
     }
@@ -28,6 +33,8 @@ public class ViewListingOutputData {
     public String getListingOwner() {
         return listingOwner;
     }
+
+    public String getListingOwnerEamil() {return listingOwnerEamil;}
 
     public String getListingDescription() {
         return listingDescription;
