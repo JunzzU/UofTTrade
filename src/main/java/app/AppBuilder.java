@@ -73,7 +73,6 @@ public class AppBuilder {
 
     final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
     final CreateListingDAO createListingDAO = new CreateListingDAO();
-    final UpdateListingDataAccessObject updateListingDataAccessObject = new UpdateListingDataAccessObject();
 
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
@@ -233,7 +232,6 @@ public class AppBuilder {
                     .orElse(null);
 
             if (listingToDelete != null) {
-                System.out.println("✅ Deleting listing: " + listingToDelete.get_name());
                 updateListingController.execute(true, currentUser, listingToDelete);
                 //profileView.loadProfile();
             } else {
@@ -387,11 +385,14 @@ public class AppBuilder {
     }
 
     public AppBuilder addUpdateListingUseCase() {
+        UpdateListingUserDataAccessInterface updateListingDAO =
+                new UpdateListingDataAccessObject();
+
         UpdateListingOutputBoundary outputBoundary =
                 new UpdateListingPresenter(viewProfileViewModel, viewManagerModel);
 
         UpdateListingInputBoundary interactor =
-                new UpdateListingInteractor(updateListingDataAccessObject, outputBoundary);
+                new UpdateListingInteractor(updateListingDAO, outputBoundary);
 
         this.updateListingController = new UpdateListingController(interactor);
 
