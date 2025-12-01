@@ -13,11 +13,12 @@ import java.util.List;
 import use_case.messaging.MessagingUserDataAccessInterface;
 import use_case.register.RegisterUserDataAccessInterface;
 import use_case.view_profile.ViewProfileUserDataAccessInterface;
+import use_case.view_listing.ViewListingUserDataAccessInterface;
 import java.util.Iterator;
 import java.io.IOException;
 
 public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface,
-        ViewProfileUserDataAccessInterface, MessagingUserDataAccessInterface {
+        ViewProfileUserDataAccessInterface, MessagingUserDataAccessInterface, ViewListingUserDataAccessInterface {
 
     private String username;
     private String email;
@@ -231,4 +232,5 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
         return email.contains("@") && email.contains(".") && email.indexOf("@") > 0;
 
     }
+
 }

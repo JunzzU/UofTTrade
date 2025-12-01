@@ -148,7 +148,8 @@ public class ViewListingView extends JPanel implements PropertyChangeListener {
                 }
 
                 final String sellerIdentifier = owner;
-                messagingController.createGmailComposeLink(sellerIdentifier);
+                final String sellerEmail= state.getListingOwnerEmail();
+                messagingController.createGmailComposeLink(sellerIdentifier, sellerEmail);
 
                 viewManagerModel.setState(MessagingViewModel.VIEW_NAME);
                 viewManagerModel.firePropertyChanged();

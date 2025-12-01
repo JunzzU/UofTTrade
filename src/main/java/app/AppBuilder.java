@@ -180,7 +180,7 @@ public class AppBuilder {
         final ViewListingOutputBoundary viewListingOutputBoundary = new ViewListingPresenter(homepageViewModel,
                 viewManagerModel, viewListingViewModel);
         final ViewListingInputBoundary viewListingInteractor = new ViewListingInteractor(
-                createListingDAO, viewListingOutputBoundary);
+                createListingDAO, userDataAccessObject, viewListingOutputBoundary);
 
         ViewListingController controller = new ViewListingController(viewListingInteractor);
         homepageView.setViewListingController(controller);
@@ -342,7 +342,7 @@ public class AppBuilder {
         final ViewListingOutputBoundary viewListingOutputBoundary = new ViewListingPresenter(homepageViewModel,
                 viewManagerModel, new ViewListingViewModel());
         final ViewListingInputBoundary viewListingInteractor = new ViewListingInteractor(
-                createListingDAO, viewListingOutputBoundary);
+                createListingDAO, userDataAccessObject, viewListingOutputBoundary);
 
         final ViewListingController controller = new ViewListingController(viewListingInteractor);
         viewListingView.setViewListingController(controller);

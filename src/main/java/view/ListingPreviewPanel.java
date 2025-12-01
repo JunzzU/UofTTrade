@@ -68,7 +68,8 @@ public class ListingPreviewPanel extends JPanel {
             }
 
             final String sellerIdentifier = OWNER_NAME;
-            messagingController.createGmailComposeLink(sellerIdentifier);
+            final String sellerEmail = listing.optString("Email", null);
+            messagingController.createGmailComposeLink(sellerIdentifier, sellerEmail);
 
             viewManagerModel.setState(MessagingViewModel.VIEW_NAME);
             viewManagerModel.firePropertyChanged();

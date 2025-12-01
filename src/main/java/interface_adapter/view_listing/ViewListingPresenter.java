@@ -26,6 +26,7 @@ public class ViewListingPresenter implements ViewListingOutputBoundary {
         final ViewListingState viewListingState = viewListingViewModel.getState();
         viewListingState.setListingName(viewListingOutputData.getListingName());
         viewListingState.setListingOwner(viewListingOutputData.getListingOwner());
+        viewListingState.setListingOwnerEmail(viewListingOutputData.getListingOwnerEamil());
         viewListingState.setListingCategories(viewListingOutputData.getListingCategories());
         viewListingState.setListingDescription(viewListingOutputData.getListingDescription());
         this.viewListingViewModel.firePropertyChanged();
