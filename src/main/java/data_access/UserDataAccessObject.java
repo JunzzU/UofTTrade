@@ -114,39 +114,61 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
         try {
             CreateListingDAO listingDAO = new CreateListingDAO();
-            JSONObject data = listingDAO.getListingData();
-            Iterator<String> keys = data.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                if (data.get(key) instanceof JSONObject) {
-                    JSONObject listingJSON = data.getJSONObject(key);
+            JSONArray data = listingDAO.getListingData();  // It's a JSONArray
 
-                    String ownerUsername = "";
-                    if (listingJSON.has("Owner")) {
-                        Object ownerObj = listingJSON.get("Owner");
-                        if (ownerObj instanceof JSONObject) ownerUsername = ((JSONObject)ownerObj).optString("name");
-                        else ownerUsername = ownerObj.toString();
-                    }
+            for (int i = 0; i < data.length(); i++) {
 
-                    if (ownerUsername.equals(username)) {
-                        String name = listingJSON.optString("Name", "Unknown");
-                        String description = listingJSON.optString("Description", "");
+                JSONObject listingJSON = data.optJSONObject(i);
+                if (listingJSON == null) continue;
 
-                        // Reconstruct categories
-                        List<Category> cats = new ArrayList<>();
-                        if (listingJSON.has("Categories")) {
-                            JSONArray catArr = listingJSON.getJSONArray("Categories");
-                            for(int i=0; i<catArr.length(); i++) {
-                                Object c = catArr.get(i);
-                                if (c instanceof String) cats.add(new Category((String)c));
-                                else if (c instanceof JSONObject) cats.add(new Category(((JSONObject)c).optString("name")));
-                            }
-                        }
+                // -------------------------
+                // Extract owner username
+                // -------------------------
+                String ownerUsername = "";
+                if (listingJSON.has("Owner")) {
+                    Object ownerObj = listingJSON.get("Owner");
 
-                        Listing listing = new Listing(name, description, cats, new User(ownerUsername, "",""));
-                        result.add(listing);
+                    if (ownerObj instanceof JSONObject) {
+                        ownerUsername = ((JSONObject) ownerObj).optString("name");
+                    } else {
+                        ownerUsername = ownerObj.toString();
                     }
                 }
+
+                // Only add listings belonging to this user
+                if (!ownerUsername.equals(username)) continue;
+
+                // -------------------------
+                // Extract simple fields
+                // -------------------------
+                String name = listingJSON.optString("Name", "Unknown");
+                String description = listingJSON.optString("Description", "");
+
+                // -------------------------
+                // Extract categories (JSONArray)
+                // -------------------------
+                List<Category> cats = new ArrayList<>();
+                if (listingJSON.has("Categories")) {
+                    JSONArray catArr = listingJSON.optJSONArray("Categories");
+                    if (catArr != null) {
+                        for (int j = 0; j < catArr.length(); j++) {
+                            Object c = catArr.get(j);
+                            if (c instanceof String) {
+                                cats.add(new Category((String) c));
+                            } else if (c instanceof JSONObject) {
+                                cats.add(new Category(((JSONObject) c).optString("name")));
+                            }
+                        }
+                    }
+                }
+
+                // -------------------------
+                // Build Listing object
+                // -------------------------
+                User owner = new User(ownerUsername, "", "");
+                Listing listing = new Listing(name, description, cats, owner);
+
+                result.add(listing);
             }
 
         } catch (Exception e) {
@@ -155,6 +177,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
         return result;
     }
+
 
     public void setUsername(String username) {this.username = username;}
 
