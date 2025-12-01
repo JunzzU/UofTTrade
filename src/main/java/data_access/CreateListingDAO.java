@@ -21,38 +21,52 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface, V
      */
     @Override
     public void save(Listing listing) throws IOException {
-
         String listingID = String.valueOf(listing.get_listingId());
-        JSONObject listings = getListingData();
+
+        // 1. Get existing JSON object from Pantry
+        JSONObject listings = getListingData();  // always returns a JSONObject (we'll fix that too)
+
+        // 2. Check duplicate
         if (listings.has(listingID)) {
             throw new DuplicateListingException(listingID);
         }
 
+        // 3. Build categories as names
         List<String> categoryNames = new ArrayList<>();
-        for (Category c : listing.get_categories()) {
-            categoryNames.add(c.getName());
+        if (listing.get_categories() != null) {
+            for (Category c : listing.get_categories()) {
+                categoryNames.add(c.getName());
+            }
         }
-        // create a JSON object of the new listing
+
+        // 4. Build the new listing object
         JSONObject newListing = new JSONObject();
         newListing.put("Name", listing.get_name());
-        newListing.put("Categories", categoryNames);
-        newListing.put("Owner", listing.get_owner());
-        newListing.put("ListingID", listing.get_listingId());
         newListing.put("Description", listing.get_description());
+        newListing.put("Categories", categoryNames);
+        newListing.put("Owner", listing.get_owner().get_username());
+        newListing.put("ListingID", listing.get_listingId());
 
-        // map the listing to the ID
-        JSONObject updatedListings = new JSONObject();
-        updatedListings.put(listingID, newListing);
+        // 5. Insert into the existing map
+        listings.put(listingID, newListing);
 
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        // 6. PUT the WHOLE object back
+        OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, updatedListings.toString());
+        RequestBody body = RequestBody.create(mediaType, listings.toString());
+
         Request request = new Request.Builder()
                 .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS")
-                .method("PUT", body)
+                .put(body)
                 .addHeader("Content-Type", "application/json")
                 .build();
-        client.newCall(request).execute();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to save listing: "
+                        + response.code() + " " + response.message());
+            }
+        }
     }
 
     public JSONObject getSpecificListingInfo(String listingName, String listingOwner) throws IOException {
@@ -71,19 +85,38 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface, V
      * Fetches the listings from the API database.
      * @return JSON Object of the data
      */
-    JSONObject getListingData() throws IOException {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "");
+    public JSONObject getListingData() throws IOException {
+        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS")
                 .get()
                 .addHeader("Content-Type", "application/json")
                 .build();
-        final Response response = client.newCall(request).execute();
-        return new JSONObject(response.body().string());
 
+        try (Response response = client.newCall(request).execute()) {
+            String body = response.body() != null ? response.body().string() : "";
+
+            if (body.isBlank()) {
+                // Empty basket → treat as empty map
+                return new JSONObject();
+            }
+
+            try {
+                return new JSONObject(body);
+            } catch (org.json.JSONException e) {
+                System.err.println("getListingData: invalid JSON from Pantry: " + e.getMessage());
+                // Don't crash callers: behave as if there are no listings
+                return new JSONObject();
+            }
+        }
+    }
+
+    public boolean existsById(String listingID) throws IOException {
+        JSONObject listingData = getListingData();
+        if (listingData.keySet().contains(listingID)) {
+            return true;
+        }
+        return false;
     }
 
     public class DuplicateListingException extends RuntimeException {
