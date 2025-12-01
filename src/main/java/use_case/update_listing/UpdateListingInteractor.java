@@ -16,9 +16,10 @@ public class UpdateListingInteractor implements UpdateListingInputBoundary {
         final User user = updateListingInputData.getUser();
         final boolean isDelete = updateListingInputData.getDelete();
         final Listing listing = updateListingInputData.getListing();
+        final int listingID = listing.get_listingId();
         if (isDelete) {
             user.delete_listing(listing);
-            userDataAccessObject.updateListing(user);
+            userDataAccessObject.updateListing(listingID);
             final UpdateListingOutputData updateListingOutputData = new UpdateListingOutputData(user);
             updateListingPresenter.prepareSuccessView(updateListingOutputData);
         }

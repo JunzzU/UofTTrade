@@ -1,5 +1,6 @@
 package app;
 
+import data_access.UpdateListingDataAccessObject;
 import data_access.UserDataAccessObject;
 import data_access.CreateListingDAO;
 import entity.Listing;
@@ -20,6 +21,7 @@ import interface_adapter.view_listing.ViewListingController;
 import interface_adapter.view_listing.ViewListingPresenter;
 import interface_adapter.view_listing.ViewListingViewModel;
 import org.json.JSONObject;
+import interface_adapter.update_listing.UpdateListingPresenter;
 import use_case.create_listing.CreateListingInputBoundary;
 import use_case.create_listing.CreateListingInteractor;
 import use_case.create_listing.CreateListingOutputBoundary;
@@ -71,7 +73,7 @@ public class AppBuilder {
 
     final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
     final CreateListingDAO createListingDAO = new CreateListingDAO();
-
+    final UpdateListingDataAccessObject updateListingDataAccessObject = new UpdateListingDataAccessObject();
 
     private RegisterView registerView;
     private RegisterViewModel registerViewModel;
@@ -152,7 +154,7 @@ public class AppBuilder {
 
     }
 
-    public AppBuilder addHomepageView() throws IOException {
+    public AppBuilder addHomepageView() {
 
         homepageViewModel = new HomepageViewModel();
         homepageView = new HomepageView(homepageViewModel);
@@ -173,7 +175,7 @@ public class AppBuilder {
             viewManagerModel.setState(searchListingsViewModel.getViewName());
             viewManagerModel.firePropertyChanged();
         });
-        final List<JSONObject> allListings = userDataAccessObject.getAllListings();
+
         viewListingViewModel = new ViewListingViewModel();
         final ViewListingOutputBoundary viewListingOutputBoundary = new ViewListingPresenter(homepageViewModel,
                 viewManagerModel, viewListingViewModel);
@@ -182,7 +184,7 @@ public class AppBuilder {
 
         ViewListingController controller = new ViewListingController(viewListingInteractor);
         homepageView.setViewListingController(controller);
-        homepageView.getListingPanels(allListings);
+
         contentPane.add(homepageView, homepageView.getViewName());
         return this;
 
@@ -348,7 +350,7 @@ public class AppBuilder {
 
     }
 
-    public AppBuilder addMessagingUseCase() {
+    public AppBuilder addMessagingUseCase() throws IOException {
         // viewmodel
         messagingViewModel = new MessagingViewModel();
         // presenter
@@ -359,7 +361,12 @@ public class AppBuilder {
         this.messagingController = new MessagingController(messagingInteractor);
 
         if(homepageView != null) {
-            homepageView.setMessagingDependencies(messagingController,messagingViewModel,viewManagerModel);
+            homepageView.setMessagingDependencies(messagingController, messagingViewModel, viewManagerModel);
+            final List<JSONObject> allListings = userDataAccessObject.getAllListings();
+            homepageView.getListingPanels(allListings);
+        }
+        if (viewListingView != null) {
+            viewListingView.setMessagingDependencies(messagingController, messagingViewModel, viewManagerModel);
         }
         return this;
     }
@@ -375,6 +382,18 @@ public class AppBuilder {
         };
         messagingSubpageView = new MessagingSubpageView(messagingViewModel, onBack);
         contentPane.add(messagingSubpageView, messagingViewModel.getViewName());
+
+        return this;
+    }
+
+    public AppBuilder addUpdateListingUseCase() {
+        UpdateListingOutputBoundary outputBoundary =
+                new UpdateListingPresenter(viewProfileViewModel, viewManagerModel);
+
+        UpdateListingInputBoundary interactor =
+                new UpdateListingInteractor(updateListingDataAccessObject, outputBoundary);
+
+        this.updateListingController = new UpdateListingController(interactor);
 
         return this;
     }

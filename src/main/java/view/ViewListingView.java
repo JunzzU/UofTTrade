@@ -10,6 +10,9 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.messaging.MessagingController;
+import interface_adapter.messaging.MessagingViewModel;
 import interface_adapter.view_listing.ViewListingController;
 import interface_adapter.view_listing.ViewListingState;
 import interface_adapter.view_listing.ViewListingViewModel;
@@ -38,6 +41,9 @@ public class ViewListingView extends JPanel implements PropertyChangeListener {
     private List<String> categories;
     private final ViewListingViewModel viewListingViewModel;
     private ViewListingController viewListingController;
+    private MessagingController messagingController;
+    private MessagingViewModel messagingViewModel;
+    private ViewManagerModel viewManagerModel;
 
     public ViewListingView(ViewListingViewModel viewListingViewModel) {
         this.viewListingViewModel = viewListingViewModel;
@@ -131,12 +137,37 @@ public class ViewListingView extends JPanel implements PropertyChangeListener {
             listingDescriptionLabel.setText("<html><div style='width: 500px;'>Description: " + description
                     + "</div></html>");
 
+            messageSellerButton.addActionListener(event -> {
+                if (messagingController == null || messagingViewModel == null || viewManagerModel == null) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Messaging is not available yet",
+                            "error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                final String sellerIdentifier = owner;
+                messagingController.createGmailComposeLink(sellerIdentifier);
+
+                viewManagerModel.setState(MessagingViewModel.VIEW_NAME);
+                viewManagerModel.firePropertyChanged();
+            });
+
         }
 
     }
 
     public String getViewName() {
         return viewName;
+    }
+
+    public void setMessagingDependencies(MessagingController messagingController,
+                                         MessagingViewModel messagingViewModel,
+                                         ViewManagerModel viewManagerModel) {
+        this.messagingController = messagingController;
+        this.messagingViewModel = messagingViewModel;
+        this.viewManagerModel = viewManagerModel;
     }
 
 }

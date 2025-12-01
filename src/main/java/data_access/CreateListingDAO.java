@@ -71,7 +71,7 @@ public class CreateListingDAO implements CreateListingUserDataAccessInterface, V
      * Fetches the listings from the API database.
      * @return JSON Object of the data
      */
-    private JSONObject getListingData() throws IOException {
+    JSONObject getListingData() throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");

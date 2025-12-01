@@ -123,7 +123,8 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         itemsPanel.setPreferredSize(new Dimension(1250, 4320));
 
         for (int i = 0; i < allListings.size(); i++) {
-            itemsPanel.add(createItemPanel(allListings.get(i), viewListingController));
+            itemsPanel.add(createItemPanel(allListings.get(i), viewListingController, messagingController,
+                    messagingViewModel, viewManagerModel));
         }
         JScrollPane itemsScroll = new JScrollPane(homepageContentPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(itemsScroll, BorderLayout.CENTER);
@@ -147,9 +148,12 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         this.viewListingController = viewListingController;
     }
 
-    private JPanel createItemPanel(JSONObject listing, ViewListingController viewListingController) {
+    private JPanel createItemPanel(JSONObject listing, ViewListingController viewListingController,
+                                   MessagingController messagingController, MessagingViewModel messagingViewModel,
+                                   ViewManagerModel viewManagerModel) {
 
-        return new ListingPreviewPanel(listing, viewListingController);
+        return new ListingPreviewPanel(listing, viewListingController, messagingController, messagingViewModel,
+                viewManagerModel);
 
     }
 
@@ -169,6 +173,5 @@ public class HomepageView extends JPanel implements PropertyChangeListener {
         this.messagingViewModel = messagingViewModel;
         this.viewManagerModel = viewManagerModel;
     }
-
 
 }
