@@ -59,6 +59,7 @@ public class Main {
                 .addViewProfileUseCase()
                 .addViewListingUseCase()
                 .addSearchUseCase()
+                .addUpdateListingUseCase()
                 .build();
 
         application.pack();
