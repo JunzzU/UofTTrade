@@ -21,6 +21,4 @@ public class HomepageState {
         this.username = username;
     }
 
-
-
 }

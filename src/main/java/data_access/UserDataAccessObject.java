@@ -16,7 +16,8 @@ import use_case.view_profile.ViewProfileUserDataAccessInterface;
 import java.util.Iterator;
 import java.io.IOException;
 
-public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface, ViewProfileUserDataAccessInterface, MessagingUserDataAccessInterface {
+public class UserDataAccessObject implements LoginUserDataAccessInterface, RegisterUserDataAccessInterface,
+        ViewProfileUserDataAccessInterface, MessagingUserDataAccessInterface {
 
     private String username;
     private String email;
@@ -109,6 +110,7 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
     @Override
     public List<Listing> getUserListings(String username) {
+
         List<Listing> result = new ArrayList<>();
 
         try {
@@ -164,7 +166,33 @@ public class UserDataAccessObject implements LoginUserDataAccessInterface, Regis
 
     public String getEmail() {return email;}
 
+    public List<JSONObject> getAllListings() throws IOException {
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "");
+            Request request = new Request.Builder()
+                    .url("https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS")
+                    .get()
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            final Response response = client.newCall(request).execute();
+            final JSONObject listings = new JSONObject(response.body().string());
+            listings.remove("Listings");
+            final List<JSONObject> allListings = new ArrayList<>();
+            for (String listing : listings.keySet()) {
+                allListings.add(listings.getJSONObject(listing));
+            }
 
+            return allListings;
+
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
 
     private JSONArray getUserData() throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder()
