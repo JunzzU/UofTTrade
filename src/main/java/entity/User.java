@@ -32,6 +32,10 @@ public class User {
         listings.remove(listing);
     }
 
+    public void set_listing(List<Listing> listings) {
+        this.listings = listings;
+    }
+
     public List<Listing> get_listings() {
         return listings;
     }

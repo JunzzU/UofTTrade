@@ -54,7 +54,7 @@ public class ViewProfileInteractor implements ViewProfileInputBoundary {
 
         // Fetch listings from DAO
         List<Listing> listings = userDataAccess.getUserListings(user.get_username());
-
+        user.set_listing(listings);
         // ✔ Correct place to update the user entity
         //user.get_listings().clear();
         //user.get_listings().addAll(listings);

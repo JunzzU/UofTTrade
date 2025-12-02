@@ -8,57 +8,49 @@ import java.io.IOException;
 
 public class UpdateListingDataAccessObject implements UpdateListingUserDataAccessInterface {
 
-    private final CreateListingDAO createListingDAO;
-
-    public UpdateListingDataAccessObject() {
-        this.createListingDAO = new CreateListingDAO();   // or inject via constructor
-    }
-
     private static final String URL =
             "https://getpantry.cloud/apiv1/pantry/c8a932ca-ce25-4926-a92c-d127ecb78809/basket/LISTINGS";
 
     private final OkHttpClient client = new OkHttpClient();
+    private final CreateListingDAO createListingDAO = new CreateListingDAO();
 
     @Override
     public void updateListing(int listingId) {
         try {
             String key = String.valueOf(listingId);
 
-            // 1. Fetch current JSON
+            // 1) Fetch current JSON
             JSONObject listings = createListingDAO.getListingData();
 
-            // 2. Check existence
             if (!listings.has(key)) {
-                throw new ListingNotFoundException(key);
+                return;
             }
 
-            // 3. Remove the listing
+            // 2) Remove listing
             listings.remove(key);
 
-            // 4. PUT updated object
+            // 3) PUT back to Pantry
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, listings.toString());
+            String jsonToSend = listings.toString();
+
+            RequestBody body = RequestBody.create(mediaType, jsonToSend);
 
             Request request = new Request.Builder()
                     .url(URL)
-                    .put(body)
+                    .method("POST", body)
                     .addHeader("Content-Type", "application/json")
                     .build();
 
             try (Response response = client.newCall(request).execute()) {
+
                 if (!response.isSuccessful()) {
-                    throw new IOException("Failed to delete listing: "
-                            + response.code() + " " + response.message());
+                    throw new IOException("Failed to delete listing: " +
+                            response.code() + " " + response.message());
                 }
             }
+
         } catch (IOException e) {
             System.err.println("Failed to delete listing: " + e.getMessage());
-        }
-    }
-
-    public static class ListingNotFoundException extends RuntimeException {
-        public ListingNotFoundException(String listingId) {
-            super("Listing not found: " + listingId);
         }
     }
 }

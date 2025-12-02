@@ -17,12 +17,18 @@ public class MessagingInteractor implements MessagingInputBoundary {
     @Override
     public void execute(MessagingInputData inputData) {
         try {
-
             String name = inputData.getUsername();
-            String email = inputData.getUsername();
+            String email = inputData.getEmail();
 
-            if (email == null){
-                presenter.presentFailureView("Invalid email address");
+
+            if (email == null || email.isBlank()) {
+                email = userDataAccess.getValidEmailForUser(name);
+            }
+
+
+            if (email == null || !userDataAccess.isPlasuibleEmail(email)) {
+                presenter.presentFailureView("Invalid email address for user: " + name);
+                return;
             }
 
             String gmailUrl = buildGmailComposeUrl(
@@ -31,11 +37,11 @@ public class MessagingInteractor implements MessagingInputBoundary {
                     ""
             );
 
-
             MessagingOutputData outputData =
                     new MessagingOutputData(name, gmailUrl);
 
             presenter.presentSuccessView(outputData);
+
         } catch (Exception e) {
             presenter.presentFailureView("Failed to create Gmail link: " + e.getMessage());
         }
@@ -48,7 +54,8 @@ public class MessagingInteractor implements MessagingInputBoundary {
 
         return "https://mail.google.com/mail/?view=cm&fs=1"
                 + "&to=" + encTo
-                + "&su=" + encSubject   //
+                + "&su=" + encSubject
                 + "&body=" + encBody;
     }
 }
+

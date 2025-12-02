@@ -7,6 +7,7 @@ public class ViewListingState {
     private String listingName = "";
     private List<String> listingCategories;
     private String listingOwner = "";
+    private String listingOwnerEmail = "";
     private String listingDescription = "";
 
     public String getListingName() {
@@ -39,6 +40,14 @@ public class ViewListingState {
 
     public String getListingDescription() {
         return listingDescription;
+    }
+
+    public void setListingOwnerEmail(String listingOwnerEmail) {
+        this.listingOwnerEmail = listingOwnerEmail;
+    }
+
+    public String getListingOwnerEmail() {
+        return listingOwnerEmail;
     }
 
 }
